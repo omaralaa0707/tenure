@@ -1,0 +1,916 @@
+/* ============================================================
+   Tenure — token system
+   Type:  Libre Caslon (legal & government printing lineage)
+          Public Sans  (US federal design-system lineage)
+   Color: OKLCH, neutrals tinted toward the oxblood hue (18)
+   ============================================================ */
+
+:root {
+  /* --- color: light (primary — daytime, desk-bound reading) --- */
+  --ink: oklch(0.23 0.012 18);
+  --paper: oklch(0.957 0.005 18);
+  --surface: oklch(0.987 0.004 18);
+  /* muted is body copy on --paper, so it must clear 4.5:1 — measured 4.83:1 */
+  --muted: oklch(0.52 0.014 18);
+  --rule: oklch(0.885 0.008 18);
+  --rule-strong: oklch(0.78 0.012 18);
+  /* control boundaries need 3:1 (WCAG 1.4.11); --muted measures 4.83:1 */
+  --edge: var(--muted);
+  --tap: 2.75rem;
+  --accent: oklch(0.4 0.098 18);
+  --accent-quiet: oklch(0.4 0.098 18 / 0.09);
+  --on-accent: oklch(0.98 0.004 18);
+
+  /* --- type --- */
+  --display: var(--font-caslon-display), "Iowan Old Style", Charter, Georgia, serif;
+  --serif: var(--font-caslon-text), "Iowan Old Style", Charter, Georgia, serif;
+  --sans: var(--font-public-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+
+  --t-display: clamp(3.25rem, 8.5vw, 5.75rem);
+  --t-h1: clamp(2rem, 4vw, 2.75rem);
+  --t-h2: clamp(1.375rem, 2.2vw, 1.625rem);
+  --t-body: 1.0625rem;
+  --t-sm: 0.875rem;
+  --t-label: 0.6875rem;
+
+  /* --- space: 4pt scale, semantic names --- */
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  --space-4xl: 6rem;
+
+  --section-y: clamp(var(--space-2xl), 7vw, var(--space-4xl));
+
+  /* --- measure --- */
+  --measure: 68ch;
+  --page: 66rem;
+  --rail: 9rem;
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: oklch(0.93 0.006 18);
+    --paper: oklch(0.175 0.009 18);
+    --surface: oklch(0.225 0.009 18);
+    --muted: oklch(0.66 0.013 18);
+    --rule: oklch(0.315 0.011 18);
+    --rule-strong: oklch(0.42 0.014 18);
+    --accent: oklch(0.7 0.12 18);
+    --accent-quiet: oklch(0.7 0.12 18 / 0.14);
+    --on-accent: oklch(0.16 0.01 18);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .transcript {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: var(--t-body);
+  line-height: 1.6;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+dl,
+dd,
+figure {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+}
+
+:where(a, button, input, textarea, summary):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.u-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.u-measure {
+  max-width: var(--measure);
+}
+
+.u-muted {
+  color: var(--muted);
+}
+
+.u-sm {
+  font-size: var(--t-sm);
+}
+
+/* ============================================================
+   Page shell
+   ============================================================ */
+
+.shell {
+  max-width: var(--page);
+  margin-inline: auto;
+  padding-inline: clamp(var(--space-lg), 5vw, var(--space-3xl));
+}
+
+.masthead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+  padding-block: var(--space-lg) var(--space-md);
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.masthead__mark {
+  font-family: var(--display);
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: -0.015em;
+  text-decoration: none;
+}
+
+.masthead__descriptor {
+  display: block;
+  margin-top: var(--space-xs);
+  font-family: var(--sans);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.masthead__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  font-size: var(--t-sm);
+  text-decoration: none;
+  box-shadow: inset 0 -1px 0 var(--edge);
+  transition: color 220ms var(--ease-out-quart), box-shadow 220ms var(--ease-out-quart);
+}
+
+.masthead__link:hover {
+  color: var(--accent);
+  box-shadow: inset 0 -1px 0 var(--accent);
+}
+
+/* ============================================================
+   Hero — set as letterhead, not as a marketing headline block
+   ============================================================ */
+
+.hero {
+  padding-block: clamp(var(--space-2xl), 9vw, var(--space-4xl)) var(--section-y);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.hero__title {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: var(--t-display);
+  line-height: 0.96;
+  letter-spacing: -0.028em;
+  text-wrap: balance;
+  max-width: 14ch;
+}
+
+.hero__standfirst {
+  max-width: 40ch;
+  font-size: clamp(1.0625rem, 1.5vw, 1.1875rem);
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  align-items: center;
+  margin-top: var(--space-xs);
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap);
+  font: inherit;
+  font-size: 0.9375rem;
+  line-height: 1;
+  padding: 0.75rem 1.4rem;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 220ms var(--ease-out-quart),
+    border-color 220ms var(--ease-out-quart), color 220ms var(--ease-out-quart);
+}
+
+.btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+.btn--quiet {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--edge);
+}
+
+.btn--quiet:hover {
+  background: transparent;
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* ============================================================
+   Bands — asymmetric label rail + content column
+   ============================================================ */
+
+.band {
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr);
+  gap: clamp(var(--space-lg), 4vw, var(--space-2xl));
+  align-items: start;
+  border-top: 1px solid var(--rule);
+  padding-block: var(--section-y);
+}
+
+.band__label {
+  font-size: var(--t-label);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding-top: 0.55rem;
+}
+
+.band__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  min-width: 0;
+}
+
+.band__title {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: var(--t-h1);
+  line-height: 1.1;
+  letter-spacing: -0.016em;
+  text-wrap: balance;
+  max-width: 20ch;
+}
+
+/* ============================================================
+   Documents
+   ============================================================ */
+
+.doc {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: clamp(var(--space-lg), 3vw, var(--space-xl));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.doc__kicker {
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.doc__title {
+  font-family: var(--display);
+  font-size: var(--t-h2);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+
+.doc__fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--rule);
+}
+
+.field__key {
+  display: block;
+  margin-bottom: var(--space-2xs);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.field__value {
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.duties {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--rule);
+}
+
+.duties__item {
+  position: relative;
+  padding-left: 1.35rem;
+  font-size: 0.9375rem;
+}
+
+.duties__item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 0.6rem;
+  height: 1px;
+  background: var(--accent);
+}
+
+.doc__boundary {
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--rule);
+  font-size: var(--t-sm);
+  color: var(--muted);
+  max-width: var(--measure);
+}
+
+/* ============================================================
+   Signature element — the interview writes the offer letter
+   ============================================================ */
+
+.hiring {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  align-items: start;
+}
+
+@media (max-width: 60rem) {
+  .hiring {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.interview {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--rule-strong);
+  background: var(--surface);
+  min-height: 28rem;
+}
+
+.interview__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  padding: var(--space-sm) var(--space-lg);
+  border-bottom: 1px solid var(--rule);
+}
+
+.interview__who {
+  font-family: var(--display);
+  font-size: 1.0625rem;
+  line-height: 1.2;
+}
+
+.interview__role {
+  display: block;
+  font-family: var(--sans);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.pill {
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-quiet);
+  padding: 0.32rem 0.6rem;
+  white-space: nowrap;
+}
+
+.transcript {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 32rem;
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  scroll-behavior: smooth;
+}
+
+.turn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  max-width: 46ch;
+}
+
+.turn__who {
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.turn__text {
+  white-space: pre-wrap;
+  text-wrap: pretty;
+}
+
+.turn--candidate .turn__text {
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  line-height: 1.62;
+}
+
+.turn--attorney {
+  align-self: flex-end;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.turn--attorney .turn__text {
+  font-size: 0.9375rem;
+  color: var(--muted);
+}
+
+.turn--notice .turn__text {
+  font-family: var(--sans);
+  font-size: var(--t-sm);
+  color: var(--accent);
+}
+
+.caret::after {
+  content: "";
+  display: inline-block;
+  width: 0.42ch;
+  height: 1em;
+  background: var(--accent);
+  vertical-align: -0.14em;
+  margin-left: 0.12ch;
+  animation: caret-blink 1.05s steps(2, start) infinite;
+}
+
+@keyframes caret-blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+.composer {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+  border-top: 1px solid var(--rule);
+}
+
+.composer__input {
+  flex: 1;
+  font: inherit;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  resize: none;
+  padding-block: 0.6rem;
+  min-height: var(--tap);
+  max-height: 8rem;
+  field-sizing: content;
+}
+
+.composer__input::placeholder {
+  color: var(--muted);
+}
+
+.composer__send {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap);
+  font: inherit;
+  font-size: 0.8125rem;
+  line-height: 1;
+  padding: 0.5rem 1.1rem;
+  border: 1px solid var(--edge);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 220ms var(--ease-out-quart), border-color 220ms var(--ease-out-quart);
+}
+
+.composer__send:hover:not(:disabled) {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.composer__send:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.composer__send:disabled {
+  color: var(--muted);
+  border-color: var(--rule);
+  cursor: not-allowed;
+}
+
+.composer__input:disabled {
+  color: var(--muted);
+  cursor: wait;
+}
+
+.composer:focus-within {
+  box-shadow: inset 0 1px 0 var(--accent);
+}
+
+/* --- the offer letter that fills itself in --- */
+
+.offer {
+  border: 1px solid var(--rule-strong);
+  background: var(--surface);
+  padding: clamp(var(--space-lg), 2.5vw, var(--space-xl));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  position: sticky;
+  top: var(--space-lg);
+}
+
+@media (max-width: 60rem) {
+  .offer {
+    position: static;
+  }
+}
+
+.offer__kicker {
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.offer__body {
+  font-family: var(--serif);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+
+.offer__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--rule);
+}
+
+.offer__row {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: var(--space-sm);
+  align-items: baseline;
+  font-size: var(--t-sm);
+}
+
+.offer__key {
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.offer__value {
+  font-family: var(--serif);
+  font-size: 0.9375rem;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.offer__value[data-state="blank"] {
+  font-family: var(--sans);
+  font-size: var(--t-sm);
+  color: var(--muted);
+  border-bottom: 1px dashed var(--rule-strong);
+  display: block;
+  min-height: 1.2em;
+}
+
+.offer__value[data-state="filled"] {
+  animation: ink-in 420ms var(--ease-out-quart) both;
+}
+
+@keyframes ink-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.offer__sign {
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--rule);
+  font-size: var(--t-sm);
+  color: var(--muted);
+}
+
+/* ============================================================
+   The employment sequence — a real sequence, so it is numbered
+   ============================================================ */
+
+.sequence {
+  display: flex;
+  flex-direction: column;
+  counter-reset: step;
+}
+
+.sequence__step {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  gap: var(--space-md);
+  align-items: baseline;
+  padding-block: var(--space-lg);
+  border-top: 1px solid var(--rule);
+}
+
+.sequence__step:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.sequence__step::before {
+  counter-increment: step;
+  content: counter(step, decimal-leading-zero);
+  font-family: var(--display);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--accent);
+}
+
+.sequence__title {
+  font-family: var(--serif);
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: var(--space-2xs);
+}
+
+.sequence__copy {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  max-width: 54ch;
+  text-wrap: pretty;
+}
+
+/* ============================================================
+   Questions
+   ============================================================ */
+
+.qa {
+  display: flex;
+  flex-direction: column;
+}
+
+.qa__item {
+  padding-block: var(--space-lg);
+  border-top: 1px solid var(--rule);
+}
+
+.qa__item:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.qa__q {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 1.0625rem;
+  margin-bottom: var(--space-2xs);
+}
+
+.qa__a {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  max-width: var(--measure);
+  text-wrap: pretty;
+}
+
+/* ============================================================
+   Terms + closing
+   ============================================================ */
+
+.terms {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: var(--space-lg);
+  padding-block: var(--space-lg);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.terms__term {
+  font-family: var(--display);
+  font-size: 1.25rem;
+  line-height: 1.15;
+  margin-bottom: var(--space-2xs);
+}
+
+.terms__gloss {
+  font-size: var(--t-sm);
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.closing {
+  border-top: 1px solid var(--rule-strong);
+  padding-block: var(--section-y);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  align-items: flex-start;
+}
+
+.closing__title {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(2.25rem, 5.5vw, 3.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.022em;
+  max-width: 16ch;
+  text-wrap: balance;
+}
+
+.colophon {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  padding-block: var(--space-lg) var(--space-2xl);
+  border-top: 1px solid var(--rule);
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+/* ============================================================
+   Page-load orchestration — one sequence, then stillness
+   ============================================================ */
+
+@media (prefers-reduced-motion: no-preference) {
+  .rise {
+    animation: rise 620ms var(--ease-out-quart) both;
+  }
+
+  .rise--1 {
+    animation-delay: 60ms;
+  }
+
+  .rise--2 {
+    animation-delay: 130ms;
+  }
+
+  .rise--3 {
+    animation-delay: 200ms;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ============================================================
+   Narrow
+   ============================================================ */
+
+@media (max-width: 46rem) {
+  .band {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-md);
+  }
+
+  .band__label {
+    padding-top: 0;
+  }
+
+  .turn--attorney {
+    align-self: stretch;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .offer__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2xs);
+  }
+
+  .sequence__step {
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    gap: var(--space-sm);
+  }
+}
