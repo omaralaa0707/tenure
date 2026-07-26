@@ -95,7 +95,7 @@ const NAV_LINKS = [
 export default function Page() {
   return (
     <>
-      <nav className="nav">
+      <nav className="nav glass">
         <div className="wrap nav__row">
           <a className="nav__brand" href="/">
             Tenure
@@ -161,125 +161,137 @@ export default function Page() {
         </section>
 
         <Reveal as="section" className="wrap section" aria-labelledby="kit-heading">
-          <div className="section__head">
-            <p className="eyebrow">What it comes with</p>
-            <h2 className="section__title" id="kit-heading">
-              The same setup as anyone else on your team.
-            </h2>
-            <p className="section__lede">
-              Not a script bolted onto your inbox. A hire, with the equipment and access that
-              implies.
-            </p>
+          <div className="glass glass--card">
+            <div className="section__head">
+              <p className="eyebrow">What it comes with</p>
+              <h2 className="section__title" id="kit-heading">
+                The same setup as anyone else on your team.
+              </h2>
+              <p className="section__lede">
+                Not a script bolted onto your inbox. A hire, with the equipment and access that
+                implies.
+              </p>
+            </div>
+            <div className="kit">
+              {KIT.map((item) => (
+                <div className="kit__item" key={item.title}>
+                  {ICONS[item.icon]}
+                  <h3 className="kit__title">{item.title}</h3>
+                  <p className="kit__copy">{item.copy}</p>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="kit">
-            {KIT.map((item) => (
-              <div className="kit__item" key={item.title}>
-                {ICONS[item.icon]}
-                <h3 className="kit__title">{item.title}</h3>
-                <p className="kit__copy">{item.copy}</p>
+        </Reveal>
+
+        <Reveal as="section" className="wrap section" aria-labelledby="capability-heading">
+          <div className="glass glass--card">
+            <div className="section__head">
+              <p className="eyebrow">What it is good at</p>
+              <h2 className="section__title" id="capability-heading">
+                Always on. Fast at the repetitive work. Capable of more.
+              </h2>
+            </div>
+            <div className="capability">
+              <div className="capability__col">
+                <p className="capability__label">Junior work, done faster</p>
+                <p className="capability__copy">
+                  Repetitive, high-volume tasks: data entry, scheduling, follow-ups, first-pass
+                  research and drafts. It works around the clock, takes no weekends, and moves
+                  through this kind of work faster than any junior hire.
+                </p>
               </div>
-            ))}
-          </div>
-        </Reveal>
-
-        <Reveal as="section" className="wrap section section--tint" aria-labelledby="capability-heading">
-          <div className="section__head">
-            <p className="eyebrow">What it is good at</p>
-            <h2 className="section__title" id="capability-heading">
-              Always on. Fast at the repetitive work. Capable of more.
-            </h2>
-          </div>
-          <div className="capability">
-            <div className="capability__col">
-              <p className="capability__label">Junior work, done faster</p>
-              <p className="capability__copy">
-                Repetitive, high-volume tasks: data entry, scheduling, follow-ups, first-pass
-                research and drafts. It works around the clock, takes no weekends, and moves
-                through this kind of work faster than any junior hire.
-              </p>
-            </div>
-            <div className="capability__col">
-              <p className="capability__label">Senior work, with oversight</p>
-              <p className="capability__copy">
-                It can take on more judgment-heavy work too: analysis, complex drafting, decision
-                support. For that tier, we recommend a human on your team reviews its output
-                before it goes out. You decide where that line sits.
-              </p>
+              <div className="capability__col">
+                <p className="capability__label">Senior work, with oversight</p>
+                <p className="capability__copy">
+                  It can take on more judgment-heavy work too: analysis, complex drafting, decision
+                  support. For that tier, we recommend a human on your team reviews its output
+                  before it goes out. You decide where that line sits.
+                </p>
+              </div>
             </div>
           </div>
         </Reveal>
 
-        <Reveal as="section" className="wrap section section--tint" id="delivery" aria-labelledby="delivery-heading">
-          <div className="section__head">
-            <p className="eyebrow">How it is delivered</p>
-            <h2 className="section__title" id="delivery-heading">
-              You do not operate anything. We deliver the result.
-            </h2>
-            <p className="section__lede">
-              This is a managed hire, not software you configure. Four steps, and Tenure runs all
-              of them.
-            </p>
+        <Reveal as="section" className="wrap section" id="delivery" aria-labelledby="delivery-heading">
+          <div className="glass glass--card">
+            <div className="section__head">
+              <p className="eyebrow">How it is delivered</p>
+              <h2 className="section__title" id="delivery-heading">
+                You do not operate anything. We deliver the result.
+              </h2>
+              <p className="section__lede">
+                This is a managed hire, not software you configure. Four steps, and Tenure runs all
+                of them.
+              </p>
+            </div>
+            <ol className="process">
+              {PROCESS.map((step, index) => (
+                <li className="process__item" key={step.title}>
+                  <span className="process__index">{String(index + 1).padStart(2, '0')}</span>
+                  <h3 className="process__title">{step.title}</h3>
+                  <p className="process__copy">{step.copy}</p>
+                </li>
+              ))}
+            </ol>
           </div>
-          <ol className="process">
-            {PROCESS.map((step, index) => (
-              <li className="process__item" key={step.title}>
-                <span className="process__index">{String(index + 1).padStart(2, '0')}</span>
-                <h3 className="process__title">{step.title}</h3>
-                <p className="process__copy">{step.copy}</p>
-              </li>
-            ))}
-          </ol>
         </Reveal>
 
         <Reveal as="section" className="wrap section" id="evidence" aria-labelledby="evidence-heading">
-          <div className="section__head">
-            <p className="eyebrow">See it work</p>
-            <h2 className="section__title" id="evidence-heading">
-              Watch it handle a real inquiry.
-            </h2>
-            <p className="section__lede">
-              This is the Intake Coordinator, one AI employee Tenure has already built: exactly
-              the kind of fast, repetitive, junior work described above. Talk to it the way a
-              prospective client would, and watch it qualify, respond, and hand off.
-            </p>
+          <div className="glass glass--card">
+            <div className="section__head">
+              <p className="eyebrow">See it work</p>
+              <h2 className="section__title" id="evidence-heading">
+                Watch it handle a real inquiry.
+              </h2>
+              <p className="section__lede">
+                This is the Intake Coordinator, one AI employee Tenure has already built: exactly
+                the kind of fast, repetitive, junior work described above. Talk to it the way a
+                prospective client would, and watch it qualify, respond, and hand off.
+              </p>
+            </div>
           </div>
           <div className="evidence">
             <Interview />
           </div>
         </Reveal>
 
-        <Reveal as="section" className="wrap section section--tint" id="pricing" aria-labelledby="terms-heading">
-          <div className="section__head">
-            <p className="eyebrow">Pricing</p>
-            <h2 className="section__title" id="terms-heading">
-              A setup fee, then a monthly fee.
-            </h2>
-            <p className="section__lede">
-              Priced against what the work is worth, not per seat and not per message. If it is
-              not performing, we rebuild or replace it. No fixed deadline on that, no fine print.
-            </p>
+        <Reveal as="section" className="wrap section" id="pricing" aria-labelledby="terms-heading">
+          <div className="glass glass--card">
+            <div className="section__head">
+              <p className="eyebrow">Pricing</p>
+              <h2 className="section__title" id="terms-heading">
+                A setup fee, then a monthly fee.
+              </h2>
+              <p className="section__lede">
+                Priced against what the work is worth, not per seat and not per message. If it is
+                not performing, we rebuild or replace it. No fixed deadline on that, no fine print.
+              </p>
+            </div>
           </div>
         </Reveal>
 
         <Reveal as="section" className="wrap section" id="faq" aria-labelledby="questions-heading">
-          <div className="section__head">
-            <p className="eyebrow">Questions</p>
-            <h2 className="section__title" id="questions-heading">
-              Questions every owner asks.
-            </h2>
-          </div>
-          <div className="faq">
-            {QUESTIONS.map(({ q, a }) => (
-              <details className="faq__item" key={q}>
-                <summary>
-                  {q}
-                  <span className="faq__chevron" aria-hidden="true">
-                    &#9660;
-                  </span>
-                </summary>
-                <p className="faq__answer">{a}</p>
-              </details>
-            ))}
+          <div className="glass glass--card">
+            <div className="section__head">
+              <p className="eyebrow">Questions</p>
+              <h2 className="section__title" id="questions-heading">
+                Questions every owner asks.
+              </h2>
+            </div>
+            <div className="faq">
+              {QUESTIONS.map(({ q, a }) => (
+                <details className="faq__item" key={q}>
+                  <summary>
+                    {q}
+                    <span className="faq__chevron" aria-hidden="true">
+                      &#9660;
+                    </span>
+                  </summary>
+                  <p className="faq__answer">{a}</p>
+                </details>
+              ))}
+            </div>
           </div>
         </Reveal>
 

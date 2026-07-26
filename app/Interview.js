@@ -126,7 +126,7 @@ export default function Interview() {
 
   return (
     <>
-      <section className="interview" aria-label="Watch it handle a real inquiry">
+      <section className="interview glass" aria-label="Watch it handle a real inquiry">
         <header className="interview__head">
           <p className="interview__who">
             Intake Coordinator
@@ -196,7 +196,7 @@ export default function Interview() {
         </form>
       </section>
 
-      <aside className="results" aria-label="Live results, filled in as you talk">
+      <aside className="results glass" aria-label="Live results, filled in as you talk">
         <p className="results__kicker">Live results</p>
         <p className="results__body">
           This fills in as the conversation happens. Nothing here is written by hand.

@@ -41,7 +41,18 @@ export default function RootLayout({ children }) {
         <noscript>
           <style>{'.reveal { opacity: 1 !important; transform: none !important; }'}</style>
         </noscript>
-        {children}
+        {/* Fixed, persistent backdrop standing in for Riopack's video: an
+            activity grid of staggered pulsing dots plus one slow scan line,
+            both in the accent color. Content floats over it in glass panels. */}
+        <div className="bg" aria-hidden="true">
+          <div className="bg__grid">
+            {Array.from({ length: 48 }, (_, i) => (
+              <span className="bg__dot" key={i} />
+            ))}
+          </div>
+          <div className="bg__scan" />
+        </div>
+        <div className="page">{children}</div>
       </body>
     </html>
   )
