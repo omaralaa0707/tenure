@@ -45,4 +45,5 @@ Verified: WCAG AA contrast on all text pairs, 44px minimum touch targets, keyboa
 
 - The live model path has not been exercised against the real API — add a key and run one interview end to end before showing anyone.
 - No analytics, no form capture. The only call to action is a mailto.
-- `npm audit` reports advisories in `postcss` and `sharp`, both transitive inside Next itself. The suggested "fix" downgrades Next to v9; leave them until Next ships updated deps.
+- `postcss` and `sharp` are pinned to patched versions through `overrides` in `package.json`, since Next still resolves vulnerable ones. Drop the overrides once Next ships updated deps.
+- `/api/interview` is public by design. It rate limits per IP in memory, which holds for a single server but not across serverless instances: put a shared limiter in front of it before scaling out.
