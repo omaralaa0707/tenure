@@ -1,5 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { OPENING } from '../../opening'
+import { RESULT_KEY_SPEC } from '../../results'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -34,7 +35,7 @@ Whenever the owner tells you something worth capturing for the results panel, ap
 
 ::field key=value
 
-Valid keys, each used at most once per reply: firm (the firm's name), practice (the kind of client work they do), coverage (the regions or markets they serve), volume (inquiries per week), response (how fast they answer now), start (a proposed start date).
+Valid keys, each used at most once per reply: ${RESULT_KEY_SPEC}.
 Keep each value under twelve words. Only record something the owner actually told you: never guess, and never restate a value you already recorded. These lines are stripped from what the owner sees, so never mention them or refer to them in your prose.
 
 Begin by introducing yourself in two sentences and asking your first question.`

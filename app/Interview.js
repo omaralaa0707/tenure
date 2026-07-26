@@ -1,39 +1,11 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import Turn from './components/Turn'
 import { OPENING } from './opening'
+import { collectResults, resultRows, stripFields } from './results'
 
-const FIELDS = [
-  { key: 'firm', label: 'Employer', blank: 'the firm' },
-  { key: 'practice', label: 'Handles', blank: 'what they handle' },
-  { key: 'coverage', label: 'Coverage', blank: 'regions served' },
-  { key: 'volume', label: 'Inquiry volume', blank: 'per week' },
-  { key: 'response', label: 'Answered now in', blank: 'current speed' },
-  { key: 'start', label: 'Start date', blank: 'on signature' },
-]
-
-const FIELD_LINE = /^::field\s+([a-z]+)\s*=\s*(.+)$/gim
-
-// The model appends `::field key=value` lines for the results panel. Strip them
-// from what the owner reads, and read them for the letter.
-function readFields(raw) {
-  const found = {}
-  for (const match of raw.matchAll(FIELD_LINE)) {
-    const value = match[2].trim()
-    if (value) found[match[1].toLowerCase()] = value
-  }
-  return found
-}
-
-function stripFields(raw) {
-  return raw
-    .replace(FIELD_LINE, '')
-    .replace(/::field[\s\S]*$/i, '') // a half-streamed marker
-    .replace(/—/g, ', ') // house style forbids the em dash; degrade gracefully if one slips through
-    .replace(/\n{3,}/g, '\n\n')
-    .replace(/ {2,}/g, ' ')
-    .trimEnd()
-}
+const CANDIDATE = 'Intake Coordinator'
 
 export default function Interview() {
   const [turns, setTurns] = useState([])
@@ -45,10 +17,14 @@ export default function Interview() {
   const transcriptRef = useRef(null)
   const abortRef = useRef(null)
 
-  const results = useMemo(() => {
-    const all = [OPENING, ...turns.filter((t) => t.role === 'assistant').map((t) => t.raw ?? '')]
-    return all.reduce((acc, text) => ({ ...acc, ...readFields(text) }), {})
-  }, [turns])
+  const results = useMemo(
+    () =>
+      collectResults([
+        OPENING,
+        ...turns.filter((t) => t.role === 'assistant').map((t) => t.raw ?? ''),
+      ]),
+    [turns],
+  )
 
   useEffect(() => {
     const el = transcriptRef.current
@@ -129,41 +105,30 @@ export default function Interview() {
       <section className="interview" aria-label="Watch it handle a real inquiry">
         <header className="interview__head">
           <p className="interview__who">
-            Intake Coordinator
+            {CANDIDATE}
             <span className="interview__role">AI employee · Tenure</span>
           </p>
         </header>
 
         <div className="transcript" ref={transcriptRef} aria-live="polite" aria-atomic="false">
-          <article className="turn turn--candidate">
-            <p className="turn__who">Intake Coordinator</p>
-            <p className="turn__text">{stripFields(OPENING)}</p>
-          </article>
+          <Turn who={CANDIDATE} text={stripFields(OPENING)} />
 
           {turns.map((turn, index) => (
-            <article
+            <Turn
               key={index}
-              className={`turn ${turn.role === 'user' ? 'turn--visitor' : 'turn--candidate'}`}
-            >
-              <p className="turn__who">{turn.role === 'user' ? 'You' : 'Intake Coordinator'}</p>
-              <p className="turn__text">{turn.content}</p>
-            </article>
+              variant={turn.role === 'user' ? 'visitor' : 'candidate'}
+              who={turn.role === 'user' ? 'You' : CANDIDATE}
+              text={turn.content}
+            />
           ))}
 
           {/* Hidden from assistive tech while streaming; the completed turn
               announces once instead of on every token. */}
           {busy && (
-            <article className="turn turn--candidate" aria-hidden="true">
-              <p className="turn__who">Intake Coordinator</p>
-              <p className="turn__text caret">{streaming}</p>
-            </article>
+            <Turn who={CANDIDATE} text={streaming} textClassName="caret" aria-hidden="true" />
           )}
 
-          {notice && (
-            <article className="turn turn--notice" role="status">
-              <p className="turn__text">{notice}</p>
-            </article>
-          )}
+          {notice && <Turn variant="notice" text={notice} role="status" />}
         </div>
 
         <form
@@ -199,17 +164,14 @@ export default function Interview() {
         </p>
 
         <dl className="results__list">
-          {FIELDS.map(({ key, label, blank }) => {
-            const value = results[key]
-            return (
-              <div className="results__row" key={key}>
-                <dt className="results__key">{label}</dt>
-                <dd className="results__value" data-state={value ? 'filled' : 'blank'}>
-                  {value ?? blank}
-                </dd>
-              </div>
-            )
-          })}
+          {resultRows(results).map(({ key, label, value, state }) => (
+            <div className="results__row" key={key}>
+              <dt className="results__key">{label}</dt>
+              <dd className="results__value" data-state={state}>
+                {value}
+              </dd>
+            </div>
+          ))}
         </dl>
 
         <p className="u-sm u-muted">
