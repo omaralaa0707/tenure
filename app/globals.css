@@ -603,6 +603,13 @@ button {
   gap: var(--space-lg);
 }
 
+.role-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
 .role-card__title {
   font-family: var(--sans);
   font-weight: 700;

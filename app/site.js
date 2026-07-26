@@ -10,5 +10,5 @@ export const NAV_LINKS = [
 export const INTERVIEW_HREF = '#interview'
 export const INTERVIEW_CTA = 'Interview the candidate'
 
-export const CONTACT_HREF = 'mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20founding%20client'
+export const CONTACT_HREF = 'mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20interested'
 export const CONTACT_CTA = 'Talk to Omar'

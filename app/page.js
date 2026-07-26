@@ -76,11 +76,6 @@ const TERMS = [
     gloss:
       'If the role is not performing against its scorecard in the first ninety days, we rebuild it or replace it. The same guarantee recruiters give.',
   },
-  {
-    term: 'Three founding clients',
-    gloss:
-      'Tenure is a new firm and says so. The first three firms get a founding rate, fixed, in exchange for letting us publish what the numbers did.',
-  },
 ]
 
 const QUESTIONS = [
@@ -132,10 +127,10 @@ export default function Page() {
             <p className="eyebrow rise rise--1">AI Employment Firm</p>
             <h1 className="hero__title rise rise--1">Meet your next hire.</h1>
             <p className="hero__standfirst rise rise--2">
-              Tenure designs, hires, trains, and manages AI employees for founder-led service
-              businesses. The first one is an Intake Coordinator: it answers every inquiry in
-              under a minute, never claims to be a person, and has a named human here accountable
-              for its work.
+              Tenure designs, hires, trains, and manages AI employees built around whatever role
+              your business actually needs. Below is an example we&rsquo;ve already built, an
+              Intake Coordinator: it answers every inquiry in under a minute, never claims to be a
+              person, and has a named human here accountable for its work.
             </p>
             <div className="hero__actions rise rise--3">
               <a className="btn" href={INTERVIEW_HREF}>
@@ -181,9 +176,9 @@ export default function Page() {
             <SectionHead
               className={null}
               id="role-heading"
-              eyebrow="The role"
-              title="One role, written down before anyone signs anything."
-              lede="Every AI employee starts as a scorecard, the same document a firm would write for a person. This is the one your firm would be hiring against."
+              eyebrow="Not a fixed catalog"
+              title="Every role starts as a scorecard, built for what you need."
+              lede="There is no set first hire. Every AI employee starts as a scorecard scoped to your business, the same document a firm would write for a person. Below is one we have already built, as an example."
             >
               <ul className="checklist">
                 {DUTIES.map((duty) => (
@@ -195,7 +190,10 @@ export default function Page() {
             </SectionHead>
 
             <div className="role-card">
-              <p className="role-card__kicker">Role scorecard</p>
+              <div className="role-card__head">
+                <p className="role-card__kicker">Role scorecard</p>
+                <span className="pill">Example</span>
+              </div>
               <h3 className="role-card__title">Intake Coordinator (AI)</h3>
               <FieldList block="role-card" className="role-card__grid" fields={ROLE_FACTS} />
               <p className="role-card__boundary">
@@ -210,9 +208,9 @@ export default function Page() {
         <section className="wrap section" id="interview" aria-labelledby="interview-heading">
           <SectionHead
             id="interview-heading"
-            eyebrow="Try it"
+            eyebrow="Try the example"
             title="Interview it yourself, the way you would interview anyone."
-            lede="Tell it about your firm and it will show you how it would run your intake. As you talk, the offer of employment beside the transcript fills itself in."
+            lede="This is our Intake Coordinator, built as an example. Tell it about your firm and watch it work; the role Tenure builds for you would be scoped to what your business actually needs. As you talk, the offer of employment beside the transcript fills itself in."
           />
           <Interview />
         </section>
@@ -248,10 +246,6 @@ export default function Page() {
               </div>
             ))}
           </div>
-          <p className="u-measure u-muted u-sm" style={{ marginTop: 'var(--space-lg)' }}>
-            We publish no numbers we have not earned. Ask on the call and you will get the real
-            ones, including the ones that are not flattering yet.
-          </p>
         </section>
 
         <section className="wrap section section--tint" id="faq" aria-labelledby="questions-heading">
