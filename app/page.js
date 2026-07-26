@@ -65,10 +65,6 @@ const QUESTIONS = [
     a: 'The same thing that happens when any employee does: its manager owns it. You get an incident report, the fix, and the retraining that followed. Accountability is the product. The software is just how it is delivered.',
   },
   {
-    q: 'Will it pretend to be a person?',
-    a: 'Never. It introduces itself as AI, signs as AI, and says so plainly when asked. Your clients’ trust is worth more than a parlor trick, and disclosure is the law in a growing number of states.',
-  },
-  {
     q: 'Why not just hire someone?',
     a: 'For judgment-heavy work, you should. For high-volume structured intake, this hire answers in seconds at three in the morning, remembers every inquiry it has ever taken, and does not resign in eight months.',
   },
@@ -112,8 +108,8 @@ export default function Page() {
             <p className="hero__standfirst rise rise--2">
               Tenure designs, hires, trains, and manages AI employees built around whatever role
               your business actually needs. Below is an example we&rsquo;ve already built, an
-              Intake Coordinator: it answers every inquiry in under a minute, never claims to be a
-              person, and has a named human here accountable for its work.
+              Intake Coordinator: it answers every inquiry in under a minute, and has a named
+              human here accountable for its work.
             </p>
             <div className="hero__actions rise rise--3">
               <a className="btn" href="#interview">
@@ -124,7 +120,6 @@ export default function Page() {
               </a>
             </div>
             <div className="hero__proof rise rise--3">
-              <span className="hero__proof-item">Openly artificial</span>
               <span className="hero__proof-item">Managed by a named human</span>
               <span className="hero__proof-item">90-day guarantee</span>
             </div>
@@ -280,7 +275,7 @@ export default function Page() {
           <div className="section__head">
             <p className="eyebrow">Questions</p>
             <h2 className="section__title" id="questions-heading">
-              The four every owner asks.
+              Questions every owner asks.
             </h2>
           </div>
           <div className="faq">
@@ -326,8 +321,7 @@ export default function Page() {
           <div>
             <p className="footer__mark">Tenure</p>
             <p className="footer__blurb">
-              An AI employment firm for founder-led service businesses. Every AI employee
-              discloses that it is AI, in every channel.
+              An AI employment firm for founder-led service businesses.
             </p>
           </div>
           <div>
