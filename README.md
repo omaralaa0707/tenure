@@ -16,6 +16,19 @@ Without `ANTHROPIC_API_KEY` the page still renders and the interview panel expla
 
 Get a key at <https://console.anthropic.com>. It is read server-side only and never reaches the browser.
 
+## Tests
+
+```bash
+npm test              # vitest, once
+npm run test:coverage # with a coverage report
+```
+
+Vitest with jsdom and Testing Library. `test/route.test.js` covers `/api/interview` against a
+stubbed Anthropic SDK: validation, the transcript it sends, the streamed body, refusals, a stream
+that breaks mid-sentence, and rate-limit or auth failures. `test/offer-protocol.test.js` covers
+the `::field` marker parsing and stripping. `test/Interview.test.jsx` drives the panel itself, and
+`test/page.test.jsx` is a smoke test for the page. No test touches the real API.
+
 ## Stack
 
 - **Next.js 16** (App Router) — the page is static, `/api/interview` is dynamic and streams
