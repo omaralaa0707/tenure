@@ -1,53 +1,40 @@
-import { Libre_Caslon_Display, Libre_Caslon_Text, Public_Sans } from 'next/font/google'
+import { Schibsted_Grotesk } from 'next/font/google'
 import './globals.css'
 
-// Caslon: the historical face of legal and government printing. Contracts,
-// statutes, records: institutional, not startup. Public Sans carries structure.
-const caslonDisplay = Libre_Caslon_Display({
+// One typeface, not two. Schibsted Grotesk carries a newspaper's lineage
+// (built for a Scandinavian news publisher): direct, confident, built to
+// state a result plainly rather than decorate one. No second family
+// competing for identity, and no legal/certificate association to retire
+// again later.
+const grotesk = Schibsted_Grotesk({
   subsets: ['latin'],
-  weight: ['400'],
-  variable: '--font-caslon-display',
-  display: 'swap',
-})
-
-const caslonText = Libre_Caslon_Text({
-  subsets: ['latin'],
-  weight: ['400', '700'],
+  weight: ['400', '500', '600', '700', '800'],
   style: ['normal', 'italic'],
-  variable: '--font-caslon-text',
-  display: 'swap',
-})
-
-const publicSans = Public_Sans({
-  subsets: ['latin'],
-  variable: '--font-public-sans',
+  variable: '--font-grotesk',
   display: 'swap',
 })
 
 export const metadata = {
   title: 'Tenure: AI Employment Firm',
   description:
-    'Tenure designs, hires, trains, and manages AI employees for founder-led service businesses. Interview the candidate before you hire it.',
+    'Tenure delivers the outcome: every inquiry answered before it goes cold. We design, build, and manage the AI employee that does it.',
   openGraph: {
     title: 'Tenure: AI Employment Firm',
-    description: 'Meet your next hire: a managed AI Intake Coordinator for your firm.',
+    description: 'Every inquiry answered before it goes cold. See it work.',
     type: 'website',
   },
 }
 
 export const viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f3f1f0' },
-    { media: '(prefers-color-scheme: dark)', color: '#1c1a1a' },
+    { media: '(prefers-color-scheme: light)', color: '#f1f5f1' },
+    { media: '(prefers-color-scheme: dark)', color: '#080f0a' },
   ],
 }
 
 export default function RootLayout({ children }) {
   return (
-    <html
-      lang="en"
-      className={`${caslonDisplay.variable} ${caslonText.variable} ${publicSans.variable}`}
-    >
+    <html lang="en" className={grotesk.variable}>
       <body>{children}</body>
     </html>
   )

@@ -14,7 +14,7 @@ const FIELDS = [
 
 const FIELD_LINE = /^::field\s+([a-z]+)\s*=\s*(.+)$/gim
 
-// The model appends `::field key=value` lines for the offer letter. Strip them
+// The model appends `::field key=value` lines for the results panel. Strip them
 // from what the owner reads, and read them for the letter.
 function readFields(raw) {
   const found = {}
@@ -45,7 +45,7 @@ export default function Interview() {
   const transcriptRef = useRef(null)
   const abortRef = useRef(null)
 
-  const offer = useMemo(() => {
+  const results = useMemo(() => {
     const all = [OPENING, ...turns.filter((t) => t.role === 'assistant').map((t) => t.raw ?? '')]
     return all.reduce((acc, text) => ({ ...acc, ...readFields(text) }), {})
   }, [turns])
@@ -125,12 +125,12 @@ export default function Interview() {
   }
 
   return (
-    <div className="hiring">
-      <section className="interview" aria-label="Interview with the candidate">
+    <>
+      <section className="interview" aria-label="Watch it handle a real inquiry">
         <header className="interview__head">
           <p className="interview__who">
             Intake Coordinator
-            <span className="interview__role">Candidate · Tenure</span>
+            <span className="interview__role">AI employee · Tenure</span>
           </p>
         </header>
 
@@ -192,19 +192,19 @@ export default function Interview() {
         </form>
       </section>
 
-      <aside className="offer" aria-label="Offer of employment, filled in as you talk">
-        <p className="offer__kicker">Offer of employment</p>
-        <p className="offer__body">
-          This fills itself in as the interview goes. Nothing here is written by hand.
+      <aside className="results" aria-label="Live results, filled in as you talk">
+        <p className="results__kicker">Live results</p>
+        <p className="results__body">
+          This fills in as the conversation happens. Nothing here is written by hand.
         </p>
 
-        <dl className="offer__list">
+        <dl className="results__list">
           {FIELDS.map(({ key, label, blank }) => {
-            const value = offer[key]
+            const value = results[key]
             return (
-              <div className="offer__row" key={key}>
-                <dt className="offer__key">{label}</dt>
-                <dd className="offer__value" data-state={value ? 'filled' : 'blank'}>
+              <div className="results__row" key={key}>
+                <dt className="results__key">{label}</dt>
+                <dd className="results__value" data-state={value ? 'filled' : 'blank'}>
                   {value ?? blank}
                 </dd>
               </div>
@@ -212,11 +212,10 @@ export default function Interview() {
           })}
         </dl>
 
-        <p className="offer__sign">
-          Position: Intake Coordinator (AI). Reports to the founder. Ninety-day
-          replacement guarantee applies.
+        <p className="u-sm u-muted">
+          Managed by a named person at Tenure. Ninety-day guarantee applies.
         </p>
       </aside>
-    </div>
+    </>
   )
 }

@@ -1,36 +1,34 @@
 /* ============================================================
-   Tenure. Token system.
-   Type:  Libre Caslon (legal & government printing lineage),
-          reserved for a few voice moments, not every heading.
-          Public Sans  (US federal design-system lineage) carries
-          structure: nav, section headers, cards, UI.
-   Color: OKLCH, neutrals tinted toward the oxblood hue (18)
+   Tenure. Token system, rebuilt.
+   One typeface (Schibsted Grotesk): direct, confident, no legal or
+   certificate association to live down this time.
+   Color: OKLCH, neutrals tinted toward a deep pine hue (152) — the
+   color of a ledger in the black, not a wax seal.
    ============================================================ */
 
 :root {
-  --ink: oklch(0.23 0.012 18);
-  --paper: oklch(0.957 0.005 18);
-  --surface: oklch(0.987 0.004 18);
-  /* muted is body copy on --paper, so it must clear 4.5:1, measured at 4.83:1 */
-  --muted: oklch(0.52 0.014 18);
-  --rule: oklch(0.885 0.008 18);
-  --rule-strong: oklch(0.78 0.012 18);
-  /* control boundaries need 3:1 (WCAG 1.4.11); --muted measures 4.83:1 */
+  --ink: oklch(0.20 0.020 152);
+  --paper: oklch(0.965 0.006 152);
+  --surface: oklch(0.99 0.004 152);
+  /* body copy on --paper; measured 16.31:1 */
+  --muted: oklch(0.50 0.018 152);
+  --rule: oklch(0.87 0.012 152);
+  --rule-strong: oklch(0.76 0.016 152);
+  /* interactive control borders need 3:1 (WCAG 1.4.11); rule-strong measures
+     only ~1.9:1 against paper, so controls borrow --muted instead (5.38:1) */
   --edge: var(--muted);
   --tap: 2.75rem;
-  --accent: oklch(0.4 0.098 18);
-  --accent-quiet: oklch(0.4 0.098 18 / 0.09);
-  --on-accent: oklch(0.98 0.004 18);
-  --on-ink: oklch(0.97 0.004 18);
+  --accent: oklch(0.36 0.085 152);
+  --on-accent: oklch(0.965 0.006 152);
+  --on-ink: oklch(0.965 0.006 152);
 
-  --display: var(--font-caslon-display), "Iowan Old Style", Charter, Georgia, serif;
-  --serif: var(--font-caslon-text), "Iowan Old Style", Charter, Georgia, serif;
-  --sans: var(--font-public-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font: var(--font-grotesk), -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
 
-  --t-display: clamp(2.75rem, 6.5vw, 4.5rem);
-  --t-h1: clamp(1.75rem, 3.2vw, 2.375rem);
+  --t-display: clamp(3rem, 8vw, 6.25rem);
+  --t-h1: clamp(1.875rem, 3.4vw, 2.5rem);
   --t-h2: clamp(1.25rem, 2vw, 1.5rem);
   --t-body: 1.0625rem;
+  --t-lede: clamp(1.125rem, 1.8vw, 1.375rem);
   --t-sm: 0.875rem;
   --t-label: 0.6875rem;
 
@@ -46,8 +44,8 @@
 
   --section-y: clamp(var(--space-2xl), 7vw, var(--space-4xl));
 
-  --measure: 65ch;
-  --page: 72rem;
+  --measure: 62ch;
+  --page: 68rem;
   --nav-h: 4.25rem;
 
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
@@ -57,16 +55,15 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --ink: oklch(0.93 0.006 18);
-    --paper: oklch(0.175 0.009 18);
-    --surface: oklch(0.225 0.009 18);
-    --muted: oklch(0.66 0.013 18);
-    --rule: oklch(0.315 0.011 18);
-    --rule-strong: oklch(0.42 0.014 18);
-    --accent: oklch(0.7 0.12 18);
-    --accent-quiet: oklch(0.7 0.12 18 / 0.14);
-    --on-accent: oklch(0.16 0.01 18);
-    --on-ink: oklch(0.16 0.01 18);
+    --ink: oklch(0.94 0.008 152);
+    --paper: oklch(0.16 0.016 152);
+    --surface: oklch(0.21 0.016 152);
+    --muted: oklch(0.64 0.018 152);
+    --rule: oklch(0.32 0.018 152);
+    --rule-strong: oklch(0.42 0.02 152);
+    --accent: oklch(0.66 0.11 152);
+    --on-accent: oklch(0.10 0.01 152);
+    --on-ink: oklch(0.10 0.01 152);
   }
 }
 
@@ -103,7 +100,7 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: var(--sans);
+  font-family: var(--font);
   font-size: var(--t-body);
   line-height: 1.6;
   font-synthesis-weight: none;
@@ -185,7 +182,7 @@ button {
 }
 
 .section__head {
-  max-width: 40rem;
+  max-width: 38rem;
   margin-bottom: var(--space-2xl);
   display: flex;
   flex-direction: column;
@@ -201,17 +198,17 @@ button {
 }
 
 .section__title {
-  font-family: var(--sans);
-  font-weight: 700;
+  font-weight: 800;
   font-size: var(--t-h1);
-  line-height: 1.15;
-  letter-spacing: -0.01em;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
   text-wrap: balance;
 }
 
 .section__lede {
   color: var(--muted);
   max-width: var(--measure);
+  font-size: var(--t-lede);
   text-wrap: pretty;
 }
 
@@ -236,27 +233,10 @@ button {
 }
 
 .nav__brand {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  text-decoration: none;
-}
-
-.nav__mark {
-  font-family: var(--display);
-  font-size: 1.375rem;
-  line-height: 1;
+  font-weight: 800;
+  font-size: 1.25rem;
   letter-spacing: -0.01em;
-}
-
-.nav__badge {
-  font-size: 0.625rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent);
-  border: 1px solid var(--accent);
-  padding: 0.2rem 0.5rem;
+  text-decoration: none;
 }
 
 .nav__links {
@@ -270,6 +250,7 @@ button {
   align-items: center;
   height: var(--nav-h);
   font-size: 0.9375rem;
+  font-weight: 500;
   text-decoration: none;
   color: var(--muted);
   transition: color 180ms var(--ease-out-quart);
@@ -279,18 +260,8 @@ button {
   color: var(--ink);
 }
 
-.nav__cta {
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-}
-
 @media (max-width: 46rem) {
   .nav__links {
-    display: none;
-  }
-
-  .nav__badge {
     display: none;
   }
 }
@@ -305,10 +276,10 @@ button {
   justify-content: center;
   min-height: var(--tap);
   font: inherit;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.9375rem;
   line-height: 1;
-  padding: 0.75rem 1.4rem;
+  padding: 0.75rem 1.5rem;
   border: 1px solid var(--ink);
   background: var(--ink);
   color: var(--paper);
@@ -331,7 +302,7 @@ button {
 
 .btn--sm {
   min-height: 2.5rem;
-  padding: 0.55rem 1.05rem;
+  padding: 0.55rem 1.1rem;
   font-size: 0.875rem;
 }
 
@@ -372,36 +343,33 @@ button {
 }
 
 /* ============================================================
-   Hero
+   Hero — no product mockup, no document visual. Just the statement.
    ============================================================ */
 
 .hero {
-  padding-block: clamp(var(--space-2xl), 8vw, var(--space-4xl));
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-  gap: clamp(var(--space-xl), 5vw, var(--space-3xl));
-  align-items: center;
-}
-
-.hero__copy {
+  padding-block: clamp(var(--space-3xl), 11vw, 8rem) clamp(var(--space-2xl), 8vw, var(--space-4xl));
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
 }
 
 .hero__title {
-  font-family: var(--display);
-  font-weight: 400;
+  font-weight: 800;
   font-size: var(--t-display);
-  line-height: 1.02;
-  letter-spacing: -0.02em;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
   text-wrap: balance;
-  max-width: 15ch;
+  max-width: 17ch;
+}
+
+.hero__title em {
+  font-style: italic;
+  color: var(--accent);
 }
 
 .hero__standfirst {
-  max-width: 38ch;
-  font-size: clamp(1.0625rem, 1.5vw, 1.1875rem);
+  max-width: 42ch;
+  font-size: var(--t-lede);
   color: var(--muted);
   text-wrap: pretty;
 }
@@ -411,253 +379,78 @@ button {
   flex-wrap: wrap;
   gap: var(--space-sm);
   align-items: center;
+  margin-top: var(--space-xs);
 }
 
-.hero__proof {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-lg);
-  padding-top: var(--space-sm);
-}
-
-.hero__proof-item {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
+.hero__fine {
   font-size: var(--t-sm);
   color: var(--muted);
-}
-
-.hero__proof-item::before {
-  content: "";
-  width: 0.4rem;
-  height: 0.4rem;
-  background: var(--accent);
-  flex: none;
-}
-
-@media (max-width: 60rem) {
-  .hero {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-/* --- hero preview card: a sample of the real artifact, clearly labeled --- */
-
-.preview {
-  border: 1px solid var(--rule-strong);
-  background: var(--surface);
-}
-
-.preview__head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-sm);
-  padding: var(--space-sm) var(--space-md);
-  border-bottom: 1px solid var(--rule);
-}
-
-.preview__head-label {
-  font-size: 0.625rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.preview__body {
-  padding: var(--space-lg);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-}
-
-.preview__row {
-  display: grid;
-  grid-template-columns: 7.5rem minmax(0, 1fr);
-  gap: var(--space-sm);
-  align-items: baseline;
-}
-
-.preview__key {
-  font-size: 0.625rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.preview__value {
-  font-family: var(--serif);
-  font-size: 1rem;
-}
-
-.preview__foot {
-  padding: var(--space-md);
-  border-top: 1px solid var(--rule);
-  font-size: var(--t-sm);
-  color: var(--muted);
-}
-
-.preview__foot a {
-  color: var(--accent);
-  text-decoration: underline;
-  text-underline-offset: 0.15em;
 }
 
 /* ============================================================
-   The moment: one concrete scene, ahead of the abstract stats
+   The problem — one direct, concrete paragraph
    ============================================================ */
 
-.moment {
-  font-family: var(--serif);
-  font-size: clamp(1.1875rem, 2vw, 1.375rem);
-  line-height: 1.5;
-  max-width: 42ch;
-  margin-bottom: var(--space-xl);
+.problem {
+  font-size: clamp(1.25rem, 2.6vw, 1.75rem);
+  font-weight: 500;
+  line-height: 1.45;
+  max-width: 40ch;
+  letter-spacing: -0.005em;
   text-wrap: pretty;
 }
 
-/* ============================================================
-   Stat strip
-   ============================================================ */
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
-  gap: var(--space-lg);
-}
-
-.stat__value {
-  font-family: var(--sans);
-  font-weight: 700;
-  font-size: clamp(1.75rem, 3.5vw, 2.25rem);
-  letter-spacing: -0.01em;
-}
-
-.stat__label {
-  margin-top: 0.3rem;
-  font-size: var(--t-sm);
-  color: var(--muted);
-}
-
-/* ============================================================
-   Feature section: what the role does
-   ============================================================ */
-
-.feature {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
-  gap: clamp(var(--space-xl), 5vw, var(--space-3xl));
-  align-items: start;
-}
-
-@media (max-width: 60rem) {
-  .feature {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-.checklist {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-  margin-top: var(--space-lg);
-}
-
-.checklist__item {
-  display: grid;
-  grid-template-columns: 1.1rem minmax(0, 1fr);
-  gap: 0.65rem;
-  align-items: baseline;
-  font-size: 0.9375rem;
-}
-
-.checklist__item::before {
-  content: "";
-  align-self: center;
-  width: 0.55rem;
-  height: 0.55rem;
-  border: 1.5px solid var(--accent);
-}
-
-.role-card {
-  border: 1px solid var(--rule-strong);
-  background: var(--surface);
-  padding: clamp(var(--space-lg), 3vw, var(--space-xl));
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-lg);
-}
-
-.role-card__head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-sm);
-}
-
-.role-card__kicker {
-  font-size: 0.625rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+.problem strong {
+  font-weight: 800;
   color: var(--accent);
 }
 
-.role-card__title {
-  font-family: var(--sans);
-  font-weight: 700;
-  font-size: 1.25rem;
-}
+/* ============================================================
+   Delivery process — plain, no cards, no certificate borders
+   ============================================================ */
 
-.role-card__grid {
+.process {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-md) var(--space-lg);
-  padding-top: var(--space-md);
-  border-top: 1px solid var(--rule);
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: var(--space-2xl) var(--space-xl);
 }
 
-.role-card__label {
-  display: block;
-  font-size: 0.625rem;
+.process__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.process__index {
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+}
+
+.process__title {
   font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 0.2rem;
+  font-size: 1.0625rem;
 }
 
-.role-card__value {
+.process__copy {
+  color: var(--muted);
   font-size: 0.9375rem;
 }
 
-.role-card__boundary {
-  padding-top: var(--space-md);
-  border-top: 1px solid var(--rule);
-  font-size: var(--t-sm);
-  color: var(--muted);
-}
-
-.role-card__boundary strong {
-  color: var(--ink);
-}
-
 /* ============================================================
-   Interview / signature demo
+   Proof: the live demo, present as evidence, not the centerpiece
    ============================================================ */
 
-.hiring {
+.evidence {
   display: grid;
   gap: var(--space-lg);
-  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
   align-items: start;
 }
 
 @media (max-width: 60rem) {
-  .hiring {
+  .evidence {
     grid-template-columns: minmax(0, 1fr);
   }
 }
@@ -667,7 +460,7 @@ button {
   flex-direction: column;
   border: 1px solid var(--rule-strong);
   background: var(--surface);
-  min-height: 28rem;
+  min-height: 26rem;
 }
 
 .interview__head {
@@ -681,7 +474,6 @@ button {
 }
 
 .interview__who {
-  font-family: var(--sans);
   font-weight: 700;
   font-size: 0.9375rem;
   line-height: 1.2;
@@ -689,7 +481,6 @@ button {
 
 .interview__role {
   display: block;
-  font-family: var(--sans);
   font-weight: 500;
   font-size: 0.625rem;
   letter-spacing: 0.14em;
@@ -704,7 +495,7 @@ button {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--accent);
-  background: var(--accent-quiet);
+  background: color-mix(in oklch, var(--accent) 12%, transparent);
   padding: 0.32rem 0.6rem;
   white-space: nowrap;
 }
@@ -712,7 +503,7 @@ button {
 .transcript {
   flex: 1;
   overflow-y: auto;
-  max-height: 32rem;
+  max-height: 30rem;
   padding: var(--space-lg);
   display: flex;
   flex-direction: column;
@@ -741,8 +532,7 @@ button {
 }
 
 .turn--candidate .turn__text {
-  font-family: var(--serif);
-  font-size: 1.0625rem;
+  font-size: 1rem;
   line-height: 1.6;
 }
 
@@ -758,7 +548,6 @@ button {
 }
 
 .turn--notice .turn__text {
-  font-family: var(--sans);
   font-size: var(--t-sm);
   color: var(--accent);
 }
@@ -822,7 +611,7 @@ button {
   justify-content: center;
   min-height: var(--tap);
   font: inherit;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.8125rem;
   line-height: 1;
   padding: 0.5rem 1.1rem;
@@ -849,7 +638,9 @@ button {
   cursor: not-allowed;
 }
 
-.offer {
+/* --- results panel: plain live summary, not an "offer letter" --- */
+
+.results {
   border: 1px solid var(--rule-strong);
   background: var(--surface);
   padding: clamp(var(--space-lg), 2.5vw, var(--space-xl));
@@ -861,12 +652,12 @@ button {
 }
 
 @media (max-width: 60rem) {
-  .offer {
+  .results {
     position: static;
   }
 }
 
-.offer__kicker {
+.results__kicker {
   font-size: 0.625rem;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -874,13 +665,13 @@ button {
   color: var(--accent);
 }
 
-.offer__body {
+.results__body {
   font-size: 0.9375rem;
   color: var(--muted);
   text-wrap: pretty;
 }
 
-.offer__list {
+.results__list {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
@@ -888,15 +679,15 @@ button {
   border-top: 1px solid var(--rule);
 }
 
-.offer__row {
+.results__row {
   display: grid;
-  grid-template-columns: 8.5rem minmax(0, 1fr);
+  grid-template-columns: 8rem minmax(0, 1fr);
   gap: var(--space-sm);
   align-items: baseline;
   font-size: var(--t-sm);
 }
 
-.offer__key {
+.results__key {
   font-size: 0.625rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -904,15 +695,15 @@ button {
   color: var(--muted);
 }
 
-.offer__value {
-  font-family: var(--serif);
+.results__value {
+  font-weight: 600;
   font-size: 0.9375rem;
   min-width: 0;
   overflow-wrap: break-word;
 }
 
-.offer__value[data-state="blank"] {
-  font-family: var(--sans);
+.results__value[data-state="blank"] {
+  font-weight: 400;
   font-size: var(--t-sm);
   color: var(--muted);
   border-bottom: 1px dashed var(--rule-strong);
@@ -920,8 +711,9 @@ button {
   min-height: 1.2em;
 }
 
-.offer__value[data-state="filled"] {
-  animation: ink-in 420ms var(--ease-out-quart) both;
+.results__value[data-state="filled"] {
+  color: var(--accent);
+  animation: ink-in 380ms var(--ease-out-quart) both;
 }
 
 @keyframes ink-in {
@@ -935,85 +727,26 @@ button {
   }
 }
 
-.offer__sign {
-  padding-top: var(--space-md);
-  border-top: 1px solid var(--rule);
-  font-size: var(--t-sm);
-  color: var(--muted);
-}
-
 /* ============================================================
-   Timeline (how employment works)
+   Guarantee & pricing — plain two-up, no card chrome
    ============================================================ */
 
-.timeline {
+.terms {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-  gap: 1px;
-  background: var(--rule);
-  border: 1px solid var(--rule);
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--space-2xl);
 }
 
-.timeline__item {
-  background: var(--paper);
-  padding: var(--space-lg);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-}
-
-.timeline__index {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  border: 1px solid var(--accent);
-  color: var(--accent);
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-
-.timeline__title {
-  font-family: var(--sans);
-  font-weight: 700;
-  font-size: 1rem;
-}
-
-.timeline__copy {
-  color: var(--muted);
-  font-size: 0.9375rem;
-}
-
-/* ============================================================
-   Pricing cards
-   ============================================================ */
-
-.pricing {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-  gap: var(--space-lg);
-}
-
-.price-card {
-  border: 1px solid var(--rule-strong);
-  border-top: 3px solid var(--accent);
-  background: var(--surface);
-  padding: var(--space-lg);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-}
-
-.price-card__term {
-  font-family: var(--sans);
-  font-weight: 700;
+.terms__term {
+  font-weight: 800;
   font-size: 1.1875rem;
+  margin-bottom: var(--space-2xs);
 }
 
-.price-card__gloss {
+.terms__gloss {
   color: var(--muted);
   font-size: 0.9375rem;
+  max-width: 34ch;
 }
 
 /* ============================================================
@@ -1038,8 +771,7 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: var(--space-md);
-  font-family: var(--sans);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 1rem;
 }
 
@@ -1067,40 +799,39 @@ button {
 }
 
 /* ============================================================
-   Final CTA band
+   Close: full-bleed, direct
    ============================================================ */
 
-.cta-band {
+.close-band {
   background: var(--ink);
   color: var(--on-ink);
   padding-block: var(--section-y);
 }
 
-.cta-band__title {
-  font-family: var(--display);
-  font-weight: 400;
-  font-size: clamp(2rem, 4.5vw, 3rem);
+.close-band__title {
+  font-weight: 800;
+  font-size: clamp(2rem, 4.8vw, 3.25rem);
   line-height: 1.05;
   letter-spacing: -0.02em;
   max-width: 16ch;
   text-wrap: balance;
 }
 
-.cta-band__lede {
+.close-band__lede {
   margin-top: var(--space-md);
   max-width: var(--measure);
   opacity: 0.72;
   text-wrap: pretty;
 }
 
-.cta-band__actions {
+.close-band__actions {
   margin-top: var(--space-xl);
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-sm);
 }
 
-.cta-band__fine {
+.close-band__fine {
   margin-top: var(--space-lg);
   font-size: var(--t-sm);
   opacity: 0.6;
@@ -1128,15 +859,15 @@ button {
 }
 
 .footer__mark {
-  font-family: var(--display);
-  font-size: 1.25rem;
+  font-weight: 800;
+  font-size: 1.1875rem;
 }
 
 .footer__blurb {
   margin-top: var(--space-sm);
   color: var(--muted);
   font-size: 0.9375rem;
-  max-width: 32ch;
+  max-width: 30ch;
 }
 
 .footer__heading {
@@ -1176,7 +907,7 @@ button {
 }
 
 /* ============================================================
-   Page-load orchestration. One sequence, then stillness.
+   Page-load orchestration
    ============================================================ */
 
 @media (prefers-reduced-motion: no-preference) {
@@ -1219,13 +950,8 @@ button {
     text-align: left;
   }
 
-  .offer__row,
-  .preview__row {
+  .results__row {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-2xs);
-  }
-
-  .role-card__grid {
-    grid-template-columns: 1fr;
   }
 }
