@@ -39,13 +39,43 @@ Keep each value under twelve words. Only record something the owner actually tol
 
 Begin by introducing yourself in two sentences and asking your first question.`
 
-function badRequest(message, status = 400) {
+function fail(message, status = 400) {
   return Response.json({ error: message }, { status })
+}
+
+// The SDK throws these while the stream is being consumed, not when it is
+// created, so every path that touches the stream routes failures through here.
+function failFromApi(error) {
+  console.error('interview request failed', error)
+  if (error instanceof Anthropic.RateLimitError) {
+    return fail('The candidate is handling another interview. Try again shortly.', 429)
+  }
+  if (
+    error instanceof Anthropic.AuthenticationError ||
+    error instanceof Anthropic.PermissionDeniedError
+  ) {
+    return fail('The API key was rejected. Check ANTHROPIC_API_KEY.', 503)
+  }
+  if (error instanceof Anthropic.NotFoundError) {
+    return fail('The model configured for the candidate is unavailable.', 502)
+  }
+  if (error instanceof Anthropic.APIConnectionError) {
+    return fail('Could not reach the candidate. Try again.', 504)
+  }
+  return fail('The interview could not start. Try again.', 502)
+}
+
+function abortQuietly(stream) {
+  try {
+    stream.abort()
+  } catch (error) {
+    console.error('interview stream abort failed', error)
+  }
 }
 
 export async function POST(request) {
   if (!process.env.ANTHROPIC_API_KEY) {
-    return badRequest(
+    return fail(
       'The interview is not connected yet. Add ANTHROPIC_API_KEY to .env.local and restart the server.',
       503,
     )
@@ -54,23 +84,24 @@ export async function POST(request) {
   let payload
   try {
     payload = await request.json()
-  } catch {
-    return badRequest('Could not read that request.')
+  } catch (error) {
+    console.error('interview payload unreadable', error)
+    return fail('Could not read that request.')
   }
 
   const turns = Array.isArray(payload?.turns) ? payload.turns : null
-  if (!turns) return badRequest('Expected a list of turns.')
+  if (!turns) return fail('Expected a list of turns.')
   if (turns.length > MAX_TURNS) {
-    return badRequest('This interview has run long. Reload the page to start a new one.')
+    return fail('This interview has run long. Reload the page to start a new one.')
   }
 
   const clean = []
   for (const turn of turns) {
     const role = turn?.role
     const content = typeof turn?.content === 'string' ? turn.content.trim() : ''
-    if (role !== 'user' && role !== 'assistant') return badRequest('Unrecognized turn.')
-    if (!content) return badRequest('Turns cannot be empty.')
-    if (content.length > MAX_CHARS) return badRequest('That message is too long.')
+    if (role !== 'user' && role !== 'assistant') return fail('Unrecognized turn.')
+    if (!content) return fail('Turns cannot be empty.')
+    if (content.length > MAX_CHARS) return fail('That message is too long.')
     clean.push({ role, content })
   }
 
@@ -84,65 +115,80 @@ export async function POST(request) {
 
   const client = new Anthropic()
 
+  let stream
+  let events
+  let first
   try {
-    const stream = client.messages.stream({
+    stream = client.messages.stream({
       model: 'claude-opus-5',
       max_tokens: 2000,
       output_config: { effort: 'low' },
       system: SYSTEM,
       messages,
     })
-
-    const encoder = new TextEncoder()
-    const body = new ReadableStream({
-      async start(controller) {
-        try {
-          for await (const event of stream) {
-            if (
-              event.type === 'content_block_delta' &&
-              event.delta?.type === 'text_delta' &&
-              event.delta.text
-            ) {
-              controller.enqueue(encoder.encode(event.delta.text))
-            }
-          }
-          const final = await stream.finalMessage()
-          if (final.stop_reason === 'refusal') {
-            controller.enqueue(
-              encoder.encode(
-                '\n\nI am not able to answer that one. Ask me about intake and I will pick back up.',
-              ),
-            )
-          }
-        } catch (error) {
-          console.error('interview stream failed', error)
-          controller.enqueue(
-            encoder.encode('\n\nThe connection dropped mid-sentence. Send that again.'),
-          )
-        } finally {
-          controller.close()
-        }
-      },
-      cancel() {
-        stream.abort()
-      },
-    })
-
-    return new Response(body, {
-      headers: {
-        'Content-Type': 'text/plain; charset=utf-8',
-        'Cache-Control': 'no-store',
-        'X-Accel-Buffering': 'no',
-      },
-    })
+    // Pull the first event before answering. Rate limits, rejected keys, and
+    // unreachable upstreams all surface here, where a status code can still be
+    // sent, rather than as an apology inside a 200 the client cannot tell from
+    // a real reply.
+    events = stream[Symbol.asyncIterator]()
+    first = await events.next()
   } catch (error) {
-    console.error('interview request failed', error)
-    if (error instanceof Anthropic.RateLimitError) {
-      return badRequest('The candidate is handling another interview. Try again shortly.', 429)
-    }
-    if (error instanceof Anthropic.AuthenticationError) {
-      return badRequest('The API key was rejected. Check ANTHROPIC_API_KEY.', 503)
-    }
-    return badRequest('The interview could not start. Try again.', 502)
+    if (stream) abortQuietly(stream)
+    return failFromApi(error)
   }
+
+  const encoder = new TextEncoder()
+  const body = new ReadableStream({
+    async start(controller) {
+      const send = (event) => {
+        if (
+          event.type === 'content_block_delta' &&
+          event.delta?.type === 'text_delta' &&
+          event.delta.text
+        ) {
+          controller.enqueue(encoder.encode(event.delta.text))
+        }
+      }
+
+      try {
+        if (!first.done) {
+          send(first.value)
+          for (;;) {
+            const { done, value } = await events.next()
+            if (done) break
+            send(value)
+          }
+        }
+        const final = await stream.finalMessage()
+        if (final.stop_reason === 'refusal') {
+          controller.enqueue(
+            encoder.encode(
+              '\n\nI am not able to answer that one. Ask me about intake and I will pick back up.',
+            ),
+          )
+        } else if (final.stop_reason === 'max_tokens') {
+          console.warn('interview reply hit max_tokens and was truncated')
+        }
+        controller.close()
+      } catch (error) {
+        // Headers are already sent, so the only honest signal left is an aborted
+        // body: the client sees the read fail and keeps the turn out of the
+        // transcript instead of treating half a reply as a whole one.
+        console.error('interview stream failed', error)
+        abortQuietly(stream)
+        controller.error(error)
+      }
+    },
+    cancel() {
+      abortQuietly(stream)
+    },
+  })
+
+  return new Response(body, {
+    headers: {
+      'Content-Type': 'text/plain; charset=utf-8',
+      'Cache-Control': 'no-store',
+      'X-Accel-Buffering': 'no',
+    },
+  })
 }
