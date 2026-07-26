@@ -213,7 +213,7 @@ export default function Interview() {
         </dl>
 
         <p className="u-sm u-muted">
-          Managed by a named person at Tenure. Ninety-day guarantee applies.
+          Managed by a named person at Tenure. Rebuilt or replaced if it is not performing.
         </p>
       </aside>
     </>

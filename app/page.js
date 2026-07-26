@@ -34,19 +34,6 @@ const PROCESS = [
   },
 ]
 
-const TERMS = [
-  {
-    term: 'A hiring fee, then a salary',
-    gloss:
-      'Priced against what the work is worth, not per seat and not per message. It comes out of payroll, where the comparison actually makes sense.',
-  },
-  {
-    term: 'Ninety-day guarantee',
-    gloss:
-      'If the role is not performing well in the first ninety days, we rebuild it or replace it. The same guarantee recruiters give.',
-  },
-]
-
 const QUESTIONS = [
   {
     q: 'Do I have to set anything up?',
@@ -96,7 +83,7 @@ export default function Page() {
             className="btn btn--sm"
             href="mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20interested"
           >
-            Talk to Omar
+            Talk to the team
           </a>
         </div>
       </nav>
@@ -114,7 +101,7 @@ export default function Page() {
               className="btn"
               href="mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20interested"
             >
-              Talk to Omar
+              Talk to the team
             </a>
             <a className="btn btn--quiet" href="#evidence">
               See it work
@@ -214,18 +201,14 @@ export default function Page() {
 
         <section className="wrap section section--tint" id="pricing" aria-labelledby="terms-heading">
           <div className="section__head">
-            <p className="eyebrow">Guarantee and pricing</p>
+            <p className="eyebrow">Pricing</p>
             <h2 className="section__title" id="terms-heading">
-              Priced like a hire, guaranteed like one.
+              A setup fee, then a monthly fee.
             </h2>
-          </div>
-          <div className="terms">
-            {TERMS.map(({ term, gloss }) => (
-              <div key={term}>
-                <p className="terms__term">{term}</p>
-                <p className="terms__gloss">{gloss}</p>
-              </div>
-            ))}
+            <p className="section__lede">
+              Priced against what the work is worth, not per seat and not per message. If it is
+              not performing, we rebuild or replace it. No fixed deadline on that, no fine print.
+            </p>
           </div>
         </section>
 
@@ -266,14 +249,14 @@ export default function Page() {
                 className="btn btn--on-ink"
                 href="mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20interested"
               >
-                Talk to Omar
+                Talk to the team
               </a>
               <a className="btn btn--ghost-on-ink" href="#evidence">
                 See it work
               </a>
             </div>
             <p className="close-band__fine">
-              One founder, not a support queue. That email goes straight to Omar.
+              Not a support queue. A real person reads every message.
             </p>
           </div>
         </section>
@@ -302,7 +285,7 @@ export default function Page() {
             <p className="footer__heading">Contact</p>
             <div className="footer__links">
               <a href="mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20interested">
-                Talk to Omar
+                Talk to the team
               </a>
             </div>
           </div>
