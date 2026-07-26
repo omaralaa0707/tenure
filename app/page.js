@@ -1,21 +1,36 @@
 import Interview from './Interview'
 
+const KIT = [
+  {
+    title: 'Its own workstation',
+    copy: 'A dedicated machine of its own, always on, doing the work you assign it.',
+  },
+  {
+    title: 'Its own email',
+    copy: 'Sends and receives as itself, inside the systems your team already uses.',
+  },
+  {
+    title: 'Access to your tools',
+    copy: 'The same software and platforms any hire on your team would log into.',
+  },
+]
+
 const PROCESS = [
   {
-    title: 'You tell us what is slipping',
-    copy: 'Where inquiries are being missed, and what you need the role to actually do.',
+    title: 'You tell us what needs doing',
+    copy: 'The tasks piling up, and where you want an employee, not another subscription.',
   },
   {
     title: 'We design and build it',
-    copy: 'Not a generic bot. An AI employee built for that exact job, at your firm.',
+    copy: 'Not a generic bot. An AI employee built for those exact tasks, with the access it needs.',
   },
   {
-    title: 'It goes live',
-    copy: 'It starts answering real inquiries. A named person at Tenure is accountable for how it performs.',
+    title: 'It goes to work',
+    copy: 'Its own workstation, its own email, live from day one. A named person at Tenure is accountable for how it performs.',
   },
   {
     title: 'You see the results',
-    copy: 'A written report every week: what came in, what got answered, what is still open.',
+    copy: 'A written report every week: what it did, what is still open.',
   },
 ]
 
@@ -35,11 +50,15 @@ const TERMS = [
 const QUESTIONS = [
   {
     q: 'Do I have to set anything up?',
-    a: 'No. You tell us what is slipping, and Tenure designs and builds the role. You are not configuring software or writing prompts. That is the job we do.',
+    a: 'No. You tell us what needs doing, and Tenure designs and builds the employee. You are not configuring software or writing prompts. That is the job we do.',
   },
   {
     q: 'Isn’t this just ChatGPT with extra steps?',
-    a: 'ChatGPT is a tool you operate. This is a role someone else runs. It holds responsibilities, has a manager, and reports weekly. You never open a prompt window.',
+    a: 'ChatGPT is a tool you operate yourself. This is an employee with its own workstation, its own email, and a manager who is accountable for it. You never open a prompt window.',
+  },
+  {
+    q: 'Can it handle senior-level work, or just repetitive tasks?',
+    a: 'Both. It is fastest and most independent on repetitive, high-volume work. For senior-level tasks, judgment calls, complex drafting, we recommend a human on your team reviews its output before it goes out. Where that line sits is up to you.',
   },
   {
     q: 'What happens when it gets something wrong?',
@@ -47,7 +66,7 @@ const QUESTIONS = [
   },
   {
     q: 'Why not just hire someone?',
-    a: 'For judgment-heavy work, you should. For high-volume, repetitive intake, this hire answers in seconds at three in the morning, remembers every inquiry it has ever taken, and does not resign in eight months.',
+    a: 'For work that needs real judgment, you should. For the repetitive, always-on work most teams are understaffed for, this hire works nights and weekends, never resigns, and costs less than a junior salary.',
   },
 ]
 
@@ -84,11 +103,11 @@ export default function Page() {
 
       <main>
         <section className="wrap hero">
-          <h1 className="hero__title rise rise--1">Never lose another inquiry.</h1>
+          <h1 className="hero__title rise rise--1">A real employee. It just never sleeps.</h1>
           <p className="hero__standfirst rise rise--2">
-            Tenure designs, builds, and manages the AI employee that answers every inquiry your
-            firm gets, day or night, so nothing goes cold while you are busy running the
-            business. You do not operate anything. We deliver the result.
+            Tenure designs, builds, and manages AI employees for your business. Each one gets its
+            own workstation, a company email, and the same access to your tools as anyone on your
+            team, minus the weekends, the sick days, and the slow mornings.
           </p>
           <div className="hero__actions rise rise--3">
             <a
@@ -106,11 +125,52 @@ export default function Page() {
           </p>
         </section>
 
-        <section className="wrap section">
-          <p className="problem">
-            A lead comes in at 11pm on a Friday. <strong>Nobody sees it until Monday.</strong> By
-            then, they have already called someone else.
-          </p>
+        <section className="wrap section" aria-labelledby="kit-heading">
+          <div className="section__head">
+            <p className="eyebrow">What it comes with</p>
+            <h2 className="section__title" id="kit-heading">
+              The same setup as anyone else on your team.
+            </h2>
+            <p className="section__lede">
+              Not a script bolted onto your inbox. A hire, with the equipment and access that
+              implies.
+            </p>
+          </div>
+          <div className="kit">
+            {KIT.map((item) => (
+              <div className="kit__item" key={item.title}>
+                <h3 className="kit__title">{item.title}</h3>
+                <p className="kit__copy">{item.copy}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="wrap section section--tint" aria-labelledby="capability-heading">
+          <div className="section__head">
+            <p className="eyebrow">What it is good at</p>
+            <h2 className="section__title" id="capability-heading">
+              Always on. Fast at the repetitive work. Capable of more.
+            </h2>
+          </div>
+          <div className="capability">
+            <div className="capability__col">
+              <p className="capability__label">Junior work, done faster</p>
+              <p className="capability__copy">
+                Repetitive, high-volume tasks: data entry, scheduling, follow-ups, first-pass
+                research and drafts. It works around the clock, takes no weekends, and moves
+                through this kind of work faster than any junior hire.
+              </p>
+            </div>
+            <div className="capability__col">
+              <p className="capability__label">Senior work, with oversight</p>
+              <p className="capability__copy">
+                It can take on more judgment-heavy work too: analysis, complex drafting, decision
+                support. For that tier, we recommend a human on your team reviews its output
+                before it goes out. You decide where that line sits.
+              </p>
+            </div>
+          </div>
         </section>
 
         <section className="wrap section section--tint" id="delivery" aria-labelledby="delivery-heading">
@@ -120,8 +180,8 @@ export default function Page() {
               You do not operate anything. We deliver the result.
             </h2>
             <p className="section__lede">
-              This is a managed service, not software you configure. Four steps, and Tenure runs
-              all of them.
+              This is a managed hire, not software you configure. Four steps, and Tenure runs all
+              of them.
             </p>
           </div>
           <ol className="process">
@@ -142,8 +202,9 @@ export default function Page() {
               Watch it handle a real inquiry.
             </h2>
             <p className="section__lede">
-              This is the Intake Coordinator, one role Tenure has already built. Talk to it the
-              way a prospective client would, and watch it qualify, respond, and hand off.
+              This is the Intake Coordinator, one AI employee Tenure has already built: exactly
+              the kind of fast, repetitive, junior work described above. Talk to it the way a
+              prospective client would, and watch it qualify, respond, and hand off.
             </p>
           </div>
           <div className="evidence">
@@ -196,9 +257,9 @@ export default function Page() {
               The result is the point. The AI is just how we get there.
             </h2>
             <p className="close-band__lede">
-              If inquiries are going cold before anyone answers them, that is lost revenue, not a
-              technology problem you have to solve yourself. Tell us what is slipping, and we
-              will build the fix.
+              You already know how to manage people. This is the same thing: a real hire, with
+              its own setup, that happens to run on AI. Tell us what needs doing, and we will
+              build the employee for it.
             </p>
             <div className="close-band__actions">
               <a

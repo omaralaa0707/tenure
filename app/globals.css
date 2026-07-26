@@ -2,7 +2,7 @@
    Tenure. Token system, rebuilt.
    One typeface (Schibsted Grotesk): direct, confident, no legal or
    certificate association to live down this time.
-   Color: OKLCH, neutrals tinted toward a deep pine hue (152) — the
+   Color: OKLCH, neutrals tinted toward a deep pine hue (152), the
    color of a ledger in the black, not a wax seal.
    ============================================================ */
 
@@ -343,7 +343,7 @@ button {
 }
 
 /* ============================================================
-   Hero — no product mockup, no document visual. Just the statement.
+   Hero. No product mockup, no document visual. Just the statement.
    ============================================================ */
 
 .hero {
@@ -388,25 +388,56 @@ button {
 }
 
 /* ============================================================
-   The problem — one direct, concrete paragraph
+   What it comes with: equipment and access, no numbering (order
+   does not matter here, unlike the delivery process below)
    ============================================================ */
 
-.problem {
-  font-size: clamp(1.25rem, 2.6vw, 1.75rem);
-  font-weight: 500;
-  line-height: 1.45;
-  max-width: 40ch;
-  letter-spacing: -0.005em;
-  text-wrap: pretty;
+.kit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: var(--space-xl);
 }
 
-.problem strong {
-  font-weight: 800;
-  color: var(--accent);
+.kit__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+}
+
+.kit__title {
+  font-weight: 700;
+  font-size: 1.0625rem;
+}
+
+.kit__copy {
+  color: var(--muted);
+  font-size: 0.9375rem;
 }
 
 /* ============================================================
-   Delivery process — plain, no cards, no certificate borders
+   Capability: junior work vs senior work with oversight
+   ============================================================ */
+
+.capability {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--space-2xl);
+}
+
+.capability__label {
+  font-weight: 700;
+  font-size: 1.0625rem;
+  margin-bottom: var(--space-xs);
+}
+
+.capability__copy {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  max-width: 42ch;
+}
+
+/* ============================================================
+   Delivery process. Plain, no cards, no certificate borders.
    ============================================================ */
 
 .process {
@@ -728,7 +759,7 @@ button {
 }
 
 /* ============================================================
-   Guarantee & pricing — plain two-up, no card chrome
+   Guarantee and pricing. Plain two-up, no card chrome.
    ============================================================ */
 
 .terms {
