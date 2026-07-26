@@ -109,7 +109,6 @@ export default function Interview() {
             {CANDIDATE}
             <span className="interview__role">Candidate · Tenure</span>
           </p>
-          <span className="pill">Openly artificial</span>
         </header>
 
         <div className="transcript" ref={transcriptRef} aria-live="polite" aria-atomic="false">
