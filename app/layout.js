@@ -26,10 +26,7 @@ export const metadata = {
 }
 
 export const viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f1f5f1' },
-    { media: '(prefers-color-scheme: dark)', color: '#080f0a' },
-  ],
+  themeColor: '#040b06',
 }
 
 export default function RootLayout({ children }) {
@@ -42,15 +39,14 @@ export default function RootLayout({ children }) {
           <style>{'.reveal { opacity: 1 !important; transform: none !important; }'}</style>
         </noscript>
         {/* Fixed, persistent backdrop standing in for Riopack's video: an
-            activity grid of staggered pulsing dots plus one slow scan line,
-            both in the accent color. Content floats over it in glass panels. */}
+            activity grid of staggered pulsing dots in the accent color.
+            Content floats over it in glass panels. */}
         <div className="bg" aria-hidden="true">
           <div className="bg__grid">
             {Array.from({ length: 48 }, (_, i) => (
               <span className="bg__dot" key={i} />
             ))}
           </div>
-          <div className="bg__scan" />
         </div>
         <div className="page">{children}</div>
       </body>

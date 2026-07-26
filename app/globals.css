@@ -229,40 +229,6 @@ button {
   }
 }
 
-.bg__scan {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 1px;
-  background: color-mix(in oklch, var(--accent) 45%, transparent);
-  transform: translateY(-2vh);
-  opacity: 0;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .bg__scan {
-    animation: scan-sweep 9s linear infinite;
-  }
-}
-
-@keyframes scan-sweep {
-  0% {
-    transform: translateY(-2vh);
-    opacity: 0;
-  }
-  8% {
-    opacity: 0.6;
-  }
-  92% {
-    opacity: 0.6;
-  }
-  100% {
-    transform: translateY(102vh);
-    opacity: 0;
-  }
-}
-
 .page {
   position: relative;
   z-index: 1;
