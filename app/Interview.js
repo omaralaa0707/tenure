@@ -1,12 +1,39 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import FieldList from './components/FieldList'
-import Turn from './components/Turn'
-import { collectOffer, offerRows, stripFields } from './offer'
 import { OPENING } from './opening'
 
-const CANDIDATE = 'Intake Coordinator'
+const FIELDS = [
+  { key: 'firm', label: 'Employer', blank: 'the firm' },
+  { key: 'practice', label: 'Handles', blank: 'what they handle' },
+  { key: 'coverage', label: 'Coverage', blank: 'regions served' },
+  { key: 'volume', label: 'Inquiry volume', blank: 'per week' },
+  { key: 'response', label: 'Answered now in', blank: 'current speed' },
+  { key: 'start', label: 'Start date', blank: 'on signature' },
+]
+
+const FIELD_LINE = /^::field\s+([a-z]+)\s*=\s*(.+)$/gim
+
+// The model appends `::field key=value` lines for the results panel. Strip them
+// from what the owner reads, and read them for the letter.
+function readFields(raw) {
+  const found = {}
+  for (const match of raw.matchAll(FIELD_LINE)) {
+    const value = match[2].trim()
+    if (value) found[match[1].toLowerCase()] = value
+  }
+  return found
+}
+
+function stripFields(raw) {
+  return raw
+    .replace(FIELD_LINE, '')
+    .replace(/::field[\s\S]*$/i, '') // a half-streamed marker
+    .replace(/—/g, ', ') // house style forbids the em dash; degrade gracefully if one slips through
+    .replace(/\n{3,}/g, '\n\n')
+    .replace(/ {2,}/g, ' ')
+    .trimEnd()
+}
 
 export default function Interview() {
   const [turns, setTurns] = useState([])
@@ -18,14 +45,10 @@ export default function Interview() {
   const transcriptRef = useRef(null)
   const abortRef = useRef(null)
 
-  const offer = useMemo(
-    () =>
-      collectOffer([
-        OPENING,
-        ...turns.filter((t) => t.role === 'assistant').map((t) => t.raw ?? ''),
-      ]),
-    [turns],
-  )
+  const results = useMemo(() => {
+    const all = [OPENING, ...turns.filter((t) => t.role === 'assistant').map((t) => t.raw ?? '')]
+    return all.reduce((acc, text) => ({ ...acc, ...readFields(text) }), {})
+  }, [turns])
 
   useEffect(() => {
     const el = transcriptRef.current
@@ -102,34 +125,45 @@ export default function Interview() {
   }
 
   return (
-    <div className="hiring">
-      <section className="interview" aria-label="Interview with the candidate">
+    <>
+      <section className="interview" aria-label="Watch it handle a real inquiry">
         <header className="interview__head">
           <p className="interview__who">
-            {CANDIDATE}
-            <span className="interview__role">Candidate · Tenure</span>
+            Intake Coordinator
+            <span className="interview__role">AI employee · Tenure</span>
           </p>
         </header>
 
         <div className="transcript" ref={transcriptRef} aria-live="polite" aria-atomic="false">
-          <Turn who={CANDIDATE} text={stripFields(OPENING)} />
+          <article className="turn turn--candidate">
+            <p className="turn__who">Intake Coordinator</p>
+            <p className="turn__text">{stripFields(OPENING)}</p>
+          </article>
 
           {turns.map((turn, index) => (
-            <Turn
+            <article
               key={index}
-              variant={turn.role === 'user' ? 'visitor' : 'candidate'}
-              who={turn.role === 'user' ? 'You' : CANDIDATE}
-              text={turn.content}
-            />
+              className={`turn ${turn.role === 'user' ? 'turn--visitor' : 'turn--candidate'}`}
+            >
+              <p className="turn__who">{turn.role === 'user' ? 'You' : 'Intake Coordinator'}</p>
+              <p className="turn__text">{turn.content}</p>
+            </article>
           ))}
 
           {/* Hidden from assistive tech while streaming; the completed turn
               announces once instead of on every token. */}
           {busy && (
-            <Turn who={CANDIDATE} text={streaming} textClassName="caret" aria-hidden="true" />
+            <article className="turn turn--candidate" aria-hidden="true">
+              <p className="turn__who">Intake Coordinator</p>
+              <p className="turn__text caret">{streaming}</p>
+            </article>
           )}
 
-          {notice && <Turn variant="notice" text={notice} role="status" />}
+          {notice && (
+            <article className="turn turn--notice" role="status">
+              <p className="turn__text">{notice}</p>
+            </article>
+          )}
         </div>
 
         <form
@@ -158,19 +192,30 @@ export default function Interview() {
         </form>
       </section>
 
-      <aside className="offer" aria-label="Offer of employment, filled in as you talk">
-        <p className="offer__kicker">Offer of employment</p>
-        <p className="offer__body">
-          This fills itself in as the interview goes. Nothing here is written by hand.
+      <aside className="results" aria-label="Live results, filled in as you talk">
+        <p className="results__kicker">Live results</p>
+        <p className="results__body">
+          This fills in as the conversation happens. Nothing here is written by hand.
         </p>
 
-        <FieldList block="offer" variant="definition" fields={offerRows(offer)} />
+        <dl className="results__list">
+          {FIELDS.map(({ key, label, blank }) => {
+            const value = results[key]
+            return (
+              <div className="results__row" key={key}>
+                <dt className="results__key">{label}</dt>
+                <dd className="results__value" data-state={value ? 'filled' : 'blank'}>
+                  {value ?? blank}
+                </dd>
+              </div>
+            )
+          })}
+        </dl>
 
-        <p className="offer__sign">
-          Position: Intake Coordinator (AI). Reports to the founder. Ninety-day
-          replacement guarantee applies.
+        <p className="u-sm u-muted">
+          Managed by a named person at Tenure. Ninety-day guarantee applies.
         </p>
       </aside>
-    </div>
+    </>
   )
 }

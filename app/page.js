@@ -1,67 +1,21 @@
 import Interview from './Interview'
-import FieldList from './components/FieldList'
-import SectionHead from './components/SectionHead'
-import {
-  CONTACT_CTA,
-  CONTACT_HREF,
-  INTERVIEW_CTA,
-  INTERVIEW_HREF,
-  NAV_LINKS,
-} from './site'
 
-const DUTIES = [
-  'Answer every inbound inquiry (web form, email, referral) in under sixty seconds, at any hour.',
-  'Qualify by the kind of work, timeline, and fit, in whatever language your clients use.',
-  'Turn away the inquiries that are not a fit, politely and on the record.',
-  'Book qualified meetings straight into your calendar.',
-  'File every conversation where the firm already keeps its records.',
-  'Report each Monday: what came in, what was booked, what is stuck.',
-]
-
-const STATS = [
-  { value: '< 60 sec', label: 'Median time to first response' },
-  { value: '24 / 7', label: 'Hours it works, including weekends' },
-  { value: '90 days', label: 'Wrong-hire guarantee' },
-]
-
-const SAMPLE_OFFER = [
-  { label: 'Employer', value: 'Halden Recruiting Group' },
-  { label: 'Handles', value: 'Candidate and client inquiries' },
-  { label: 'Coverage', value: 'US and Canada' },
-  { label: 'Start date', value: 'Next Monday' },
-]
-
-const ROLE_FACTS = [
-  { label: 'Reports to', value: 'The founder' },
-  { label: 'Managed by', value: 'A named human at Tenure' },
-  { label: 'Hours', value: 'All of them' },
-  { label: 'Judged on', value: 'Speed to lead, meetings booked' },
-]
-
-const SEQUENCE = [
+const PROCESS = [
   {
-    title: 'The role is written down',
-    copy: 'A scorecard, the same as any hire: the outcomes it owns, the numbers it is judged on, and the lines it does not cross.',
+    title: 'You tell us what is slipping',
+    copy: 'Where inquiries are being missed, and what you need the role to actually do.',
   },
   {
-    title: 'You interview the candidate',
-    copy: 'Before anything is signed, you put it through your own intake and watch how it handles the inquiries you actually get.',
+    title: 'We design and build it',
+    copy: 'Not a generic bot. An AI employee built for that exact job, at your firm.',
   },
   {
-    title: 'An offer is signed',
-    copy: 'Responsibilities, compensation, start date, and the ninety-day guarantee, on paper and countersigned by Tenure.',
+    title: 'It goes live',
+    copy: 'It starts answering real inquiries. A named person at Tenure is accountable for how it performs.',
   },
   {
-    title: 'It starts on a Monday',
-    copy: 'Accounts provisioned, introduced to your team by title, and a week in shadow mode reading real inquiries before it answers one.',
-  },
-  {
-    title: 'It reports every week',
-    copy: 'A written standup each Monday: what it did, what is next, where it is stuck, and the numbers behind all three.',
-  },
-  {
-    title: 'It is reviewed every quarter',
-    copy: 'Performance against the scorecard, with its manager present, and a proposal for what it should learn next.',
+    title: 'You see the results',
+    copy: 'A written report every week: what came in, what got answered, what is still open.',
   },
 ]
 
@@ -74,23 +28,34 @@ const TERMS = [
   {
     term: 'Ninety-day guarantee',
     gloss:
-      'If the role is not performing against its scorecard in the first ninety days, we rebuild it or replace it. The same guarantee recruiters give.',
+      'If the role is not performing well in the first ninety days, we rebuild it or replace it. The same guarantee recruiters give.',
   },
 ]
 
 const QUESTIONS = [
   {
+    q: 'Do I have to set anything up?',
+    a: 'No. You tell us what is slipping, and Tenure designs and builds the role. You are not configuring software or writing prompts. That is the job we do.',
+  },
+  {
     q: 'Isn’t this just ChatGPT with extra steps?',
-    a: 'ChatGPT is a tool you operate. This is a role someone else runs. It holds responsibilities, has a manager, reports on Mondays, and is reviewed each quarter. You never open a prompt window.',
+    a: 'ChatGPT is a tool you operate. This is a role someone else runs. It holds responsibilities, has a manager, and reports weekly. You never open a prompt window.',
   },
   {
     q: 'What happens when it gets something wrong?',
-    a: 'The same thing that happens when any employee does: its manager owns it. You get an incident report, the fix, and the retraining that followed. Accountability is the product. The software is just how it is delivered.',
+    a: 'The same thing that happens when any employee does: its manager owns it. You get told what went wrong, what was fixed, and what changed after. Accountability is the product. The software is just how it is delivered.',
   },
   {
     q: 'Why not just hire someone?',
-    a: 'For judgment-heavy work, you should. For high-volume structured intake, this hire answers in seconds at three in the morning, remembers every inquiry it has ever taken, and does not resign in eight months.',
+    a: 'For judgment-heavy work, you should. For high-volume, repetitive intake, this hire answers in seconds at three in the morning, remembers every inquiry it has ever taken, and does not resign in eight months.',
   },
+]
+
+const NAV_LINKS = [
+  { href: '#delivery', label: 'How it is delivered' },
+  { href: '#evidence', label: 'See it work' },
+  { href: '#pricing', label: 'Pricing' },
+  { href: '#faq', label: 'FAQ' },
 ]
 
 export default function Page() {
@@ -99,8 +64,7 @@ export default function Page() {
       <nav className="nav">
         <div className="wrap nav__row">
           <a className="nav__brand" href="/">
-            <span className="nav__mark">Tenure</span>
-            <span className="nav__badge">AI Employment Firm</span>
+            Tenure
           </a>
           <div className="nav__links">
             {NAV_LINKS.map((link) => (
@@ -109,146 +73,108 @@ export default function Page() {
               </a>
             ))}
           </div>
-          <div className="nav__cta">
-            <a className="btn btn--sm" href={INTERVIEW_HREF}>
-              {INTERVIEW_CTA}
-            </a>
-          </div>
+          <a
+            className="btn btn--sm"
+            href="mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20interested"
+          >
+            Talk to Omar
+          </a>
         </div>
       </nav>
 
       <main>
         <section className="wrap hero">
-          <div className="hero__copy">
-            <p className="eyebrow rise rise--1">AI Employment Firm</p>
-            <h1 className="hero__title rise rise--1">Meet your next hire.</h1>
-            <p className="hero__standfirst rise rise--2">
-              Tenure designs, hires, trains, and manages AI employees built around whatever role
-              your business actually needs. Below is an example we&rsquo;ve already built, an
-              Intake Coordinator: it answers every inquiry in under a minute, and has a named
-              human here accountable for its work.
-            </p>
-            <div className="hero__actions rise rise--3">
-              <a className="btn" href={INTERVIEW_HREF}>
-                {INTERVIEW_CTA}
-              </a>
-              <a className="btn btn--quiet" href="#pricing">
-                See pricing
-              </a>
-            </div>
-            <div className="hero__proof rise rise--3">
-              <span className="hero__proof-item">Managed by a named human</span>
-              <span className="hero__proof-item">90-day guarantee</span>
-            </div>
+          <h1 className="hero__title rise rise--1">Never lose another inquiry.</h1>
+          <p className="hero__standfirst rise rise--2">
+            Tenure designs, builds, and manages the AI employee that answers every inquiry your
+            firm gets, day or night, so nothing goes cold while you are busy running the
+            business. You do not operate anything. We deliver the result.
+          </p>
+          <div className="hero__actions rise rise--3">
+            <a
+              className="btn"
+              href="mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20interested"
+            >
+              Talk to Omar
+            </a>
+            <a className="btn btn--quiet" href="#evidence">
+              See it work
+            </a>
           </div>
-
-          <div className="preview rise rise--2">
-            <div className="preview__head">
-              <span className="preview__head-label">Sample offer of employment</span>
-              <span className="pill">Example</span>
-            </div>
-            <FieldList block="preview" className="preview__body" fields={SAMPLE_OFFER} />
-            <p className="preview__foot">
-              Generated live during an actual interview.{' '}
-              <a href={INTERVIEW_HREF}>Try yours below.</a>
-            </p>
-          </div>
+          <p className="hero__fine rise rise--3">
+            A named person at Tenure is accountable for it. Always.
+          </p>
         </section>
 
         <section className="wrap section">
-          <div className="stats">
-            {STATS.map((stat) => (
-              <div key={stat.label}>
-                <p className="stat__value">{stat.value}</p>
-                <p className="stat__label">{stat.label}</p>
-              </div>
-            ))}
+          <p className="problem">
+            A lead comes in at 11pm on a Friday. <strong>Nobody sees it until Monday.</strong> By
+            then, they have already called someone else.
+          </p>
+        </section>
+
+        <section className="wrap section section--tint" id="delivery" aria-labelledby="delivery-heading">
+          <div className="section__head">
+            <p className="eyebrow">How it is delivered</p>
+            <h2 className="section__title" id="delivery-heading">
+              You do not operate anything. We deliver the result.
+            </h2>
+            <p className="section__lede">
+              This is a managed service, not software you configure. Four steps, and Tenure runs
+              all of them.
+            </p>
           </div>
-        </section>
-
-        <section className="wrap section section--tint" aria-labelledby="role-heading">
-          <div className="feature">
-            <SectionHead
-              className={null}
-              id="role-heading"
-              eyebrow="Not a fixed catalog"
-              title="Every role starts as a scorecard, built for what you need."
-              lede="There is no set first hire. Every AI employee starts as a scorecard scoped to your business, the same document a firm would write for a person. Below is one we have already built, as an example."
-            >
-              <ul className="checklist">
-                {DUTIES.map((duty) => (
-                  <li className="checklist__item" key={duty}>
-                    {duty}
-                  </li>
-                ))}
-              </ul>
-            </SectionHead>
-
-            <div className="role-card">
-              <div className="role-card__head">
-                <p className="role-card__kicker">Role scorecard</p>
-                <span className="pill">Example</span>
-              </div>
-              <h3 className="role-card__title">Intake Coordinator (AI)</h3>
-              <FieldList block="role-card" className="role-card__grid" fields={ROLE_FACTS} />
-              <p className="role-card__boundary">
-                <strong>Boundary.</strong> It qualifies, schedules, and collects facts. It does
-                not give professional advice, quote pricing, or promise outcomes. Those go to
-                someone on the team, every time.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section className="wrap section" id="interview" aria-labelledby="interview-heading">
-          <SectionHead
-            id="interview-heading"
-            eyebrow="Try the example"
-            title="Interview it yourself, the way you would interview anyone."
-            lede="This is our Intake Coordinator, built as an example. Tell it about your firm and watch it work; the role Tenure builds for you would be scoped to what your business actually needs. As you talk, the offer of employment beside the transcript fills itself in."
-          />
-          <Interview />
-        </section>
-
-        <section className="wrap section section--tint" id="how-it-works" aria-labelledby="sequence-heading">
-          <SectionHead
-            id="sequence-heading"
-            eyebrow="How employment works"
-            title="Six steps, in order, every time."
-          />
-          <ol className="timeline">
-            {SEQUENCE.map((step, index) => (
-              <li className="timeline__item" key={step.title}>
-                <span className="timeline__index">{index + 1}</span>
-                <h3 className="timeline__title">{step.title}</h3>
-                <p className="timeline__copy">{step.copy}</p>
+          <ol className="process">
+            {PROCESS.map((step, index) => (
+              <li className="process__item" key={step.title}>
+                <span className="process__index">{String(index + 1).padStart(2, '0')}</span>
+                <h3 className="process__title">{step.title}</h3>
+                <p className="process__copy">{step.copy}</p>
               </li>
             ))}
           </ol>
         </section>
 
-        <section className="wrap section" id="pricing" aria-labelledby="terms-heading">
-          <SectionHead
-            id="terms-heading"
-            eyebrow="Terms"
-            title="Priced like a hire, guaranteed like one."
-          />
-          <div className="pricing">
+        <section className="wrap section" id="evidence" aria-labelledby="evidence-heading">
+          <div className="section__head">
+            <p className="eyebrow">See it work</p>
+            <h2 className="section__title" id="evidence-heading">
+              Watch it handle a real inquiry.
+            </h2>
+            <p className="section__lede">
+              This is the Intake Coordinator, one role Tenure has already built. Talk to it the
+              way a prospective client would, and watch it qualify, respond, and hand off.
+            </p>
+          </div>
+          <div className="evidence">
+            <Interview />
+          </div>
+        </section>
+
+        <section className="wrap section section--tint" id="pricing" aria-labelledby="terms-heading">
+          <div className="section__head">
+            <p className="eyebrow">Guarantee and pricing</p>
+            <h2 className="section__title" id="terms-heading">
+              Priced like a hire, guaranteed like one.
+            </h2>
+          </div>
+          <div className="terms">
             {TERMS.map(({ term, gloss }) => (
-              <div className="price-card" key={term}>
-                <p className="price-card__term">{term}</p>
-                <p className="price-card__gloss">{gloss}</p>
+              <div key={term}>
+                <p className="terms__term">{term}</p>
+                <p className="terms__gloss">{gloss}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="wrap section section--tint" id="faq" aria-labelledby="questions-heading">
-          <SectionHead
-            id="questions-heading"
-            eyebrow="Questions"
-            title="Questions every owner asks."
-          />
+        <section className="wrap section" id="faq" aria-labelledby="questions-heading">
+          <div className="section__head">
+            <p className="eyebrow">Questions</p>
+            <h2 className="section__title" id="questions-heading">
+              Questions every owner asks.
+            </h2>
+          </div>
           <div className="faq">
             {QUESTIONS.map(({ q, a }) => (
               <details className="faq__item" key={q}>
@@ -264,22 +190,30 @@ export default function Page() {
           </div>
         </section>
 
-        <section className="cta-band">
+        <section className="close-band">
           <div className="wrap">
-            <h2 className="cta-band__title">Hiring is the part you already know how to do.</h2>
-            <p className="cta-band__lede">
-              Businesses don&rsquo;t buy AI. They hire capability. If the inquiries reaching your
-              firm are going cold before anyone answers them, that is a staffing problem, and we
-              solve staffing problems.
+            <h2 className="close-band__title">
+              The result is the point. The AI is just how we get there.
+            </h2>
+            <p className="close-band__lede">
+              If inquiries are going cold before anyone answers them, that is lost revenue, not a
+              technology problem you have to solve yourself. Tell us what is slipping, and we
+              will build the fix.
             </p>
-            <div className="cta-band__actions">
-              <a className="btn btn--on-ink" href={CONTACT_HREF}>
-                {CONTACT_CTA}
+            <div className="close-band__actions">
+              <a
+                className="btn btn--on-ink"
+                href="mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20interested"
+              >
+                Talk to Omar
               </a>
-              <a className="btn btn--ghost-on-ink" href={INTERVIEW_HREF}>
-                {INTERVIEW_CTA}
+              <a className="btn btn--ghost-on-ink" href="#evidence">
+                See it work
               </a>
             </div>
+            <p className="close-band__fine">
+              One founder, not a support queue. That email goes straight to Omar.
+            </p>
           </div>
         </section>
       </main>
@@ -289,7 +223,8 @@ export default function Page() {
           <div>
             <p className="footer__mark">Tenure</p>
             <p className="footer__blurb">
-              An AI employment firm for founder-led service businesses.
+              An AI employment firm for founder-led service businesses. We deliver the outcome;
+              the AI is just how.
             </p>
           </div>
           <div>
@@ -300,18 +235,19 @@ export default function Page() {
                   {link.label}
                 </a>
               ))}
-              <a href={INTERVIEW_HREF}>{INTERVIEW_CTA}</a>
             </div>
           </div>
           <div>
             <p className="footer__heading">Contact</p>
             <div className="footer__links">
-              <a href={CONTACT_HREF}>{CONTACT_CTA}</a>
+              <a href="mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20interested">
+                Talk to Omar
+              </a>
             </div>
           </div>
         </div>
         <div className="footer__base">
-          <p>Tenure, AI Employment Firm</p>
+          <p>Tenure, AI employment firm</p>
           <p>&copy; 2026 Tenure</p>
         </div>
       </footer>
