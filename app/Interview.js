@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { OPENING } from './opening'
 
-const FIELDS = [
+export const FIELDS = [
   { key: 'firm', label: 'Employer', blank: 'the firm' },
   { key: 'practice', label: 'Handles', blank: 'what they handle' },
   { key: 'coverage', label: 'Coverage', blank: 'regions served' },
@@ -16,7 +16,7 @@ const FIELD_LINE = /^::field\s+([a-z]+)\s*=\s*(.+)$/gim
 
 // The model appends `::field key=value` lines for the offer letter. Strip them
 // from what the owner reads, and read them for the letter.
-function readFields(raw) {
+export function readFields(raw) {
   const found = {}
   for (const match of raw.matchAll(FIELD_LINE)) {
     const value = match[2].trim()
@@ -25,7 +25,7 @@ function readFields(raw) {
   return found
 }
 
-function stripFields(raw) {
+export function stripFields(raw) {
   return raw
     .replace(FIELD_LINE, '')
     .replace(/::field[\s\S]*$/i, '') // a half-streamed marker
