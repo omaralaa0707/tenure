@@ -5,9 +5,9 @@ import { OPENING } from './opening'
 
 const FIELDS = [
   { key: 'firm', label: 'Employer', blank: 'the firm' },
-  { key: 'practice', label: 'Practice', blank: 'what they handle' },
-  { key: 'jurisdictions', label: 'Jurisdictions', blank: 'states licensed' },
-  { key: 'volume', label: 'Enquiry volume', blank: 'per week' },
+  { key: 'practice', label: 'Handles', blank: 'what they handle' },
+  { key: 'coverage', label: 'Coverage', blank: 'regions served' },
+  { key: 'volume', label: 'Inquiry volume', blank: 'per week' },
   { key: 'response', label: 'Answered now in', blank: 'current speed' },
   { key: 'start', label: 'Start date', blank: 'on signature' },
 ]
@@ -15,7 +15,7 @@ const FIELDS = [
 const FIELD_LINE = /^::field\s+([a-z]+)\s*=\s*(.+)$/gim
 
 // The model appends `::field key=value` lines for the offer letter. Strip them
-// from what the attorney reads, and read them for the letter.
+// from what the owner reads, and read them for the letter.
 function readFields(raw) {
   const found = {}
   for (const match of raw.matchAll(FIELD_LINE)) {
@@ -144,7 +144,7 @@ export default function Interview() {
           {turns.map((turn, index) => (
             <article
               key={index}
-              className={`turn ${turn.role === 'user' ? 'turn--attorney' : 'turn--candidate'}`}
+              className={`turn ${turn.role === 'user' ? 'turn--visitor' : 'turn--candidate'}`}
             >
               <p className="turn__who">{turn.role === 'user' ? 'You' : 'Intake Coordinator'}</p>
               <p className="turn__text">{turn.content}</p>
@@ -214,7 +214,7 @@ export default function Interview() {
         </dl>
 
         <p className="offer__sign">
-          Position: Intake Coordinator (AI). Reports to the Managing Attorney. Ninety-day
+          Position: Intake Coordinator (AI). Reports to the founder. Ninety-day
           replacement guarantee applies.
         </p>
       </aside>

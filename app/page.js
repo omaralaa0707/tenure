@@ -2,9 +2,9 @@ import Interview from './Interview'
 
 const DUTIES = [
   'Answer every inbound inquiry (web form, email, referral) in under sixty seconds, at any hour.',
-  'Qualify by case type, jurisdiction, and urgency, in English or Spanish.',
+  'Qualify by the kind of work, timeline, and fit, in whatever language your clients use.',
   'Turn away the inquiries that are not a fit, politely and on the record.',
-  'Book qualified consultations straight into the attorney calendar.',
+  'Book qualified meetings straight into your calendar.',
   'File every conversation where the firm already keeps its records.',
   'Report each Monday: what came in, what was booked, what is stuck.',
 ]
@@ -115,10 +115,10 @@ export default function Page() {
             <p className="eyebrow rise rise--1">AI Employment Firm</p>
             <h1 className="hero__title rise rise--1">Meet your next hire.</h1>
             <p className="hero__standfirst rise rise--2">
-              Tenure designs, hires, trains, and manages AI employees for US immigration law
-              firms. The first one is an Intake Coordinator: it answers every inquiry in under a
-              minute, never claims to be a person, and has a named human here accountable for its
-              work.
+              Tenure designs, hires, trains, and manages AI employees for founder-led service
+              businesses. The first one is an Intake Coordinator: it answers every inquiry in
+              under a minute, never claims to be a person, and has a named human here accountable
+              for its work.
             </p>
             <div className="hero__actions rise rise--3">
               <a className="btn" href="#interview">
@@ -143,15 +143,15 @@ export default function Page() {
             <div className="preview__body">
               <div className="preview__row">
                 <span className="preview__key">Employer</span>
-                <span className="preview__value">Cardenas &amp; Ruiz LLP</span>
+                <span className="preview__value">Halden Recruiting Group</span>
               </div>
               <div className="preview__row">
-                <span className="preview__key">Practice</span>
-                <span className="preview__value">Family-based immigration</span>
+                <span className="preview__key">Handles</span>
+                <span className="preview__value">Candidate and client inquiries</span>
               </div>
               <div className="preview__row">
-                <span className="preview__key">Jurisdictions</span>
-                <span className="preview__value">Texas</span>
+                <span className="preview__key">Coverage</span>
+                <span className="preview__value">US and Canada</span>
               </div>
               <div className="preview__row">
                 <span className="preview__key">Start date</span>
@@ -202,7 +202,7 @@ export default function Page() {
               <div className="role-card__grid">
                 <div>
                   <span className="role-card__label">Reports to</span>
-                  <span className="role-card__value">Managing Attorney</span>
+                  <span className="role-card__value">The founder</span>
                 </div>
                 <div>
                   <span className="role-card__label">Managed by</span>
@@ -214,13 +214,13 @@ export default function Page() {
                 </div>
                 <div>
                   <span className="role-card__label">Judged on</span>
-                  <span className="role-card__value">Speed to lead, consults booked</span>
+                  <span className="role-card__value">Speed to lead, meetings booked</span>
                 </div>
               </div>
               <p className="role-card__boundary">
                 <strong>Boundary.</strong> It qualifies, schedules, and collects facts. It does
-                not give legal advice, assess eligibility, or estimate outcomes. Those go to an
-                attorney, every time.
+                not give professional advice, quote pricing, or promise outcomes. Those go to
+                someone on the team, every time.
               </p>
             </div>
           </div>
@@ -283,7 +283,7 @@ export default function Page() {
           <div className="section__head">
             <p className="eyebrow">Questions</p>
             <h2 className="section__title" id="questions-heading">
-              The four every attorney asks.
+              The four every owner asks.
             </h2>
           </div>
           <div className="faq">
@@ -329,8 +329,8 @@ export default function Page() {
           <div>
             <p className="footer__mark">Tenure</p>
             <p className="footer__blurb">
-              An AI employment firm for US immigration law firms. Every AI employee discloses
-              that it is AI, in every channel.
+              An AI employment firm for founder-led service businesses. Every AI employee
+              discloses that it is AI, in every channel.
             </p>
           </div>
           <div>

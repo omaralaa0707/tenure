@@ -726,13 +726,13 @@ button {
   line-height: 1.6;
 }
 
-.turn--attorney {
+.turn--visitor {
   align-self: flex-end;
   align-items: flex-end;
   text-align: right;
 }
 
-.turn--attorney .turn__text {
+.turn--visitor .turn__text {
   font-size: 0.9375rem;
   color: var(--muted);
 }
@@ -1187,7 +1187,7 @@ button {
    ============================================================ */
 
 @media (max-width: 46rem) {
-  .turn--attorney {
+  .turn--visitor {
     align-self: stretch;
     align-items: flex-start;
     text-align: left;
