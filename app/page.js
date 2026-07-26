@@ -1,4 +1,13 @@
 import Interview from './Interview'
+import FieldList from './components/FieldList'
+import SectionHead from './components/SectionHead'
+import {
+  CONTACT_CTA,
+  CONTACT_HREF,
+  INTERVIEW_CTA,
+  INTERVIEW_HREF,
+  NAV_LINKS,
+} from './site'
 
 const DUTIES = [
   'Answer every inbound inquiry (web form, email, referral) in under sixty seconds, at any hour.',
@@ -13,6 +22,20 @@ const STATS = [
   { value: '< 60 sec', label: 'Median time to first response' },
   { value: '24 / 7', label: 'Hours it works, including weekends' },
   { value: '90 days', label: 'Wrong-hire guarantee' },
+]
+
+const SAMPLE_OFFER = [
+  { label: 'Employer', value: 'Halden Recruiting Group' },
+  { label: 'Handles', value: 'Candidate and client inquiries' },
+  { label: 'Coverage', value: 'US and Canada' },
+  { label: 'Start date', value: 'Next Monday' },
+]
+
+const ROLE_FACTS = [
+  { label: 'Reports to', value: 'The founder' },
+  { label: 'Managed by', value: 'A named human at Tenure' },
+  { label: 'Hours', value: 'All of them' },
+  { label: 'Judged on', value: 'Speed to lead, meetings booked' },
 ]
 
 const SEQUENCE = [
@@ -79,12 +102,6 @@ const QUESTIONS = [
   },
 ]
 
-const NAV_LINKS = [
-  { href: '#how-it-works', label: 'How it works' },
-  { href: '#pricing', label: 'Pricing' },
-  { href: '#faq', label: 'FAQ' },
-]
-
 export default function Page() {
   return (
     <>
@@ -102,8 +119,8 @@ export default function Page() {
             ))}
           </div>
           <div className="nav__cta">
-            <a className="btn btn--sm" href="#interview">
-              Interview the candidate
+            <a className="btn btn--sm" href={INTERVIEW_HREF}>
+              {INTERVIEW_CTA}
             </a>
           </div>
         </div>
@@ -121,8 +138,8 @@ export default function Page() {
               for its work.
             </p>
             <div className="hero__actions rise rise--3">
-              <a className="btn" href="#interview">
-                Interview the candidate
+              <a className="btn" href={INTERVIEW_HREF}>
+                {INTERVIEW_CTA}
               </a>
               <a className="btn btn--quiet" href="#pricing">
                 See pricing
@@ -140,27 +157,10 @@ export default function Page() {
               <span className="preview__head-label">Sample offer of employment</span>
               <span className="pill">Example</span>
             </div>
-            <div className="preview__body">
-              <div className="preview__row">
-                <span className="preview__key">Employer</span>
-                <span className="preview__value">Halden Recruiting Group</span>
-              </div>
-              <div className="preview__row">
-                <span className="preview__key">Handles</span>
-                <span className="preview__value">Candidate and client inquiries</span>
-              </div>
-              <div className="preview__row">
-                <span className="preview__key">Coverage</span>
-                <span className="preview__value">US and Canada</span>
-              </div>
-              <div className="preview__row">
-                <span className="preview__key">Start date</span>
-                <span className="preview__value">Next Monday</span>
-              </div>
-            </div>
+            <FieldList block="preview" className="preview__body" fields={SAMPLE_OFFER} />
             <p className="preview__foot">
               Generated live during an actual interview.{' '}
-              <a href="#interview">Try yours below.</a>
+              <a href={INTERVIEW_HREF}>Try yours below.</a>
             </p>
           </div>
         </section>
@@ -178,15 +178,13 @@ export default function Page() {
 
         <section className="wrap section section--tint" aria-labelledby="role-heading">
           <div className="feature">
-            <div>
-              <p className="eyebrow">The role</p>
-              <h2 className="section__title" id="role-heading">
-                One role, written down before anyone signs anything.
-              </h2>
-              <p className="section__lede">
-                Every AI employee starts as a scorecard, the same document a firm would write for
-                a person. This is the one your firm would be hiring against.
-              </p>
+            <SectionHead
+              className={null}
+              id="role-heading"
+              eyebrow="The role"
+              title="One role, written down before anyone signs anything."
+              lede="Every AI employee starts as a scorecard, the same document a firm would write for a person. This is the one your firm would be hiring against."
+            >
               <ul className="checklist">
                 {DUTIES.map((duty) => (
                   <li className="checklist__item" key={duty}>
@@ -194,29 +192,12 @@ export default function Page() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </SectionHead>
 
             <div className="role-card">
               <p className="role-card__kicker">Role scorecard</p>
               <h3 className="role-card__title">Intake Coordinator (AI)</h3>
-              <div className="role-card__grid">
-                <div>
-                  <span className="role-card__label">Reports to</span>
-                  <span className="role-card__value">The founder</span>
-                </div>
-                <div>
-                  <span className="role-card__label">Managed by</span>
-                  <span className="role-card__value">A named human at Tenure</span>
-                </div>
-                <div>
-                  <span className="role-card__label">Hours</span>
-                  <span className="role-card__value">All of them</span>
-                </div>
-                <div>
-                  <span className="role-card__label">Judged on</span>
-                  <span className="role-card__value">Speed to lead, meetings booked</span>
-                </div>
-              </div>
+              <FieldList block="role-card" className="role-card__grid" fields={ROLE_FACTS} />
               <p className="role-card__boundary">
                 <strong>Boundary.</strong> It qualifies, schedules, and collects facts. It does
                 not give professional advice, quote pricing, or promise outcomes. Those go to
@@ -227,26 +208,21 @@ export default function Page() {
         </section>
 
         <section className="wrap section" id="interview" aria-labelledby="interview-heading">
-          <div className="section__head">
-            <p className="eyebrow">Try it</p>
-            <h2 className="section__title" id="interview-heading">
-              Interview it yourself, the way you would interview anyone.
-            </h2>
-            <p className="section__lede">
-              Tell it about your firm and it will show you how it would run your intake. As you
-              talk, the offer of employment beside the transcript fills itself in.
-            </p>
-          </div>
+          <SectionHead
+            id="interview-heading"
+            eyebrow="Try it"
+            title="Interview it yourself, the way you would interview anyone."
+            lede="Tell it about your firm and it will show you how it would run your intake. As you talk, the offer of employment beside the transcript fills itself in."
+          />
           <Interview />
         </section>
 
         <section className="wrap section section--tint" id="how-it-works" aria-labelledby="sequence-heading">
-          <div className="section__head">
-            <p className="eyebrow">How employment works</p>
-            <h2 className="section__title" id="sequence-heading">
-              Six steps, in order, every time.
-            </h2>
-          </div>
+          <SectionHead
+            id="sequence-heading"
+            eyebrow="How employment works"
+            title="Six steps, in order, every time."
+          />
           <ol className="timeline">
             {SEQUENCE.map((step, index) => (
               <li className="timeline__item" key={step.title}>
@@ -259,12 +235,11 @@ export default function Page() {
         </section>
 
         <section className="wrap section" id="pricing" aria-labelledby="terms-heading">
-          <div className="section__head">
-            <p className="eyebrow">Terms</p>
-            <h2 className="section__title" id="terms-heading">
-              Priced like a hire, guaranteed like one.
-            </h2>
-          </div>
+          <SectionHead
+            id="terms-heading"
+            eyebrow="Terms"
+            title="Priced like a hire, guaranteed like one."
+          />
           <div className="pricing">
             {TERMS.map(({ term, gloss }) => (
               <div className="price-card" key={term}>
@@ -280,12 +255,11 @@ export default function Page() {
         </section>
 
         <section className="wrap section section--tint" id="faq" aria-labelledby="questions-heading">
-          <div className="section__head">
-            <p className="eyebrow">Questions</p>
-            <h2 className="section__title" id="questions-heading">
-              The four every owner asks.
-            </h2>
-          </div>
+          <SectionHead
+            id="questions-heading"
+            eyebrow="Questions"
+            title="The four every owner asks."
+          />
           <div className="faq">
             {QUESTIONS.map(({ q, a }) => (
               <details className="faq__item" key={q}>
@@ -310,14 +284,11 @@ export default function Page() {
               solve staffing problems.
             </p>
             <div className="cta-band__actions">
-              <a
-                className="btn btn--on-ink"
-                href="mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20founding%20client"
-              >
-                Talk to Omar
+              <a className="btn btn--on-ink" href={CONTACT_HREF}>
+                {CONTACT_CTA}
               </a>
-              <a className="btn btn--ghost-on-ink" href="#interview">
-                Interview the candidate
+              <a className="btn btn--ghost-on-ink" href={INTERVIEW_HREF}>
+                {INTERVIEW_CTA}
               </a>
             </div>
           </div>
@@ -341,15 +312,13 @@ export default function Page() {
                   {link.label}
                 </a>
               ))}
-              <a href="#interview">Interview the candidate</a>
+              <a href={INTERVIEW_HREF}>{INTERVIEW_CTA}</a>
             </div>
           </div>
           <div>
             <p className="footer__heading">Contact</p>
             <div className="footer__links">
-              <a href="mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20founding%20client">
-                Talk to Omar
-              </a>
+              <a href={CONTACT_HREF}>{CONTACT_CTA}</a>
             </div>
           </div>
         </div>

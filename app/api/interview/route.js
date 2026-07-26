@@ -1,4 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk'
+import { OFFER_KEY_SPEC } from '../../offer'
 import { OPENING } from '../../opening'
 
 export const runtime = 'nodejs'
@@ -34,7 +35,7 @@ Whenever the owner tells you something that belongs on an offer of employment, a
 
 ::field key=value
 
-Valid keys, each used at most once per reply: firm (the firm's name), practice (the kind of client work they do), coverage (the regions or markets they serve), volume (inquiries per week), response (how fast they answer now), start (a proposed start date).
+Valid keys, each used at most once per reply: ${OFFER_KEY_SPEC}.
 Keep each value under twelve words. Only record something the owner actually told you: never guess, and never restate a value you already recorded. These lines are stripped from what the owner sees, so never mention them or refer to them in your prose.
 
 Begin by introducing yourself in two sentences and asking your first question.`
