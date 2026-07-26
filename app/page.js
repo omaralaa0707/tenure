@@ -1,5 +1,4 @@
 import Interview from './Interview'
-import Reveal from './Reveal'
 
 const DUTIES = [
   'Answer every inbound inquiry (web form, email, referral) in under sixty seconds, at any hour.',
@@ -89,13 +88,7 @@ export default function Page() {
 
       <main>
         <section className="hero">
-          <p className="stamp rise rise--1" aria-hidden="true">
-            <span className="stamp__top">Verified</span>
-            <span className="stamp__mid">AI</span>
-            <span className="stamp__bottom">Not a person</span>
-          </p>
           <h1 className="hero__title rise rise--1">Meet your next hire.</h1>
-          <hr className="hero__rule rise rise--2" />
           <p className="hero__standfirst rise rise--2">
             Tenure designs, hires, trains, and manages AI employees for US immigration law firms.
             The first one is an Intake Coordinator. It answers every inquiry in under a minute, it
@@ -111,16 +104,7 @@ export default function Page() {
           </div>
         </section>
 
-        <div className="pull">
-          <div className="pull__inner">
-            <p className="pull__text">
-              Businesses don&rsquo;t buy AI. They hire capability.
-            </p>
-            <p className="pull__cite">The premise this firm is built on</p>
-          </div>
-        </div>
-
-        <Reveal as="section" className="band" aria-labelledby="candidate-heading">
+        <section className="band" aria-labelledby="candidate-heading">
           <p className="band__label">The candidate</p>
           <div className="band__body">
             <h2 className="band__title" id="candidate-heading">
@@ -169,9 +153,9 @@ export default function Page() {
               </p>
             </article>
           </div>
-        </Reveal>
+        </section>
 
-        <Reveal as="section" className="band" id="interview" aria-labelledby="interview-heading">
+        <section className="band" id="interview" aria-labelledby="interview-heading">
           <p className="band__label">The interview</p>
           <div className="band__body">
             <h2 className="band__title" id="interview-heading">
@@ -183,9 +167,9 @@ export default function Page() {
             </p>
             <Interview />
           </div>
-        </Reveal>
+        </section>
 
-        <Reveal as="section" className="band" aria-labelledby="sequence-heading">
+        <section className="band" aria-labelledby="sequence-heading">
           <p className="band__label">How employment works</p>
           <div className="band__body">
             <h2 className="band__title" id="sequence-heading">
@@ -202,9 +186,9 @@ export default function Page() {
               ))}
             </ol>
           </div>
-        </Reveal>
+        </section>
 
-        <Reveal as="section" className="band" id="terms" aria-labelledby="terms-heading">
+        <section className="band" id="terms" aria-labelledby="terms-heading">
           <p className="band__label">Terms</p>
           <div className="band__body">
             <h2 className="band__title" id="terms-heading">
@@ -223,9 +207,9 @@ export default function Page() {
               ones, including the ones that are not flattering yet.
             </p>
           </div>
-        </Reveal>
+        </section>
 
-        <Reveal as="section" className="band" aria-labelledby="questions-heading">
+        <section className="band" aria-labelledby="questions-heading">
           <p className="band__label">Questions</p>
           <div className="band__body">
             <h2 className="band__title" id="questions-heading">
@@ -240,9 +224,9 @@ export default function Page() {
               ))}
             </div>
           </div>
-        </Reveal>
+        </section>
 
-        <Reveal as="section" className="closing" aria-labelledby="closing-heading">
+        <section className="closing" aria-labelledby="closing-heading">
           <h2 className="closing__title" id="closing-heading">
             Hiring is the part you already know how to do.
           </h2>
@@ -254,7 +238,7 @@ export default function Page() {
           <a className="btn" href="mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20founding%20client">
             Talk to Omar
           </a>
-        </Reveal>
+        </section>
       </main>
 
       <footer className="colophon">

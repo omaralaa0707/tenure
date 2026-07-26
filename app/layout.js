@@ -1,7 +1,7 @@
 import { Libre_Caslon_Display, Libre_Caslon_Text, Public_Sans } from 'next/font/google'
 import './globals.css'
 
-// Caslon: the historical face of legal and government printing — contracts,
+// Caslon: the historical face of legal and government printing. Contracts,
 // statutes, records. Public Sans: the US federal design system's face, which is
 // the visual world an immigration attorney already works inside.
 const caslonDisplay = Libre_Caslon_Display({
@@ -26,11 +26,11 @@ const publicSans = Public_Sans({
 })
 
 export const metadata = {
-  title: 'Tenure — AI Employment Firm',
+  title: 'Tenure: AI Employment Firm',
   description:
     'Tenure designs, hires, trains, and manages AI employees for US immigration law firms. Interview the candidate before you hire it.',
   openGraph: {
-    title: 'Tenure — AI Employment Firm',
+    title: 'Tenure: AI Employment Firm',
     description:
       'Meet your next hire: a managed AI Intake Coordinator for immigration law firms.',
     type: 'website',
