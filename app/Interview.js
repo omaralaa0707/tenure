@@ -29,7 +29,9 @@ function stripFields(raw) {
   return raw
     .replace(FIELD_LINE, '')
     .replace(/::field[\s\S]*$/i, '') // a half-streamed marker
+    .replace(/—/g, ', ') // house style forbids the em dash; degrade gracefully if one slips through
     .replace(/\n{3,}/g, '\n\n')
+    .replace(/ {2,}/g, ' ')
     .trimEnd()
 }
 

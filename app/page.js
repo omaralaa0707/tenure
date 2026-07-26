@@ -1,7 +1,8 @@
 import Interview from './Interview'
+import Reveal from './Reveal'
 
 const DUTIES = [
-  'Answer every inbound inquiry — web form, email, referral — in under sixty seconds, at any hour.',
+  'Answer every inbound inquiry (web form, email, referral) in under sixty seconds, at any hour.',
   'Qualify by case type, jurisdiction, and urgency, in English or Spanish.',
   'Turn away the inquiries that are not a fit, politely and on the record.',
   'Book qualified consultations straight into the attorney calendar.',
@@ -20,7 +21,7 @@ const SEQUENCE = [
   },
   {
     title: 'An offer is signed',
-    copy: 'Responsibilities, compensation, start date, and the ninety-day guarantee — on paper, countersigned by Tenure.',
+    copy: 'Responsibilities, compensation, start date, and the ninety-day guarantee, on paper and countersigned by Tenure.',
   },
   {
     title: 'It starts on a Monday',
@@ -43,7 +44,7 @@ const QUESTIONS = [
   },
   {
     q: 'What happens when it gets something wrong?',
-    a: 'The same thing that happens when any employee does: its manager owns it. You get an incident report, the fix, and the retraining that followed. Accountability is the product — the software is just how it is delivered.',
+    a: 'The same thing that happens when any employee does: its manager owns it. You get an incident report, the fix, and the retraining that followed. Accountability is the product. The software is just how it is delivered.',
   },
   {
     q: 'Will it pretend to be a person?',
@@ -88,7 +89,13 @@ export default function Page() {
 
       <main>
         <section className="hero">
+          <p className="stamp rise rise--1" aria-hidden="true">
+            <span className="stamp__top">Verified</span>
+            <span className="stamp__mid">AI</span>
+            <span className="stamp__bottom">Not a person</span>
+          </p>
           <h1 className="hero__title rise rise--1">Meet your next hire.</h1>
+          <hr className="hero__rule rise rise--2" />
           <p className="hero__standfirst rise rise--2">
             Tenure designs, hires, trains, and manages AI employees for US immigration law firms.
             The first one is an Intake Coordinator. It answers every inquiry in under a minute, it
@@ -104,14 +111,23 @@ export default function Page() {
           </div>
         </section>
 
-        <section className="band" aria-labelledby="candidate-heading">
+        <div className="pull">
+          <div className="pull__inner">
+            <p className="pull__text">
+              Businesses don&rsquo;t buy AI. They hire capability.
+            </p>
+            <p className="pull__cite">The premise this firm is built on</p>
+          </div>
+        </div>
+
+        <Reveal as="section" className="band" aria-labelledby="candidate-heading">
           <p className="band__label">The candidate</p>
           <div className="band__body">
             <h2 className="band__title" id="candidate-heading">
               One role, written down before anyone signs anything.
             </h2>
             <p className="u-measure u-muted">
-              Every AI employee starts as a scorecard — the same document a firm would write for a
+              Every AI employee starts as a scorecard, the same document a firm would write for a
               person. This is the one your firm would be hiring against.
             </p>
 
@@ -148,14 +164,14 @@ export default function Page() {
 
               <p className="doc__boundary">
                 <strong>Boundary.</strong> It qualifies, schedules, and collects facts. It does not
-                give legal advice, assess eligibility, or estimate outcomes — those go to an
+                give legal advice, assess eligibility, or estimate outcomes. Those go to an
                 attorney, every time. The line is written into the role, not left to judgment.
               </p>
             </article>
           </div>
-        </section>
+        </Reveal>
 
-        <section className="band" id="interview" aria-labelledby="interview-heading">
+        <Reveal as="section" className="band" id="interview" aria-labelledby="interview-heading">
           <p className="band__label">The interview</p>
           <div className="band__body">
             <h2 className="band__title" id="interview-heading">
@@ -167,9 +183,9 @@ export default function Page() {
             </p>
             <Interview />
           </div>
-        </section>
+        </Reveal>
 
-        <section className="band" aria-labelledby="sequence-heading">
+        <Reveal as="section" className="band" aria-labelledby="sequence-heading">
           <p className="band__label">How employment works</p>
           <div className="band__body">
             <h2 className="band__title" id="sequence-heading">
@@ -186,9 +202,9 @@ export default function Page() {
               ))}
             </ol>
           </div>
-        </section>
+        </Reveal>
 
-        <section className="band" id="terms" aria-labelledby="terms-heading">
+        <Reveal as="section" className="band" id="terms" aria-labelledby="terms-heading">
           <p className="band__label">Terms</p>
           <div className="band__body">
             <h2 className="band__title" id="terms-heading">
@@ -207,9 +223,9 @@ export default function Page() {
               ones, including the ones that are not flattering yet.
             </p>
           </div>
-        </section>
+        </Reveal>
 
-        <section className="band" aria-labelledby="questions-heading">
+        <Reveal as="section" className="band" aria-labelledby="questions-heading">
           <p className="band__label">Questions</p>
           <div className="band__body">
             <h2 className="band__title" id="questions-heading">
@@ -224,9 +240,9 @@ export default function Page() {
               ))}
             </div>
           </div>
-        </section>
+        </Reveal>
 
-        <section className="closing" aria-labelledby="closing-heading">
+        <Reveal as="section" className="closing" aria-labelledby="closing-heading">
           <h2 className="closing__title" id="closing-heading">
             Hiring is the part you already know how to do.
           </h2>
@@ -235,14 +251,14 @@ export default function Page() {
             going cold before anyone answers them, that is a staffing problem, and we solve staffing
             problems.
           </p>
-          <a className="btn" href="mailto:omarmorsi07@gmail.com?subject=Tenure%20—%20founding%20client">
+          <a className="btn" href="mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20founding%20client">
             Talk to Omar
           </a>
-        </section>
+        </Reveal>
       </main>
 
       <footer className="colophon">
-        <p>Tenure — AI Employment Firm</p>
+        <p>Tenure, AI Employment Firm</p>
         <p>Every AI employee discloses that it is AI, in every channel.</p>
       </footer>
     </div>

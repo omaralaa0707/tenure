@@ -1,16 +1,16 @@
 /* ============================================================
-   Tenure — token system
+   Tenure. Token system.
    Type:  Libre Caslon (legal & government printing lineage)
           Public Sans  (US federal design-system lineage)
    Color: OKLCH, neutrals tinted toward the oxblood hue (18)
    ============================================================ */
 
 :root {
-  /* --- color: light (primary — daytime, desk-bound reading) --- */
+  /* --- color: light (primary: daytime, desk-bound reading) --- */
   --ink: oklch(0.23 0.012 18);
   --paper: oklch(0.957 0.005 18);
   --surface: oklch(0.987 0.004 18);
-  /* muted is body copy on --paper, so it must clear 4.5:1 — measured 4.83:1 */
+  /* muted is body copy on --paper, so it must clear 4.5:1, measured at 4.83:1 */
   --muted: oklch(0.52 0.014 18);
   --rule: oklch(0.885 0.008 18);
   --rule-strong: oklch(0.78 0.012 18);
@@ -26,9 +26,10 @@
   --serif: var(--font-caslon-text), "Iowan Old Style", Charter, Georgia, serif;
   --sans: var(--font-public-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
 
-  --t-display: clamp(3.25rem, 8.5vw, 5.75rem);
+  --t-display: clamp(3.75rem, 11vw, 7.5rem);
   --t-h1: clamp(2rem, 4vw, 2.75rem);
   --t-h2: clamp(1.375rem, 2.2vw, 1.625rem);
+  --t-quote: clamp(1.75rem, 4.4vw, 3rem);
   --t-body: 1.0625rem;
   --t-sm: 0.875rem;
   --t-label: 0.6875rem;
@@ -100,6 +101,7 @@ html {
 }
 
 body {
+  position: relative;
   margin: 0;
   background: var(--paper);
   color: var(--ink);
@@ -109,6 +111,32 @@ body {
   font-synthesis-weight: none;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* A stock's worth of tooth on the page. Not decoration for its own sake:
+   the whole system's premise is that this is paper. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDAiIGhlaWdodD0iMTQwIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC44NSIgbnVtT2N0YXZlcz0iMiIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjxmZUNvbG9yTWF0cml4IHR5cGU9Im1hdHJpeCIgdmFsdWVzPSIwIDAgMCAwIDAgIDAgMCAwIDAgMCAgMCAwIDAgMCAwICAwIDAgMCAwLjQgMCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNuKSIvPjwvc3ZnPg==");
+  background-size: 140px;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+}
+
+@media (prefers-color-scheme: dark) {
+  body::before {
+    opacity: 0.09;
+    mix-blend-mode: overlay;
+  }
+}
+
+.shell {
+  position: relative;
+  z-index: 1;
 }
 
 h1,
@@ -215,10 +243,11 @@ a {
 }
 
 /* ============================================================
-   Hero — set as letterhead, not as a marketing headline block
+   Hero. Set as letterhead, not a marketing headline block.
    ============================================================ */
 
 .hero {
+  position: relative;
   padding-block: clamp(var(--space-2xl), 9vw, var(--space-4xl)) var(--section-y);
   display: flex;
   flex-direction: column;
@@ -229,14 +258,22 @@ a {
   font-family: var(--display);
   font-weight: 400;
   font-size: var(--t-display);
-  line-height: 0.96;
-  letter-spacing: -0.028em;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
   text-wrap: balance;
-  max-width: 14ch;
+  max-width: 11ch;
+}
+
+.hero__rule {
+  width: clamp(6rem, 22vw, 11rem);
+  height: 5px;
+  background: var(--accent);
+  border: 0;
+  margin: 0;
 }
 
 .hero__standfirst {
-  max-width: 40ch;
+  max-width: 38ch;
   font-size: clamp(1.0625rem, 1.5vw, 1.1875rem);
   color: var(--muted);
   text-wrap: pretty;
@@ -248,6 +285,51 @@ a {
   gap: var(--space-sm);
   align-items: center;
   margin-top: var(--space-xs);
+}
+
+.stamp {
+  position: absolute;
+  top: clamp(0.5rem, 3vw, 2rem);
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.85rem 1.1rem;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  transform: rotate(6deg);
+  font-family: var(--sans);
+  text-align: center;
+  mix-blend-mode: multiply;
+}
+
+@media (prefers-color-scheme: dark) {
+  .stamp {
+    mix-blend-mode: normal;
+  }
+}
+
+.stamp__top,
+.stamp__bottom {
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.stamp__mid {
+  font-family: var(--display);
+  font-size: 1.375rem;
+  font-style: italic;
+  line-height: 1;
+}
+
+@media (max-width: 40rem) {
+  .stamp {
+    display: none;
+  }
 }
 
 /* ============================================================
@@ -295,7 +377,7 @@ a {
 }
 
 /* ============================================================
-   Bands — asymmetric label rail + content column
+   Bands. Asymmetric label rail plus content column.
    ============================================================ */
 
 .band {
@@ -339,7 +421,8 @@ a {
 
 .doc {
   background: var(--surface);
-  border: 1px solid var(--rule);
+  border-inline: 1px solid var(--rule);
+  border-block: 4px double var(--rule-strong);
   padding: clamp(var(--space-lg), 3vw, var(--space-xl));
   display: flex;
   flex-direction: column;
@@ -418,7 +501,7 @@ a {
 }
 
 /* ============================================================
-   Signature element — the interview writes the offer letter
+   Signature element. The interview writes the offer letter.
    ============================================================ */
 
 .hiring {
@@ -437,7 +520,8 @@ a {
 .interview {
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--rule-strong);
+  border-inline: 1px solid var(--rule-strong);
+  border-block: 4px double var(--rule-strong);
   background: var(--surface);
   min-height: 28rem;
 }
@@ -622,7 +706,8 @@ a {
 /* --- the offer letter that fills itself in --- */
 
 .offer {
-  border: 1px solid var(--rule-strong);
+  border-inline: 1px solid var(--rule-strong);
+  border-block: 4px double var(--rule-strong);
   background: var(--surface);
   padding: clamp(var(--space-lg), 2.5vw, var(--space-xl));
   display: flex;
@@ -716,7 +801,7 @@ a {
 }
 
 /* ============================================================
-   The employment sequence — a real sequence, so it is numbered
+   The employment sequence. A real sequence, so it is numbered.
    ============================================================ */
 
 .sequence {
@@ -726,12 +811,14 @@ a {
 }
 
 .sequence__step {
+  position: relative;
   display: grid;
-  grid-template-columns: 3.5rem minmax(0, 1fr);
+  grid-template-columns: 5.5rem minmax(0, 1fr);
   gap: var(--space-md);
-  align-items: baseline;
-  padding-block: var(--space-lg);
+  align-items: start;
+  padding-block: var(--space-xl);
   border-top: 1px solid var(--rule);
+  overflow: clip;
 }
 
 .sequence__step:first-child {
@@ -743,9 +830,12 @@ a {
   counter-increment: step;
   content: counter(step, decimal-leading-zero);
   font-family: var(--display);
-  font-size: 1.5rem;
-  line-height: 1;
+  font-size: clamp(4rem, 9vw, 6.5rem);
+  line-height: 0.8;
+  letter-spacing: -0.03em;
   color: var(--accent);
+  opacity: 0.16;
+  transform: translateY(-0.1em);
 }
 
 .sequence__title {
@@ -796,6 +886,66 @@ a {
 }
 
 /* ============================================================
+   Pull quote. The one full-bleed break in an otherwise gridded page.
+   ============================================================ */
+
+.pull {
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  width: 100vw;
+  background: var(--accent);
+  color: var(--on-accent);
+  padding-block: clamp(var(--space-2xl), 8vw, var(--space-4xl));
+}
+
+.pull__inner {
+  max-width: var(--page);
+  margin-inline: auto;
+  padding-inline: clamp(var(--space-lg), 5vw, var(--space-3xl));
+}
+
+.pull__text {
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--t-quote);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  max-width: 18ch;
+  text-wrap: balance;
+}
+
+.pull__cite {
+  margin-top: var(--space-lg);
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+/* ============================================================
+   Scroll reveal. One arrival per band, no scroll-jacking.
+   ============================================================ */
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 640ms var(--ease-out-quart), transform 640ms var(--ease-out-quart);
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ============================================================
    Terms + closing
    ============================================================ */
 
@@ -833,10 +983,10 @@ a {
 .closing__title {
   font-family: var(--display);
   font-weight: 400;
-  font-size: clamp(2.25rem, 5.5vw, 3.25rem);
-  line-height: 1.02;
-  letter-spacing: -0.022em;
-  max-width: 16ch;
+  font-size: clamp(2.5rem, 6.2vw, 4rem);
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  max-width: 15ch;
   text-wrap: balance;
 }
 
@@ -852,7 +1002,7 @@ a {
 }
 
 /* ============================================================
-   Page-load orchestration — one sequence, then stillness
+   Page-load orchestration. One sequence, then stillness.
    ============================================================ */
 
 @media (prefers-reduced-motion: no-preference) {
