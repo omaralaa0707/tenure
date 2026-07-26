@@ -132,6 +132,10 @@ export default function Interview() {
             Intake Coordinator
             <span className="interview__role">AI employee · Tenure</span>
           </p>
+          <span className="pulse" aria-hidden="true">
+            <span className="pulse__dot" />
+            <span className="pulse__label">Live</span>
+          </span>
         </header>
 
         <div className="transcript" ref={transcriptRef} aria-live="polite" aria-atomic="false">

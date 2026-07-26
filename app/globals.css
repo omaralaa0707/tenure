@@ -348,9 +348,22 @@ button {
 
 .hero {
   padding-block: clamp(var(--space-3xl), 11vw, 8rem) clamp(var(--space-2xl), 8vw, var(--space-4xl));
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-2xl);
+}
+
+.hero__copy {
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
+}
+
+@media (max-width: 60rem) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .hero__title {
@@ -916,7 +929,7 @@ button {
 }
 
 /* ============================================================
-   Page-load orchestration
+   Page-load orchestration: the hero's immediate entrance
    ============================================================ */
 
 @media (prefers-reduced-motion: no-preference) {
@@ -945,6 +958,106 @@ button {
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* ============================================================
+   Scroll reveal: everything below the hero arrives once, on the
+   way past. Falls back to visible via the noscript rule in layout.js.
+   ============================================================ */
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 640ms var(--ease-out-quart), transform 640ms var(--ease-out-quart);
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ============================================================
+   Live pulse: an ambient signal, not a hover effect. Used only on
+   the one panel that is genuinely live.
+   ============================================================ */
+
+.pulse {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.pulse__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+  flex: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pulse__dot {
+    animation: pulse-beat 2.2s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse-beat {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.pulse__label {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ============================================================
+   Equipment icons: line art, no icon-container chrome
+   ============================================================ */
+
+.kit__icon {
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--accent);
+  margin-bottom: var(--space-2xs);
+}
+
+/* ============================================================
+   Hero glyph: an abstract workstation, not a product screenshot.
+   The blinking cursor echoes the live demo's own caret further down.
+   ============================================================ */
+
+.hero__glyph {
+  align-self: center;
+  color: var(--muted);
+  width: clamp(9rem, 20vw, 13rem);
+  height: auto;
+}
+
+.hero__glyph-cursor {
+  fill: var(--accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero__glyph-cursor {
+    animation: caret-blink 1.05s steps(2, start) infinite;
+  }
+}
+
+@media (max-width: 60rem) {
+  .hero__glyph {
+    display: none;
   }
 }
 

@@ -1,15 +1,43 @@
 import Interview from './Interview'
+import Reveal from './Reveal'
+
+const ICONS = {
+  workstation: (
+    <svg className="kit__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="4" width="18" height="12" rx="1.5" />
+      <line x1="8" y1="20" x2="16" y2="20" />
+      <line x1="12" y1="16" x2="12" y2="20" />
+    </svg>
+  ),
+  email: (
+    <svg className="kit__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="5" width="18" height="14" rx="1.5" />
+      <path d="M3.5 6.5l8.5 6 8.5-6" />
+    </svg>
+  ),
+  tools: (
+    <svg className="kit__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="3" width="7" height="7" rx="1" />
+      <rect x="14" y="3" width="7" height="7" rx="1" />
+      <rect x="3" y="14" width="7" height="7" rx="1" />
+      <rect x="14" y="14" width="7" height="7" rx="1" />
+    </svg>
+  ),
+}
 
 const KIT = [
   {
+    icon: 'workstation',
     title: 'Its own workstation',
     copy: 'A dedicated machine of its own, always on, doing the work you assign it.',
   },
   {
+    icon: 'email',
     title: 'Its own email',
     copy: 'Sends and receives as itself, inside the systems your team already uses.',
   },
   {
+    icon: 'tools',
     title: 'Access to your tools',
     copy: 'The same software and platforms any hire on your team would log into.',
   },
@@ -90,29 +118,49 @@ export default function Page() {
 
       <main>
         <section className="wrap hero">
-          <h1 className="hero__title rise rise--1">A real employee. It just never sleeps.</h1>
-          <p className="hero__standfirst rise rise--2">
-            Tenure designs, builds, and manages AI employees for your business. Each one gets its
-            own workstation, a company email, and the same access to your tools as anyone on your
-            team, minus the weekends, the sick days, and the slow mornings.
-          </p>
-          <div className="hero__actions rise rise--3">
-            <a
-              className="btn"
-              href="mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20interested"
-            >
-              Talk to the team
-            </a>
-            <a className="btn btn--quiet" href="#evidence">
-              See it work
-            </a>
+          <div className="hero__copy">
+            <h1 className="hero__title rise rise--1">A real employee. It just never sleeps.</h1>
+            <p className="hero__standfirst rise rise--2">
+              Tenure designs, builds, and manages AI employees for your business. Each one gets
+              its own workstation, a company email, and the same access to your tools as anyone
+              on your team, minus the weekends, the sick days, and the slow mornings.
+            </p>
+            <div className="hero__actions rise rise--3">
+              <a
+                className="btn"
+                href="mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20interested"
+              >
+                Talk to the team
+              </a>
+              <a className="btn btn--quiet" href="#evidence">
+                See it work
+              </a>
+            </div>
+            <p className="hero__fine rise rise--3">
+              A named person at Tenure is accountable for it. Always.
+            </p>
           </div>
-          <p className="hero__fine rise rise--3">
-            A named person at Tenure is accountable for it. Always.
-          </p>
+
+          <svg
+            className="hero__glyph rise rise--2"
+            viewBox="0 0 160 120"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            aria-hidden="true"
+          >
+            <rect x="10" y="10" width="140" height="90" rx="4" />
+            <line x1="10" y1="30" x2="150" y2="30" />
+            <line x1="26" y1="50" x2="90" y2="50" />
+            <line x1="26" y1="64" x2="110" y2="64" />
+            <line x1="26" y1="78" x2="70" y2="78" />
+            <rect className="hero__glyph-cursor" x="72" y="73" width="8" height="9" stroke="none" />
+            <line x1="65" y1="112" x2="95" y2="112" />
+          </svg>
         </section>
 
-        <section className="wrap section" aria-labelledby="kit-heading">
+        <Reveal as="section" className="wrap section" aria-labelledby="kit-heading">
           <div className="section__head">
             <p className="eyebrow">What it comes with</p>
             <h2 className="section__title" id="kit-heading">
@@ -126,14 +174,15 @@ export default function Page() {
           <div className="kit">
             {KIT.map((item) => (
               <div className="kit__item" key={item.title}>
+                {ICONS[item.icon]}
                 <h3 className="kit__title">{item.title}</h3>
                 <p className="kit__copy">{item.copy}</p>
               </div>
             ))}
           </div>
-        </section>
+        </Reveal>
 
-        <section className="wrap section section--tint" aria-labelledby="capability-heading">
+        <Reveal as="section" className="wrap section section--tint" aria-labelledby="capability-heading">
           <div className="section__head">
             <p className="eyebrow">What it is good at</p>
             <h2 className="section__title" id="capability-heading">
@@ -158,9 +207,9 @@ export default function Page() {
               </p>
             </div>
           </div>
-        </section>
+        </Reveal>
 
-        <section className="wrap section section--tint" id="delivery" aria-labelledby="delivery-heading">
+        <Reveal as="section" className="wrap section section--tint" id="delivery" aria-labelledby="delivery-heading">
           <div className="section__head">
             <p className="eyebrow">How it is delivered</p>
             <h2 className="section__title" id="delivery-heading">
@@ -180,9 +229,9 @@ export default function Page() {
               </li>
             ))}
           </ol>
-        </section>
+        </Reveal>
 
-        <section className="wrap section" id="evidence" aria-labelledby="evidence-heading">
+        <Reveal as="section" className="wrap section" id="evidence" aria-labelledby="evidence-heading">
           <div className="section__head">
             <p className="eyebrow">See it work</p>
             <h2 className="section__title" id="evidence-heading">
@@ -197,9 +246,9 @@ export default function Page() {
           <div className="evidence">
             <Interview />
           </div>
-        </section>
+        </Reveal>
 
-        <section className="wrap section section--tint" id="pricing" aria-labelledby="terms-heading">
+        <Reveal as="section" className="wrap section section--tint" id="pricing" aria-labelledby="terms-heading">
           <div className="section__head">
             <p className="eyebrow">Pricing</p>
             <h2 className="section__title" id="terms-heading">
@@ -210,9 +259,9 @@ export default function Page() {
               not performing, we rebuild or replace it. No fixed deadline on that, no fine print.
             </p>
           </div>
-        </section>
+        </Reveal>
 
-        <section className="wrap section" id="faq" aria-labelledby="questions-heading">
+        <Reveal as="section" className="wrap section" id="faq" aria-labelledby="questions-heading">
           <div className="section__head">
             <p className="eyebrow">Questions</p>
             <h2 className="section__title" id="questions-heading">
@@ -232,9 +281,9 @@ export default function Page() {
               </details>
             ))}
           </div>
-        </section>
+        </Reveal>
 
-        <section className="close-band">
+        <Reveal as="section" className="close-band">
           <div className="wrap">
             <h2 className="close-band__title">
               The result is the point. The AI is just how we get there.
@@ -259,7 +308,7 @@ export default function Page() {
               Not a support queue. A real person reads every message.
             </p>
           </div>
-        </section>
+        </Reveal>
       </main>
 
       <footer className="wrap footer">

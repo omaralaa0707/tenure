@@ -17,10 +17,10 @@ const grotesk = Schibsted_Grotesk({
 export const metadata = {
   title: 'Tenure: AI Employment Firm',
   description:
-    'Tenure delivers the outcome: every inquiry answered before it goes cold. We design, build, and manage the AI employee that does it.',
+    'Tenure designs, builds, and manages AI employees: their own workstation, their own email, and access to your tools. It just never sleeps.',
   openGraph: {
     title: 'Tenure: AI Employment Firm',
-    description: 'Every inquiry answered before it goes cold. See it work.',
+    description: 'A real employee. It just never sleeps. See it work.',
     type: 'website',
   },
 }
@@ -35,7 +35,14 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={grotesk.variable}>
-      <body>{children}</body>
+      <body>
+        {/* Scroll-reveal hides .reveal content until IntersectionObserver
+            fires; without JS that would never happen, so show it plainly. */}
+        <noscript>
+          <style>{'.reveal { opacity: 1 !important; transform: none !important; }'}</style>
+        </noscript>
+        {children}
+      </body>
     </html>
   )
 }
