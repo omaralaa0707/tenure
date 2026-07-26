@@ -1,5 +1,6 @@
 import { Schibsted_Grotesk } from 'next/font/google'
 import './globals.css'
+import Backdrop from './Backdrop'
 
 // One typeface, not two. Schibsted Grotesk carries a newspaper's lineage
 // (built for a Scandinavian news publisher): direct, confident, built to
@@ -38,16 +39,10 @@ export default function RootLayout({ children }) {
         <noscript>
           <style>{'.reveal { opacity: 1 !important; transform: none !important; }'}</style>
         </noscript>
-        {/* Fixed, persistent backdrop standing in for Riopack's video: an
-            activity grid of staggered pulsing dots in the accent color.
-            Content floats over it in glass panels. */}
-        <div className="bg" aria-hidden="true">
-          <div className="bg__grid">
-            {Array.from({ length: 48 }, (_, i) => (
-              <span className="bg__dot" key={i} />
-            ))}
-          </div>
-        </div>
+        {/* Fixed, persistent backdrop standing in for Riopack's video: a
+            drifting activity field of dots in the accent color. Content
+            floats over it in glass panels that let it show through. */}
+        <Backdrop />
         <div className="page">{children}</div>
       </body>
     </html>

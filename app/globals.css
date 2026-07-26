@@ -9,14 +9,17 @@
      - default (:root): text/UI sitting directly on the dark backdrop
        (hero, close band, footer, the gaps between cards)
      - .glass: text/UI inside a floating glass panel (nav, every
-       content section, the live-demo panels) - overrides --ink,
-       --muted, --accent etc. to their on-light equivalents for
-       everything nested inside it
+       content section, the live-demo panels). The panel is a
+       translucent lift of the backdrop rather than a light card, so
+       the moving field stays visible through it; the tokens shift to
+       their on-glass values for everything nested inside
    ============================================================ */
 
 :root {
   --backdrop: oklch(0.14 0.018 152);
-  --glass-fill: oklch(0.97 0.006 152);
+  /* the tint of a glass panel before transparency; a lifted backdrop, so
+     panels read as the same dark material caught in more light */
+  --glass-fill: oklch(0.205 0.02 152);
 
   /* text/UI directly on --backdrop; measured 16.22:1 */
   --ink: oklch(0.93 0.01 152);
@@ -164,9 +167,11 @@ button {
    Fixed backdrop: a persistent dark layer behind the whole page,
    standing in for Riopack's video (no real footage of Tenure's own
    work exists to shoot). An activity grid of staggered, pulsing
-   dots plus one slow scan line, both in the accent color, echo
-   "always-on machine" without a literal screen recording. Fixed
-   positioning means it never scrolls; content passes over it.
+   dots in the accent color, drifting slowly and lit in ripples by
+   two crossing waves, echoes "always-on machine" without a literal
+   screen recording. Fixed positioning means it never scrolls; the
+   drift is what moves, so it never reads as chasing the viewport.
+   Drawn to a canvas in Backdrop.js. Content passes over it.
    ============================================================ */
 
 .bg {
@@ -178,55 +183,12 @@ button {
   pointer-events: none;
 }
 
-.bg__grid {
+.bg__canvas {
   position: absolute;
   inset: 0;
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(6, 1fr);
-  padding: clamp(1.5rem, 5vw, 4rem);
-}
-
-.bg__dot {
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: var(--accent);
-  justify-self: start;
-  align-self: start;
-  opacity: 0.14;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .bg__dot {
-    animation: dot-pulse 6.4s ease-in-out infinite;
-  }
-
-  .bg__dot:nth-child(4n + 1) {
-    animation-delay: 0s;
-  }
-
-  .bg__dot:nth-child(4n + 2) {
-    animation-delay: 1.6s;
-  }
-
-  .bg__dot:nth-child(4n + 3) {
-    animation-delay: 3.2s;
-  }
-
-  .bg__dot:nth-child(4n) {
-    animation-delay: 4.8s;
-  }
-}
-
-@keyframes dot-pulse {
-  0%,
-  100% {
-    opacity: 0.1;
-  }
-  50% {
-    opacity: 0.6;
-  }
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .page {
@@ -235,24 +197,26 @@ button {
 }
 
 /* ============================================================
-   Glass: the floating-panel treatment borrowed from Riopack. Sits
-   over the fixed dark backdrop; overrides the on-backdrop tokens
-   above to their on-light equivalents for everything nested inside.
+   Glass: the floating-panel treatment borrowed from Riopack. A
+   translucent lift of the backdrop rather than a light card, so the
+   drifting field reads through every panel. Tokens shift to their
+   on-glass values for everything nested inside; all pairs measured
+   against the composited panel background, not against --glass-fill.
    ============================================================ */
 
 .glass {
-  --ink: oklch(0.18 0.02 152);
+  --ink: oklch(0.95 0.01 152);
   --paper: var(--glass-fill);
-  --muted: oklch(0.42 0.02 152);
-  --rule: oklch(0.85 0.012 152);
-  --rule-strong: oklch(0.68 0.02 152);
+  --muted: oklch(0.72 0.02 152);
+  --rule: oklch(0.36 0.015 152);
+  --rule-strong: oklch(0.5 0.02 152);
   --edge: var(--muted);
-  --accent: oklch(0.36 0.085 152);
-  --on-accent: oklch(0.97 0.006 152);
-  background: color-mix(in oklch, var(--glass-fill) 92%, transparent);
-  backdrop-filter: blur(24px) saturate(1.5);
-  -webkit-backdrop-filter: blur(24px) saturate(1.5);
-  border: 1px solid color-mix(in oklch, white 45%, transparent);
+  --accent: oklch(0.8 0.13 152);
+  --on-accent: oklch(0.14 0.018 152);
+  background: color-mix(in oklch, var(--glass-fill) 55%, transparent);
+  backdrop-filter: blur(22px) saturate(1.35);
+  -webkit-backdrop-filter: blur(22px) saturate(1.35);
+  border: 1px solid color-mix(in oklch, oklch(0.78 0.05 152) 20%, transparent);
   color: var(--ink);
 }
 
@@ -314,8 +278,13 @@ button {
   position: sticky;
   top: 0;
   z-index: 20;
+  /* Denser than a content panel: nav text has to stay legible over whatever
+     card is passing underneath, and it cannot lean on backdrop-filter to do
+     it, since that silently degrades to nothing where the property is
+     unsupported. Opaque enough to work on its own; the blur is a bonus. */
+  background: color-mix(in oklch, var(--glass-fill) 95%, transparent);
   border: none;
-  border-bottom: 1px solid color-mix(in oklch, white 45%, transparent);
+  border-bottom: 1px solid color-mix(in oklch, oklch(0.78 0.05 152) 20%, transparent);
   border-radius: 0;
 }
 
@@ -413,10 +382,15 @@ button {
   border-color: var(--accent);
 }
 
+/* These two were written for a close band that had a solid --ink fill behind
+   them. That band became uncarded and now sits straight on the backdrop, so
+   --paper resolved to the backdrop itself: the solid button lost its fill and
+   the ghost button turned the same colour as what was behind it. Both are
+   defined against the backdrop instead, which is where they actually sit. */
 .btn--on-ink {
-  background: var(--paper);
-  border-color: var(--paper);
-  color: var(--ink);
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
 }
 
 .btn--on-ink:hover {
@@ -427,14 +401,14 @@ button {
 
 .btn--ghost-on-ink {
   background: transparent;
-  border-color: color-mix(in oklch, var(--paper) 40%, transparent);
-  color: var(--paper);
+  border-color: var(--edge);
+  color: var(--ink);
 }
 
 .btn--ghost-on-ink:hover {
-  border-color: var(--paper);
+  border-color: var(--accent);
   background: transparent;
-  color: var(--paper);
+  color: var(--accent);
 }
 
 /* ============================================================
