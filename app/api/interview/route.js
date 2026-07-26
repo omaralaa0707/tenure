@@ -7,6 +7,50 @@ export const maxDuration = 60
 
 const MAX_TURNS = 40
 const MAX_CHARS = 4000
+const MAX_BODY_BYTES = 256 * 1024
+
+// One browser tab holds one interview. The window and ceiling leave room for a
+// fast conversation and stop the endpoint from being used as a free model proxy.
+const RATE_WINDOW_MS = 60 * 1000
+const RATE_MAX_REQUESTS = 12
+
+// Per-process, so it limits per serverless instance rather than globally. Put a
+// shared store (or the platform's own limiter) in front of this before scaling out.
+const hits = new Map()
+
+function clientKey(request) {
+  const forwarded = request.headers.get('x-forwarded-for')
+  if (forwarded) return forwarded.split(',')[0].trim()
+  return request.headers.get('x-real-ip') ?? 'unknown'
+}
+
+function rateLimited(request) {
+  const now = Date.now()
+  const key = clientKey(request)
+
+  for (const [seen, stamps] of hits) {
+    const fresh = stamps.filter((stamp) => now - stamp < RATE_WINDOW_MS)
+    if (fresh.length) hits.set(seen, fresh)
+    else hits.delete(seen)
+  }
+
+  const recent = hits.get(key) ?? []
+  if (recent.length >= RATE_MAX_REQUESTS) return true
+  hits.set(key, [...recent, now])
+  return false
+}
+
+// The route is only ever called by the page it ships with, so anything carrying
+// a foreign Origin is a cross-site caller, not the interview.
+function sameOrigin(request) {
+  const origin = request.headers.get('origin')
+  if (!origin) return true
+  try {
+    return new URL(origin).host === request.headers.get('host')
+  } catch {
+    return false
+  }
+}
 
 const SYSTEM = `You are the Intake Coordinator, an AI employee built and managed by Tenure, an AI employment firm. Right now you are being interviewed by the owner of a founder-led service business who is deciding whether to hire you. This is a real evaluation, not a sales pitch.
 
@@ -51,6 +95,17 @@ export async function POST(request) {
     )
   }
 
+  if (!sameOrigin(request)) return badRequest('Cross-origin requests are not accepted.', 403)
+
+  if (rateLimited(request)) {
+    return badRequest('Too many messages in a row. Wait a moment and send that again.', 429)
+  }
+
+  const declared = Number(request.headers.get('content-length'))
+  if (Number.isFinite(declared) && declared > MAX_BODY_BYTES) {
+    return badRequest('That request is too large.', 413)
+  }
+
   let payload
   try {
     payload = await request.json()
@@ -64,14 +119,20 @@ export async function POST(request) {
     return badRequest('This interview has run long. Reload the page to start a new one.')
   }
 
+  // A transcript alternates, starts with the owner, and ends with the owner's
+  // latest message. Anything else is not a replay of an interview.
   const clean = []
-  for (const turn of turns) {
+  for (const [index, turn] of turns.entries()) {
     const role = turn?.role
     const content = typeof turn?.content === 'string' ? turn.content.trim() : ''
-    if (role !== 'user' && role !== 'assistant') return badRequest('Unrecognized turn.')
+    const expected = index % 2 === 0 ? 'user' : 'assistant'
+    if (role !== expected) return badRequest('Unrecognized turn.')
     if (!content) return badRequest('Turns cannot be empty.')
     if (content.length > MAX_CHARS) return badRequest('That message is too long.')
     clean.push({ role, content })
+  }
+  if (clean.length === 0 || clean[clean.length - 1].role !== 'user') {
+    return badRequest('Unrecognized turn.')
   }
 
   // Replay the opening as the first assistant turn so the model sees exactly the
