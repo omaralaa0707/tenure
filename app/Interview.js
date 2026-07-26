@@ -72,6 +72,16 @@ export default function Interview() {
       const controller = new AbortController()
       abortRef.current = controller
 
+      // Nothing answered the turn, so take it back out of the transcript and put
+      // it back in the box: an unanswered turn would otherwise sit there looking
+      // sent, and be replayed to the model on the next send.
+      const rollback = () => {
+        setTurns((prev) =>
+          prev.length && prev[prev.length - 1].role === 'user' ? prev.slice(0, -1) : prev,
+        )
+        setDraft((current) => current || message)
+      }
+
       try {
         const response = await fetch('/api/interview', {
           method: 'POST',
@@ -86,8 +96,14 @@ export default function Interview() {
         })
 
         if (!response.ok || !response.body) {
-          const data = await response.json().catch(() => null)
+          let data = null
+          try {
+            data = await response.json()
+          } catch (error) {
+            console.error('interview error response unreadable', response.status, error)
+          }
           setNotice(data?.error ?? 'The interview is unavailable right now.')
+          rollback()
           return
         }
 
@@ -101,15 +117,26 @@ export default function Interview() {
           raw += decoder.decode(value, { stream: true })
           setStreaming(stripFields(raw))
         }
+        raw += decoder.decode()
 
         const visible = stripFields(raw)
+        // An empty reply would go back to the server as an empty turn, which it
+        // rejects: the interview would be stuck for good. Drop it and say so.
+        if (!visible) {
+          console.error('interview returned an empty reply')
+          setNotice('The candidate did not answer. Send that again.')
+          rollback()
+          return
+        }
         setTurns((prev) => [...prev, { role: 'assistant', content: visible, raw }])
-        setStreaming('')
       } catch (error) {
-        if (error.name !== 'AbortError') {
+        if (error?.name !== 'AbortError') {
+          console.error('interview request failed', error)
           setNotice('The connection dropped. Send that again.')
+          rollback()
         }
       } finally {
+        setStreaming('')
         setBusy(false)
         abortRef.current = null
       }
