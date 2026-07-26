@@ -1,9 +1,9 @@
-// The offer-letter protocol, in one place. The model appends
-// `::field key=value` lines; the client reads them into the letter and strips
+// The results-panel protocol, in one place. The model appends
+// `::field key=value` lines; the client reads them into the panel and strips
 // them from the transcript; the system prompt lists the same keys. All three
-// read from OFFER_FIELDS so they cannot drift apart.
+// read from RESULT_FIELDS so they cannot drift apart.
 
-export const OFFER_FIELDS = [
+export const RESULT_FIELDS = [
   { key: 'firm', label: 'Employer', blank: 'the firm', prompt: "the firm's name" },
   {
     key: 'practice',
@@ -28,7 +28,9 @@ export const OFFER_FIELDS = [
 ]
 
 // For the system prompt: `firm (the firm's name), practice (...), ...`
-export const OFFER_KEY_SPEC = OFFER_FIELDS.map(({ key, prompt }) => `${key} (${prompt})`).join(', ')
+export const RESULT_KEY_SPEC = RESULT_FIELDS.map(({ key, prompt }) => `${key} (${prompt})`).join(
+  ', ',
+)
 
 const FIELD_LINE = /^::field\s+([a-z]+)\s*=\s*(.+)$/gim
 
@@ -51,16 +53,16 @@ export function stripFields(raw) {
     .trimEnd()
 }
 
-// The letter is the accumulation of every field the candidate has recorded.
-export function collectOffer(texts) {
+// The panel is the accumulation of every field the candidate has recorded.
+export function collectResults(texts) {
   return texts.reduce((acc, text) => ({ ...acc, ...readFields(text) }), {})
 }
 
-export function offerRows(offer) {
-  return OFFER_FIELDS.map(({ key, label, blank }) => ({
+export function resultRows(results) {
+  return RESULT_FIELDS.map(({ key, label, blank }) => ({
     key,
     label,
-    value: offer[key] ?? blank,
-    state: offer[key] ? 'filled' : 'blank',
+    value: results[key] ?? blank,
+    state: results[key] ? 'filled' : 'blank',
   }))
 }

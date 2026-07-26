@@ -163,6 +163,50 @@ button {
 }
 
 /* ============================================================
+   Repeated primitives — declared once, specialised below
+   ============================================================ */
+
+/* Uppercase micro-labels: eyebrows, kickers, bylines, field keys. */
+.eyebrow,
+.interview__role,
+.pill,
+.turn__who,
+.results__kicker,
+.results__key,
+.footer__heading {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Bordered panels sitting on the page surface. */
+.interview,
+.results {
+  border: 1px solid var(--rule-strong);
+  background: var(--surface);
+}
+
+/* Anything shaped like a control, whether it is a link or a button. */
+.btn,
+.composer__send {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap);
+  font: inherit;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.btn:active,
+.composer__send:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* ============================================================
    Layout primitives
    ============================================================ */
 
@@ -191,9 +235,6 @@ button {
 
 .eyebrow {
   font-size: var(--t-label);
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
   color: var(--accent);
 }
 
@@ -271,20 +312,12 @@ button {
    ============================================================ */
 
 .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: var(--tap);
-  font: inherit;
-  font-weight: 700;
   font-size: 0.9375rem;
-  line-height: 1;
   padding: 0.75rem 1.5rem;
   border: 1px solid var(--ink);
   background: var(--ink);
   color: var(--paper);
   text-decoration: none;
-  cursor: pointer;
   transition: background-color 200ms var(--ease-out-quart),
     border-color 200ms var(--ease-out-quart), color 200ms var(--ease-out-quart),
     transform 120ms var(--ease-out-quart);
@@ -294,10 +327,6 @@ button {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--on-accent);
-}
-
-.btn:active {
-  transform: translateY(1px);
 }
 
 .btn--sm {
@@ -458,8 +487,6 @@ button {
 .interview {
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--rule-strong);
-  background: var(--surface);
   min-height: 26rem;
 }
 
@@ -482,18 +509,11 @@ button {
 .interview__role {
   display: block;
   font-weight: 500;
-  font-size: 0.625rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
   margin-top: 2px;
 }
 
 .pill {
   font-size: 0.5625rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
   color: var(--accent);
   background: color-mix(in oklch, var(--accent) 12%, transparent);
   padding: 0.32rem 0.6rem;
@@ -520,10 +540,6 @@ button {
 
 .turn__who {
   font-size: 0.5625rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
 }
 
 .turn__text {
@@ -606,19 +622,11 @@ button {
 }
 
 .composer__send {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: var(--tap);
-  font: inherit;
-  font-weight: 700;
   font-size: 0.8125rem;
-  line-height: 1;
   padding: 0.5rem 1.1rem;
   border: 1px solid var(--edge);
   background: transparent;
   color: var(--ink);
-  cursor: pointer;
   white-space: nowrap;
   transition: color 200ms var(--ease-out-quart), border-color 200ms var(--ease-out-quart);
 }
@@ -626,10 +634,6 @@ button {
 .composer__send:hover:not(:disabled) {
   color: var(--accent);
   border-color: var(--accent);
-}
-
-.composer__send:active:not(:disabled) {
-  transform: translateY(1px);
 }
 
 .composer__send:disabled {
@@ -641,8 +645,6 @@ button {
 /* --- results panel: plain live summary, not an "offer letter" --- */
 
 .results {
-  border: 1px solid var(--rule-strong);
-  background: var(--surface);
   padding: clamp(var(--space-lg), 2.5vw, var(--space-xl));
   display: flex;
   flex-direction: column;
@@ -658,10 +660,6 @@ button {
 }
 
 .results__kicker {
-  font-size: 0.625rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
   color: var(--accent);
 }
 
@@ -688,11 +686,7 @@ button {
 }
 
 .results__key {
-  font-size: 0.625rem;
-  font-weight: 700;
   letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
 }
 
 .results__value {
@@ -871,11 +865,6 @@ button {
 }
 
 .footer__heading {
-  font-size: 0.625rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
   margin-bottom: var(--space-sm);
 }
 

@@ -1,4 +1,6 @@
 import Interview from './Interview'
+import SectionHead from './components/SectionHead'
+import { CONTACT_CTA, CONTACT_HREF, EVIDENCE_CTA, EVIDENCE_HREF, NAV_LINKS } from './site'
 
 const PROCESS = [
   {
@@ -51,13 +53,6 @@ const QUESTIONS = [
   },
 ]
 
-const NAV_LINKS = [
-  { href: '#delivery', label: 'How it is delivered' },
-  { href: '#evidence', label: 'See it work' },
-  { href: '#pricing', label: 'Pricing' },
-  { href: '#faq', label: 'FAQ' },
-]
-
 export default function Page() {
   return (
     <>
@@ -73,11 +68,8 @@ export default function Page() {
               </a>
             ))}
           </div>
-          <a
-            className="btn btn--sm"
-            href="mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20interested"
-          >
-            Talk to Omar
+          <a className="btn btn--sm" href={CONTACT_HREF}>
+            {CONTACT_CTA}
           </a>
         </div>
       </nav>
@@ -91,14 +83,11 @@ export default function Page() {
             business. You do not operate anything. We deliver the result.
           </p>
           <div className="hero__actions rise rise--3">
-            <a
-              className="btn"
-              href="mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20interested"
-            >
-              Talk to Omar
+            <a className="btn" href={CONTACT_HREF}>
+              {CONTACT_CTA}
             </a>
-            <a className="btn btn--quiet" href="#evidence">
-              See it work
+            <a className="btn btn--quiet" href={EVIDENCE_HREF}>
+              {EVIDENCE_CTA}
             </a>
           </div>
           <p className="hero__fine rise rise--3">
@@ -114,16 +103,12 @@ export default function Page() {
         </section>
 
         <section className="wrap section section--tint" id="delivery" aria-labelledby="delivery-heading">
-          <div className="section__head">
-            <p className="eyebrow">How it is delivered</p>
-            <h2 className="section__title" id="delivery-heading">
-              You do not operate anything. We deliver the result.
-            </h2>
-            <p className="section__lede">
-              This is a managed service, not software you configure. Four steps, and Tenure runs
-              all of them.
-            </p>
-          </div>
+          <SectionHead
+            id="delivery-heading"
+            eyebrow="How it is delivered"
+            title="You do not operate anything. We deliver the result."
+            lede="This is a managed service, not software you configure. Four steps, and Tenure runs all of them."
+          />
           <ol className="process">
             {PROCESS.map((step, index) => (
               <li className="process__item" key={step.title}>
@@ -136,28 +121,23 @@ export default function Page() {
         </section>
 
         <section className="wrap section" id="evidence" aria-labelledby="evidence-heading">
-          <div className="section__head">
-            <p className="eyebrow">See it work</p>
-            <h2 className="section__title" id="evidence-heading">
-              Watch it handle a real inquiry.
-            </h2>
-            <p className="section__lede">
-              This is the Intake Coordinator, one role Tenure has already built. Talk to it the
-              way a prospective client would, and watch it qualify, respond, and hand off.
-            </p>
-          </div>
+          <SectionHead
+            id="evidence-heading"
+            eyebrow="See it work"
+            title="Watch it handle a real inquiry."
+            lede="This is the Intake Coordinator, one role Tenure has already built. Talk to it the way a prospective client would, and watch it qualify, respond, and hand off."
+          />
           <div className="evidence">
             <Interview />
           </div>
         </section>
 
         <section className="wrap section section--tint" id="pricing" aria-labelledby="terms-heading">
-          <div className="section__head">
-            <p className="eyebrow">Guarantee and pricing</p>
-            <h2 className="section__title" id="terms-heading">
-              Priced like a hire, guaranteed like one.
-            </h2>
-          </div>
+          <SectionHead
+            id="terms-heading"
+            eyebrow="Guarantee and pricing"
+            title="Priced like a hire, guaranteed like one."
+          />
           <div className="terms">
             {TERMS.map(({ term, gloss }) => (
               <div key={term}>
@@ -169,12 +149,11 @@ export default function Page() {
         </section>
 
         <section className="wrap section" id="faq" aria-labelledby="questions-heading">
-          <div className="section__head">
-            <p className="eyebrow">Questions</p>
-            <h2 className="section__title" id="questions-heading">
-              Questions every owner asks.
-            </h2>
-          </div>
+          <SectionHead
+            id="questions-heading"
+            eyebrow="Questions"
+            title="Questions every owner asks."
+          />
           <div className="faq">
             {QUESTIONS.map(({ q, a }) => (
               <details className="faq__item" key={q}>
@@ -201,14 +180,11 @@ export default function Page() {
               will build the fix.
             </p>
             <div className="close-band__actions">
-              <a
-                className="btn btn--on-ink"
-                href="mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20interested"
-              >
-                Talk to Omar
+              <a className="btn btn--on-ink" href={CONTACT_HREF}>
+                {CONTACT_CTA}
               </a>
-              <a className="btn btn--ghost-on-ink" href="#evidence">
-                See it work
+              <a className="btn btn--ghost-on-ink" href={EVIDENCE_HREF}>
+                {EVIDENCE_CTA}
               </a>
             </div>
             <p className="close-band__fine">
@@ -240,9 +216,7 @@ export default function Page() {
           <div>
             <p className="footer__heading">Contact</p>
             <div className="footer__links">
-              <a href="mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20interested">
-                Talk to Omar
-              </a>
+              <a href={CONTACT_HREF}>{CONTACT_CTA}</a>
             </div>
           </div>
         </div>
