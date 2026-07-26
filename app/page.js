@@ -103,13 +103,13 @@ export default function Page() {
       <main>
         <section className="wrap hero">
           <div className="hero__copy">
-            <p className="eyebrow rise rise--1">AI Employment Firm</p>
+            <p className="eyebrow rise rise--1">Never lose another inquiry</p>
             <h1 className="hero__title rise rise--1">Meet your next hire.</h1>
             <p className="hero__standfirst rise rise--2">
-              Tenure designs, hires, trains, and manages AI employees built around whatever role
-              your business actually needs. Below is an example we&rsquo;ve already built, an
-              Intake Coordinator: it answers every inquiry in under a minute, and has a named
-              human here accountable for its work.
+              Every inquiry answered before it goes cold, day or night. Tenure designs, hires, and
+              manages the employee that does it, built around whatever role your business
+              actually needs. Below is an example we&rsquo;ve already built: an Intake
+              Coordinator, with a named human here accountable for it.
             </p>
             <div className="hero__actions rise rise--3">
               <a className="btn" href="#interview">
@@ -156,6 +156,11 @@ export default function Page() {
         </section>
 
         <section className="wrap section">
+          <p className="moment">
+            A lead fills out your contact form at 11:47pm on a Friday. Nobody sees it until
+            Monday morning, and by then they have already called someone else. That is the gap
+            this closes.
+          </p>
           <div className="stats">
             {STATS.map((stat) => (
               <div key={stat.label}>
@@ -312,6 +317,9 @@ export default function Page() {
                 Interview the candidate
               </a>
             </div>
+            <p className="cta-band__fine">
+              One founder, not a support queue. That email goes straight to Omar.
+            </p>
           </div>
         </section>
       </main>

@@ -507,6 +507,19 @@ button {
 }
 
 /* ============================================================
+   The moment: one concrete scene, ahead of the abstract stats
+   ============================================================ */
+
+.moment {
+  font-family: var(--serif);
+  font-size: clamp(1.1875rem, 2vw, 1.375rem);
+  line-height: 1.5;
+  max-width: 42ch;
+  margin-bottom: var(--space-xl);
+  text-wrap: pretty;
+}
+
+/* ============================================================
    Stat strip
    ============================================================ */
 
@@ -1085,6 +1098,12 @@ button {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-sm);
+}
+
+.cta-band__fine {
+  margin-top: var(--space-lg);
+  font-size: var(--t-sm);
+  opacity: 0.6;
 }
 
 /* ============================================================
