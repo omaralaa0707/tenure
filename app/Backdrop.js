@@ -11,6 +11,10 @@ import { useEffect, useRef } from 'react'
 // scan line was cut). On top of that, two long-period sine waves cross the
 // grid and raise the brightness of whatever they pass over, so activity
 // ripples through the dots instead of every dot pulsing on the same clock.
+//
+// Both are tuned to be seen. An earlier pass drifted at ~5px/s with an ~11s
+// wave cycle: measurably animating, but nothing you could perceive while
+// looking at it. Speed here is the whole point of the element.
 
 const SPACING = 46 // px between dots at 1x
 const DOT = 1.8
@@ -48,8 +52,8 @@ export default function Backdrop() {
       ctx.clearRect(0, 0, w, h)
 
       // the whole field drifts; modulo keeps it seamless
-      const dx = (t * 0.0055) % SPACING
-      const dy = (t * 0.0032) % SPACING
+      const dx = (t * 0.026) % SPACING
+      const dy = (t * 0.015) % SPACING
 
       for (let iy = 0; iy < rows; iy++) {
         for (let ix = 0; ix < cols; ix++) {
@@ -57,17 +61,17 @@ export default function Backdrop() {
           const y = iy * SPACING - SPACING + dy
 
           // two crossing waves; where they overlap, a dot is "busy"
-          const a = Math.sin(x * 0.0075 - t * 0.00055 + y * 0.0028)
-          const b = Math.sin(y * 0.0091 + t * 0.00037 - x * 0.0016)
+          const a = Math.sin(x * 0.0075 - t * 0.0024 + y * 0.0028)
+          const b = Math.sin(y * 0.0091 + t * 0.0017 - x * 0.0016)
           const wave = (a + b) * 0.5
 
           // bias low so most dots stay quiet and the lit ones read as events
-          const level = Math.pow(Math.max(0, wave * 0.5 + 0.5), 2.0)
-          const alpha = 0.09 + level * 0.5
+          const level = Math.pow(Math.max(0, wave * 0.5 + 0.5), 1.7)
+          const alpha = 0.07 + level * 0.78
 
           ctx.globalAlpha = alpha
           ctx.beginPath()
-          ctx.arc(x, y, DOT + level * 0.9, 0, Math.PI * 2)
+          ctx.arc(x, y, DOT + level * 1.7, 0, Math.PI * 2)
           ctx.fill()
         }
       }
