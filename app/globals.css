@@ -1,5 +1,5 @@
 /* ============================================================
-   Tenure. Token system, rebuilt around one persistent visual world:
+   Tenevue. Token system, rebuilt around one persistent visual world:
    a fixed dark backdrop behind everything, with content floating on
    top of it in glass panels. Deliberately single-theme (no separate
    light/dark palette) since the whole point is one atmospheric
@@ -165,7 +165,7 @@ button {
 
 /* ============================================================
    Fixed backdrop: a persistent dark layer behind the whole page,
-   standing in for Riopack's video (no real footage of Tenure's own
+   standing in for Riopack's video (no real footage of Tenevue's own
    work exists to shoot). A liquid-metal shader, tinted to the
    backdrop and accent colors so it reads as lit pine rather than
    chrome, carries the "always-on machine" idea without a literal

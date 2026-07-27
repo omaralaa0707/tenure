@@ -1,6 +1,6 @@
-# Tenure
+# Tenevue
 
-Marketing site and live candidate interview for **Tenure**, an AI employment firm that designs, hires, trains, and manages AI employees for US immigration law firms.
+Marketing site and live candidate interview for **Tenevue**, an AI employment firm that designs, hires, trains, and manages AI employees for US immigration law firms.
 
 One page. Its job is to get a managing attorney into the interview panel, where the candidate — an AI Intake Coordinator — asks about their firm and shows how it would run their intake. The offer of employment beside the transcript fills itself in as they talk.
 

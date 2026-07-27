@@ -16,11 +16,11 @@ const grotesk = Schibsted_Grotesk({
 })
 
 export const metadata = {
-  title: 'Tenure: AI Employment Firm',
+  title: 'Tenevue: AI Employment Firm',
   description:
-    'Tenure designs, builds, and manages AI employees: their own workstation, their own email, and access to your tools. It just never sleeps.',
+    'Tenevue designs, builds, and manages AI employees: their own workstation, their own email, and access to your tools. It just never sleeps.',
   openGraph: {
-    title: 'Tenure: AI Employment Firm',
+    title: 'Tenevue: AI Employment Firm',
     description: 'A real employee. It just never sleeps. See it work.',
     type: 'website',
   },

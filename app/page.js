@@ -55,7 +55,7 @@ const PROCESS = [
   },
   {
     title: 'It goes to work',
-    copy: 'Its own workstation, its own email, live from day one. A named person at Tenure is accountable for how it performs.',
+    copy: 'Its own workstation, its own email, live from day one. A named person at Tenevue is accountable for how it performs.',
   },
   {
     title: 'You see the results',
@@ -66,7 +66,7 @@ const PROCESS = [
 const QUESTIONS = [
   {
     q: 'Do I have to set anything up?',
-    a: 'No. You tell us what needs doing, and Tenure designs and builds the employee. You are not configuring software or writing prompts. That is the job we do.',
+    a: 'No. You tell us what needs doing, and Tenevue designs and builds the employee. You are not configuring software or writing prompts. That is the job we do.',
   },
   {
     q: 'Isn’t this just ChatGPT with extra steps?',
@@ -99,7 +99,7 @@ export default function Page() {
       <nav className="nav glass">
         <div className="wrap nav__row">
           <a className="nav__brand" href="/">
-            Tenure
+            Tenevue
           </a>
           <div className="nav__links">
             {NAV_LINKS.map((link) => (
@@ -110,7 +110,7 @@ export default function Page() {
           </div>
           <a
             className="btn btn--sm"
-            href="mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20interested"
+            href="mailto:omarmorsi07@gmail.com?subject=Tenevue%3A%20interested"
           >
             Talk to the team
           </a>
@@ -122,14 +122,14 @@ export default function Page() {
           <div className="hero__copy">
             <h1 className="hero__title rise rise--1">A real employee. It just never sleeps.</h1>
             <p className="hero__standfirst rise rise--2">
-              Tenure designs, builds, and manages AI employees for your business. Each one gets
+              Tenevue designs, builds, and manages AI employees for your business. Each one gets
               its own workstation, a company email, and the same access to your tools as anyone
               on your team, minus the weekends, the sick days, and the slow mornings.
             </p>
             <div className="hero__actions rise rise--3">
               <a
                 className="btn"
-                href="mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20interested"
+                href="mailto:omarmorsi07@gmail.com?subject=Tenevue%3A%20interested"
               >
                 Talk to the team
               </a>
@@ -138,7 +138,7 @@ export default function Page() {
               </a>
             </div>
             <p className="hero__fine rise rise--3">
-              A named person at Tenure is accountable for it. Always.
+              A named person at Tenevue is accountable for it. Always.
             </p>
           </div>
 
@@ -222,7 +222,7 @@ export default function Page() {
                 You do not operate anything. We deliver the result.
               </h2>
               <p className="section__lede">
-                This is a managed hire, not software you configure. Four steps, and Tenure runs all
+                This is a managed hire, not software you configure. Four steps, and Tenevue runs all
                 of them.
               </p>
             </div>
@@ -246,7 +246,7 @@ export default function Page() {
                 Watch it handle a real inquiry.
               </h2>
               <p className="section__lede">
-                This is the Intake Coordinator, one AI employee Tenure has already built: exactly
+                This is the Intake Coordinator, one AI employee Tenevue has already built: exactly
                 the kind of fast, repetitive, junior work described above. Talk to it the way a
                 prospective client would, and watch it qualify, respond, and hand off.
               </p>
@@ -310,7 +310,7 @@ export default function Page() {
             <div className="close-band__actions">
               <a
                 className="btn btn--on-ink"
-                href="mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20interested"
+                href="mailto:omarmorsi07@gmail.com?subject=Tenevue%3A%20interested"
               >
                 Talk to the team
               </a>
@@ -328,7 +328,7 @@ export default function Page() {
       <footer className="wrap footer">
         <div className="footer__grid">
           <div>
-            <p className="footer__mark">Tenure</p>
+            <p className="footer__mark">Tenevue</p>
             <p className="footer__blurb">
               An AI employment firm for founder-led service businesses. We deliver the outcome;
               the AI is just how.
@@ -347,15 +347,15 @@ export default function Page() {
           <div>
             <p className="footer__heading">Contact</p>
             <div className="footer__links">
-              <a href="mailto:omarmorsi07@gmail.com?subject=Tenure%3A%20interested">
+              <a href="mailto:omarmorsi07@gmail.com?subject=Tenevue%3A%20interested">
                 Talk to the team
               </a>
             </div>
           </div>
         </div>
         <div className="footer__base">
-          <p>Tenure, AI employment firm</p>
-          <p>&copy; 2026 Tenure</p>
+          <p>Tenevue, AI employment firm</p>
+          <p>&copy; 2026 Tenevue</p>
         </div>
       </footer>
     </>

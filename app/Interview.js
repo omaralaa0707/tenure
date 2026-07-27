@@ -130,7 +130,7 @@ export default function Interview() {
         <header className="interview__head">
           <p className="interview__who">
             Intake Coordinator
-            <span className="interview__role">AI employee · Tenure</span>
+            <span className="interview__role">AI employee · Tenevue</span>
           </p>
           <span className="pulse" aria-hidden="true">
             <span className="pulse__dot" />
@@ -217,7 +217,7 @@ export default function Interview() {
         </dl>
 
         <p className="u-sm u-muted">
-          Managed by a named person at Tenure. Rebuilt or replaced if it is not performing.
+          Managed by a named person at Tenevue. Rebuilt or replaced if it is not performing.
         </p>
       </aside>
     </>
