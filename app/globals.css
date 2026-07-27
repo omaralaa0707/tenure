@@ -166,12 +166,12 @@ button {
 /* ============================================================
    Fixed backdrop: a persistent dark layer behind the whole page,
    standing in for Riopack's video (no real footage of Tenure's own
-   work exists to shoot). An activity grid of staggered, pulsing
-   dots in the accent color, drifting slowly and lit in ripples by
-   two crossing waves, echoes "always-on machine" without a literal
-   screen recording. Fixed positioning means it never scrolls; the
-   drift is what moves, so it never reads as chasing the viewport.
-   Drawn to a canvas in Backdrop.js. Content passes over it.
+   work exists to shoot). A liquid-metal shader, tinted to the
+   backdrop and accent colors so it reads as lit pine rather than
+   chrome, carries the "always-on machine" idea without a literal
+   screen recording. Fixed positioning means it never scrolls, and
+   the movement is inside the surface, so it never reads as chasing
+   the viewport. Rendered in Backdrop.js. Content passes over it.
    ============================================================ */
 
 .bg {
@@ -183,12 +183,56 @@ button {
   pointer-events: none;
 }
 
-.bg__canvas {
+.bg__shader {
+  position: absolute !important;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  /* The shader is by far the loudest thing on the page. Text sits over it in
+     places with nothing but glass in between, so it is held well down; the
+     ceiling here is what keeps body copy legible at every phase of the
+     animation. Checked by sampling rendered pixels, not computed styles. */
+  opacity: 0.24;
+}
+
+.bg::after {
+  content: "";
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
+  background: var(--backdrop);
+  opacity: 0.34;
+  pointer-events: none;
+}
+
+.bg__shader canvas {
   display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ------------------------------------------------------------
+   Wave band: one moving light behind the closing statement.
+   Scoped to the section, never fixed, so it does not compete
+   with the backdrop shader for the same pixels.
+   ------------------------------------------------------------ */
+
+.close-band {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.wavefield {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+.close-band > .wrap {
+  position: relative;
 }
 
 .page {

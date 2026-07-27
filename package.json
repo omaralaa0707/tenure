@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.115.0",
+    "@paper-design/shaders-react": "^0.0.77",
     "next": "^16.2.12",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "three": "^0.185.1"
   }
 }

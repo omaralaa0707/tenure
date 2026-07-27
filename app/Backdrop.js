@@ -1,111 +1,61 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useState } from 'react'
+import { LiquidMetal, liquidMetalPresets } from '@paper-design/shaders-react'
 
-// The fixed activity field behind the whole page. Replaces the earlier 48
-// static spans: a canvas can carry a far denser grid and actually move it.
+// The fixed field behind the whole page. Replaces the dot grid, which read as
+// a static texture no matter how far its speed was pushed.
 //
-// Two motions, both slow and both untied to scroll. The field drifts
-// diagonally and wraps, so it reads as one continuous surface passing behind
-// the page rather than an element chasing the viewport (the reason the old
-// scan line was cut). On top of that, two long-period sine waves cross the
-// grid and raise the brightness of whatever they pass over, so activity
-// ripples through the dots instead of every dot pulsing on the same clock.
+// Preset 2 ("Backdrop") ships grey with a white tint and a red/blue chromatic
+// split. All of that is overridden: the surface is the page backdrop colour
+// and the tint is the accent green, so it reads as the same pine material the
+// rest of the site is made of, lit and moving, rather than as chrome.
 //
-// Both are tuned to be seen. An earlier pass drifted at ~5px/s with an ~11s
-// wave cycle: measurably animating, but nothing you could perceive while
-// looking at it. Speed here is the whole point of the element.
+// The shader is the loud element here, so it is deliberately dialled down:
+// slow speed, low contour, wide repetition. Content sits on top of it in
+// glass panels and has to stay readable over every phase of the animation.
 
-const SPACING = 46 // px between dots at 1x
-const DOT = 1.8
+const BASE = liquidMetalPresets[2].params
 
 export default function Backdrop() {
-  const ref = useRef(null)
+  const [reduced, setReduced] = useState(false)
 
   useEffect(() => {
-    const canvas = ref.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-    let w = 0
-    let h = 0
-    let cols = 0
-    let rows = 0
-    let raf = 0
-
-    const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
-      w = window.innerWidth
-      h = window.innerHeight
-      canvas.width = Math.floor(w * dpr)
-      canvas.height = Math.floor(h * dpr)
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      // one row and column of overscan so wrapped dots enter from off-screen
-      cols = Math.ceil(w / SPACING) + 2
-      rows = Math.ceil(h / SPACING) + 2
-    }
-
-    const draw = (t) => {
-      ctx.clearRect(0, 0, w, h)
-
-      // the whole field drifts; modulo keeps it seamless
-      const dx = (t * 0.026) % SPACING
-      const dy = (t * 0.015) % SPACING
-
-      for (let iy = 0; iy < rows; iy++) {
-        for (let ix = 0; ix < cols; ix++) {
-          const x = ix * SPACING - SPACING + dx
-          const y = iy * SPACING - SPACING + dy
-
-          // two crossing waves; where they overlap, a dot is "busy"
-          const a = Math.sin(x * 0.0075 - t * 0.0024 + y * 0.0028)
-          const b = Math.sin(y * 0.0091 + t * 0.0017 - x * 0.0016)
-          const wave = (a + b) * 0.5
-
-          // bias low so most dots stay quiet and the lit ones read as events
-          const level = Math.pow(Math.max(0, wave * 0.5 + 0.5), 1.7)
-          const alpha = 0.07 + level * 0.78
-
-          ctx.globalAlpha = alpha
-          ctx.beginPath()
-          ctx.arc(x, y, DOT + level * 1.7, 0, Math.PI * 2)
-          ctx.fill()
-        }
-      }
-      ctx.globalAlpha = 1
-    }
-
-    const loop = (now) => {
-      raf = requestAnimationFrame(loop)
-      draw(now)
-    }
-
-    // accent green, matching --accent on the backdrop
-    ctx.fillStyle = 'oklch(0.70 0.11 152)'
-
-    resize()
-    const onResize = () => {
-      resize()
-      ctx.fillStyle = 'oklch(0.70 0.11 152)'
-      if (reduced) draw(0)
-    }
-    window.addEventListener('resize', onResize)
-
-    if (reduced) draw(0)
-    else raf = requestAnimationFrame(loop)
-
-    return () => {
-      cancelAnimationFrame(raf)
-      window.removeEventListener('resize', onResize)
-    }
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setReduced(mq.matches)
+    const onChange = (e) => setReduced(e.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
   }, [])
 
   return (
     <div className="bg" aria-hidden="true">
-      <canvas ref={ref} className="bg__canvas" />
+      <LiquidMetal
+        {...BASE}
+        colorBack="#040B06"
+        colorTint="#2D583A"
+        // one wide sweep rather than a busy pattern; this sits behind every
+        // section of a long page, not just the hero
+        scale={1.35}
+        repetition={1.15}
+        softness={0.78}
+        distortion={0.14}
+        contour={0.12}
+        shiftRed={0}
+        shiftBlue={0}
+        angle={104}
+        // frozen rather than unmounted under reduced motion, so the surface
+        // still reads as the same material instead of going flat black
+        speed={reduced ? 0 : 0.42}
+        // This is a full-viewport fragment shader, so cost scales with pixels
+        // drawn, and at DPR 2 it was rasterising ~5.2M of them per frame. The
+        // surface is a soft blur with no fine detail, so it is capped well
+        // below native and stretched: visually identical, a fraction of the
+        // fill rate. Raise this only with a frame-rate measurement in hand.
+        maxPixelCount={960 * 540}
+        minPixelRatio={1}
+        className="bg__shader"
+      />
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import Interview from './Interview'
 import Reveal from './Reveal'
+import WaveField from './WaveField'
 
 const ICONS = {
   workstation: (
@@ -296,6 +297,7 @@ export default function Page() {
         </Reveal>
 
         <Reveal as="section" className="close-band">
+          <WaveField />
           <div className="wrap">
             <h2 className="close-band__title">
               The result is the point. The AI is just how we get there.
