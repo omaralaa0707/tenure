@@ -108,7 +108,7 @@ export default function Page() {
           </div>
           <a
             className="btn btn--sm"
-            href="mailto:omarmorsi07@gmail.com?subject=Tenevue%3A%20interested"
+            href="mailto:omar@tenevue.com?subject=Tenevue%3A%20interested"
           >
             Talk to the team
           </a>
@@ -127,7 +127,7 @@ export default function Page() {
             <div className="hero__actions rise rise--3">
               <a
                 className="btn"
-                href="mailto:omarmorsi07@gmail.com?subject=Tenevue%3A%20interested"
+                href="mailto:omar@tenevue.com?subject=Tenevue%3A%20interested"
               >
                 Talk to the team
               </a>
@@ -286,7 +286,7 @@ export default function Page() {
             <div className="close-band__actions">
               <a
                 className="btn btn--on-ink"
-                href="mailto:omarmorsi07@gmail.com?subject=Tenevue%3A%20interested"
+                href="mailto:omar@tenevue.com?subject=Tenevue%3A%20interested"
               >
                 Talk to the team
               </a>
@@ -320,7 +320,7 @@ export default function Page() {
           <div>
             <p className="footer__heading">Contact</p>
             <div className="footer__links">
-              <a href="mailto:omarmorsi07@gmail.com?subject=Tenevue%3A%20interested">
+              <a href="mailto:omar@tenevue.com?subject=Tenevue%3A%20interested">
                 Talk to the team
               </a>
             </div>
