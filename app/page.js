@@ -1,4 +1,3 @@
-import Interview from './Interview'
 import Reveal from './Reveal'
 import WaveField from './WaveField'
 
@@ -88,7 +87,6 @@ const QUESTIONS = [
 
 const NAV_LINKS = [
   { href: '#delivery', label: 'How it is delivered' },
-  { href: '#evidence', label: 'See it work' },
   { href: '#pricing', label: 'Pricing' },
   { href: '#faq', label: 'FAQ' },
 ]
@@ -132,9 +130,6 @@ export default function Page() {
                 href="mailto:omarmorsi07@gmail.com?subject=Tenevue%3A%20interested"
               >
                 Talk to the team
-              </a>
-              <a className="btn btn--quiet" href="#evidence">
-                See it work
               </a>
             </div>
             <p className="hero__fine rise rise--3">
@@ -238,25 +233,6 @@ export default function Page() {
           </div>
         </Reveal>
 
-        <Reveal as="section" className="wrap section" id="evidence" aria-labelledby="evidence-heading">
-          <div className="glass glass--card">
-            <div className="section__head">
-              <p className="eyebrow">See it work</p>
-              <h2 className="section__title" id="evidence-heading">
-                Watch it handle a real inquiry.
-              </h2>
-              <p className="section__lede">
-                This is the Intake Coordinator, one AI employee Tenevue has already built: exactly
-                the kind of fast, repetitive, junior work described above. Talk to it the way a
-                prospective client would, and watch it qualify, respond, and hand off.
-              </p>
-            </div>
-          </div>
-          <div className="evidence">
-            <Interview />
-          </div>
-        </Reveal>
-
         <Reveal as="section" className="wrap section" id="pricing" aria-labelledby="terms-heading">
           <div className="glass glass--card">
             <div className="section__head">
@@ -313,9 +289,6 @@ export default function Page() {
                 href="mailto:omarmorsi07@gmail.com?subject=Tenevue%3A%20interested"
               >
                 Talk to the team
-              </a>
-              <a className="btn btn--ghost-on-ink" href="#evidence">
-                See it work
               </a>
             </div>
             <p className="close-band__fine">

@@ -9,7 +9,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.115.0",
     "@paper-design/shaders-react": "^0.0.77",
     "next": "^16.2.12",
     "react": "^19.2.8",
