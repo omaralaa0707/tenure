@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tenevue: How It Works</title>
+<style>
+  :root {
+    --bg: oklch(15% 0.018 152);
+    --bg-vignette: oklch(19% 0.026 152);
+    --card: oklch(23% 0.024 152 / 0.55);
+    --card-border: oklch(48% 0.03 152 / 0.28);
+    --border: oklch(40% 0.025 152 / 0.35);
+    --text: oklch(93% 0.008 152);
+    --text-dim: oklch(75% 0.014 152);
+    --text-mute: oklch(58% 0.016 152);
+    --accent: oklch(76% 0.11 152);
+    --accent-dim: oklch(76% 0.11 152 / 0.14);
+    --gold: oklch(80% 0.13 85);
+    --font-body: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(ellipse 1100px 600px at 50% -10%, var(--bg-vignette), transparent 60%),
+      var(--bg);
+    display: flex;
+    flex-direction: column;
+    padding: 3rem 3.5rem 2.5rem;
+  }
+
+  header {
+    margin-bottom: 2.75rem;
+  }
+
+  .eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+    margin: 0 0 0.6rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  .lede {
+    font-size: 1.02rem;
+    color: var(--text-dim);
+    max-width: 40rem;
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  /* ---------- flow ---------- */
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    align-items: stretch;
+    margin-bottom: 2rem;
+  }
+
+  .step {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 0.95rem;
+    padding: 1.5rem 1.4rem 1.6rem;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    margin-right: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .step:last-child { margin-right: 0; }
+
+  .step::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -1.6rem;
+    width: 1.6rem;
+    height: 1px;
+    background: var(--border);
+    transform: translateY(-50%);
+  }
+
+  .step:last-child::after { display: none; }
+
+  .step::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -0.85rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-top: 1px solid var(--text-mute);
+    border-right: 1px solid var(--text-mute);
+    transform: translateY(-50%) rotate(45deg);
+  }
+
+  .step:last-child::before { display: none; }
+
+  .step-num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+  }
+
+  .step-title {
+    font-size: 1.02rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0;
+  }
+
+  .step-tag {
+    display: inline-block;
+    align-self: flex-start;
+    font-size: 0.66rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.16rem 0.5rem;
+    border-radius: 0.35rem;
+    background: var(--accent-dim);
+    color: var(--accent);
+  }
+
+  .step-tag.pay {
+    background: oklch(80% 0.13 85 / 0.16);
+    color: var(--gold);
+  }
+
+  .step-desc {
+    font-size: 0.83rem;
+    line-height: 1.55;
+    color: var(--text-dim);
+    margin: 0;
+  }
+
+  /* ---------- lower row ---------- */
+  .lower {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 1.25rem;
+    margin-top: auto;
+  }
+
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 0.95rem;
+    padding: 1.5rem 1.7rem;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .panel h2 {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+    margin: 0 0 0.9rem;
+    font-weight: 600;
+  }
+
+  .comes-with {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .comes-with .item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .comes-with .item-label {
+    font-size: 0.86rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .comes-with .item-desc {
+    font-size: 0.78rem;
+    color: var(--text-mute);
+    line-height: 1.45;
+  }
+
+  .guarantee-text {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--text-dim);
+    margin: 0;
+  }
+
+  .guarantee-text strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  footer {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 0.8rem;
+    color: var(--text-mute);
+    border-top: 1px solid var(--border);
+    padding-top: 1.1rem;
+  }
+
+  footer strong {
+    color: var(--text-dim);
+    font-weight: 500;
+  }
+
+  @media (max-width: 1080px) {
+    .flow { grid-template-columns: 1fr; }
+    .step { margin-right: 0; margin-bottom: 1.2rem; }
+    .step::after, .step::before { display: none; }
+    .lower { grid-template-columns: 1fr; }
+    .comes-with { grid-template-columns: 1fr; }
+    body { padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+  <header>
+    <p class="eyebrow">Tenevue</p>
+    <h1>How a Tenevue hire works</h1>
+    <p class="lede">One structure, from first call to ongoing management. The scope is custom to your team; this part is not.</p>
+  </header>
+
+  <div class="flow">
+    <div class="step">
+      <span class="step-num">01</span>
+      <span class="step-tag">Free</span>
+      <h3 class="step-title">Audit</h3>
+      <p class="step-desc">A short discovery call. We learn exactly what is eating your team's time, no build required to find out.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">02</span>
+      <span class="step-tag">Free, 48 hours</span>
+      <h3 class="step-title">Design and build</h3>
+      <p class="step-desc">An AI employee built for those exact tasks. Nothing generic, nothing off the shelf.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">03</span>
+      <span class="step-tag">Trial period</span>
+      <h3 class="step-title">It goes to work</h3>
+      <p class="step-desc">Its own workstation and email, live from day one, working your real accounts before you pay for it.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">04</span>
+      <span class="step-tag pay">Setup + monthly fee</span>
+      <h3 class="step-title">You hire it</h3>
+      <p class="step-desc">Priced against what the work is worth to your team, not per seat and not per message.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">05</span>
+      <span class="step-tag">Ongoing</span>
+      <h3 class="step-title">Managed, every week</h3>
+      <p class="step-desc">A named person at Tenevue is accountable for it. A written report of what it did lands every week.</p>
+    </div>
+  </div>
+
+  <div class="lower">
+    <div class="panel">
+      <h2>What it comes with</h2>
+      <div class="comes-with">
+        <div class="item">
+          <span class="item-label">Its own workstation</span>
+          <span class="item-desc">Same setup as anyone else on your team.</span>
+        </div>
+        <div class="item">
+          <span class="item-label">Its own email</span>
+          <span class="item-desc">A separate identity from yours or your clients'.</span>
+        </div>
+        <div class="item">
+          <span class="item-label">Access to your tools</span>
+          <span class="item-desc">Connected once at setup, revocable any time.</span>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>The guarantee</h2>
+      <p class="guarantee-text">
+        <strong>If it is not performing, we rebuild or replace it.</strong> No fixed deadline on that, no fine print.
+        The result is the point; the AI is just how we get there.
+      </p>
+    </div>
+  </div>
+
+  <footer>
+    <span>tenevue.com</span>
+    <span><strong>Your best hire.</strong></span>
+  </footer>
+
+</body>
+</html>

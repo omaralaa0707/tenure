@@ -1,0 +1,1182 @@
+<title>Marlowe &amp; Finch Creative: AI Account Coordinator</title>
+<style>
+  :root {
+    --bg: oklch(15% 0.018 152);
+    --bg-vignette: oklch(19% 0.026 152);
+    --rail: oklch(12.5% 0.016 152);
+    --card: oklch(23% 0.024 152 / 0.55);
+    --card-solid: oklch(23% 0.024 152);
+    --card-border: oklch(48% 0.03 152 / 0.28);
+    --border: oklch(40% 0.025 152 / 0.35);
+    --text: oklch(93% 0.008 152);
+    --text-dim: oklch(75% 0.014 152);
+    --text-mute: oklch(58% 0.016 152);
+    --accent: oklch(76% 0.11 152);
+    --accent-dim: oklch(76% 0.11 152 / 0.14);
+    --good: oklch(74% 0.1 155);
+    --warn: oklch(80% 0.13 85);
+    --crit: oklch(68% 0.14 25);
+    --font-body: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background:
+      radial-gradient(ellipse 900px 500px at 78% -8%, var(--bg-vignette), transparent 60%),
+      var(--bg);
+    min-height: 100vh;
+  }
+
+  a { color: inherit; }
+
+  ::selection { background: var(--accent-dim); color: var(--text); }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  .shell {
+    display: grid;
+    grid-template-columns: 15rem 1fr;
+    min-height: 100vh;
+  }
+
+  /* ---------- left rail ---------- */
+  .rail {
+    background: var(--rail);
+    border-right: 1px solid var(--border);
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.75rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+
+  .rail-mark {
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    color: var(--text);
+  }
+
+  .rail-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .rail-label {
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+    font-weight: 600;
+  }
+
+  .rail-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .rail-btn {
+    all: unset;
+    cursor: pointer;
+    padding: 0.55rem 0.7rem;
+    border-radius: 0.5rem;
+    font-size: 0.86rem;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 200ms ease-out, color 200ms ease-out;
+  }
+
+  .rail-btn:hover { background: oklch(30% 0.02 152 / 0.4); color: var(--text); }
+
+  .rail-btn[aria-selected="true"] {
+    background: var(--accent-dim);
+    color: var(--text);
+  }
+
+  .rail-btn .count {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.74rem;
+    color: var(--text-mute);
+  }
+
+  .rail-footer {
+    margin-top: auto;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.72rem;
+    color: var(--text-mute);
+    line-height: 1.6;
+  }
+
+  .rail-footer strong { color: var(--text-dim); font-weight: 500; }
+
+  /* ---------- main ---------- */
+  main {
+    padding: 2.75rem 3.25rem 5rem;
+    max-width: 62rem;
+  }
+
+  header.page-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+    margin: 0 0 0.6rem;
+  }
+
+  h1 {
+    font-size: 1.7rem;
+    font-weight: 600;
+    margin: 0 0 0.35rem;
+    text-wrap: balance;
+    letter-spacing: -0.01em;
+  }
+
+  .role-line {
+    color: var(--text-dim);
+    font-size: 0.92rem;
+    margin: 0;
+  }
+
+  .status-block {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+  }
+
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.32rem 0.75rem 0.32rem 0.6rem;
+    border-radius: 999px;
+    background: oklch(30% 0.05 152 / 0.35);
+    border: 1px solid var(--card-border);
+    font-size: 0.76rem;
+    color: var(--text);
+  }
+
+  .status-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--good);
+    box-shadow: 0 0 0 3px oklch(74% 0.1 155 / 0.18);
+  }
+
+  .tenure {
+    font-size: 0.74rem;
+    color: var(--text-mute);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- stat row ---------- */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.9rem;
+    margin-bottom: 2.75rem;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 0.85rem;
+    padding: 1.1rem 1.2rem;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .stat-value {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 1.55rem;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+    color: var(--text-mute);
+    margin-top: 0.3rem;
+    letter-spacing: 0.02em;
+  }
+
+  /* ---------- tab panels ---------- */
+  .panel { display: none; }
+  .panel[data-active="true"] { display: block; }
+
+  .panel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 1.1rem;
+  }
+
+  .panel-head h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .panel-head .sub {
+    font-size: 0.78rem;
+    color: var(--text-mute);
+  }
+
+  /* activity feed */
+  .feed {
+    list-style: none;
+    margin: 0 0 2rem;
+    padding: 0;
+    border-left: 1px solid var(--border);
+  }
+
+  .feed-item {
+    position: relative;
+    padding: 0 0 1.35rem 1.4rem;
+  }
+
+  .feed-item::before {
+    content: "";
+    position: absolute;
+    left: -0.315rem;
+    top: 0.35rem;
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+
+  .feed-time {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-mute);
+    font-variant-numeric: tabular-nums;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  .feed-text {
+    font-size: 0.9rem;
+    color: var(--text);
+    line-height: 1.5;
+    max-width: 46rem;
+  }
+
+  .feed-text .tag {
+    display: inline-block;
+    margin-left: 0.5rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.12rem 0.45rem;
+    border-radius: 0.3rem;
+    vertical-align: middle;
+    position: relative;
+    top: -0.05em;
+  }
+
+  .tag.warn { background: oklch(80% 0.13 85 / 0.16); color: var(--warn); }
+  .tag.good { background: oklch(74% 0.1 155 / 0.16); color: var(--good); }
+
+  /* weekly report card */
+  .report-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 0.9rem;
+    padding: 1.5rem 1.7rem;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .report-card .eyebrow { margin-bottom: 0.5rem; }
+
+  .report-card p {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--text-dim);
+    max-width: 42rem;
+    margin: 0 0 0.9rem;
+  }
+
+  .report-sign {
+    font-size: 0.78rem;
+    color: var(--text-mute);
+  }
+
+  /* task board */
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .col-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+    padding: 0 0.15rem;
+  }
+
+  .col-head .stripe {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 2px;
+    margin-right: 0.4rem;
+  }
+
+  .col-head .head-left { display: flex; align-items: center; }
+
+  .stripe.waiting { background: var(--warn); }
+  .stripe.progress { background: var(--accent); }
+  .stripe.done { background: var(--good); }
+
+  .task-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 0.7rem;
+    padding: 0.85rem 0.95rem;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .task-client {
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+
+  .task-desc {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    line-height: 1.45;
+  }
+
+  .task-meta {
+    margin-top: 0.55rem;
+    font-size: 0.68rem;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    color: var(--text-mute);
+  }
+
+  /* ---------- inbox ---------- */
+  .inbox-address {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-mute);
+  }
+
+  .inbox-layout {
+    display: grid;
+    grid-template-columns: 18.5rem 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .mail-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .mail-item { all: unset; }
+
+  .mail-row {
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    padding: 0.7rem 0.85rem;
+    border-radius: 0.65rem;
+    border: 1px solid transparent;
+    transition: background 200ms ease-out, border-color 200ms ease-out;
+  }
+
+  .mail-row:hover { background: oklch(30% 0.02 152 / 0.35); }
+
+  .mail-item[aria-current="true"] .mail-row {
+    background: var(--card);
+    border-color: var(--card-border);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .mail-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .mail-who {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .mail-when {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    color: var(--text-mute);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .mail-subject {
+    font-size: 0.79rem;
+    color: var(--text-dim);
+    margin-bottom: 0.15rem;
+  }
+
+  .mail-snippet {
+    font-size: 0.75rem;
+    color: var(--text-mute);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mail-dir {
+    display: inline-block;
+    font-size: 0.62rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+    margin-right: 0.4rem;
+  }
+
+  .reading-pane {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 0.9rem;
+    padding: 1.6rem 1.8rem;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .rp-subject {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 0 0 0.9rem;
+    text-wrap: balance;
+  }
+
+  .rp-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-size: 0.78rem;
+    color: var(--text-mute);
+    padding-bottom: 1rem;
+    margin-bottom: 1.2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .rp-meta strong { color: var(--text-dim); font-weight: 500; }
+
+  .rp-body p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--text-dim);
+    max-width: 40rem;
+    margin: 0 0 1rem;
+  }
+
+  .rp-sign {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .rp-sign .muted { color: var(--text-mute); font-size: 0.78rem; }
+
+  @media (max-width: 880px) {
+    .shell { grid-template-columns: 1fr; }
+    .rail {
+      position: static;
+      height: auto;
+      flex-direction: row;
+      align-items: center;
+      gap: 1.5rem;
+      overflow-x: auto;
+      padding: 1.1rem 1.25rem;
+    }
+    .rail-section:first-of-type { display: none; }
+    .rail-footer { display: none; }
+    .rail-nav { flex-direction: row; }
+    main { padding: 2rem 1.25rem 3rem; }
+    header.page-head { flex-direction: column; gap: 1rem; }
+    .status-block { align-items: flex-start; text-align: left; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .board { grid-template-columns: 1fr; overflow-x: visible; }
+    .inbox-layout { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .rail-btn, .feed-item { transition: background 200ms ease-out, color 200ms ease-out; }
+  }
+</style>
+
+<div class="shell">
+  <nav class="rail" aria-label="Dashboard navigation">
+    <div class="rail-mark">Tenevue</div>
+
+    <div class="rail-section">
+      <div class="rail-label">Client</div>
+      <div style="font-size:0.86rem; color:var(--text-dim); line-height:1.5;">
+        Marlowe &amp; Finch Creative<br />
+        <span style="color:var(--text-mute); font-size:0.76rem;">Brand &amp; marketing, 22 staff</span>
+      </div>
+    </div>
+
+    <div class="rail-section">
+      <div class="rail-label">View</div>
+      <div class="rail-nav" role="tablist" aria-orientation="vertical">
+        <button class="rail-btn" role="tab" id="tab-activity" aria-controls="panel-activity" aria-selected="true">
+          Activity <span class="count">16</span>
+        </button>
+        <button class="rail-btn" role="tab" id="tab-tasks" aria-controls="panel-tasks" aria-selected="false">
+          Tasks <span class="count">17</span>
+        </button>
+        <button class="rail-btn" role="tab" id="tab-inbox" aria-controls="panel-inbox" aria-selected="false">
+          Inbox <span class="count">10</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="rail-footer">
+      <strong>AI Account Coordinator</strong><br />
+      Marlowe &amp; Finch Creative<br />
+      managed by Tenevue
+    </div>
+  </nav>
+
+  <main>
+    <header class="page-head">
+      <div>
+        <p class="eyebrow">Marlowe &amp; Finch Creative</p>
+        <h1>AI Account Coordinator</h1>
+        <p class="role-line">A named person at Tenevue is accountable for it. Always.</p>
+      </div>
+      <div class="status-block">
+        <span class="status-pill"><span class="status-dot"></span> On duty, active now</span>
+        <span class="tenure">Day 34 on the job</span>
+      </div>
+    </header>
+
+    <section class="stats" aria-label="Weekly summary">
+      <div class="stat-card">
+        <div class="stat-value">34</div>
+        <div class="stat-label">Tasks completed this week</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">5</div>
+        <div class="stat-label">Stalled projects unstuck</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">21.5 <span style="font-size:0.9rem; color:var(--text-mute);">hrs</span></div>
+        <div class="stat-label">Estimated hours saved</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">4 <span style="font-size:0.9rem; color:var(--text-mute);">min</span></div>
+        <div class="stat-label">Avg. response time</div>
+      </div>
+    </section>
+
+    <section id="panel-activity" class="panel" role="tabpanel" aria-labelledby="tab-activity" data-active="true">
+      <div class="panel-head">
+        <h2>Activity</h2>
+        <span class="sub">Week of Jul 21–25</span>
+      </div>
+
+      <ul class="feed">
+        <li class="feed-item">
+          <span class="feed-time">Today · 4:12 PM</span>
+          <span class="feed-text">Followed up with Halston Retail on the overdue logo files for the Q3 rebrand (third request in 11 days). Flagged to the account lead.<span class="tag warn">Waiting on client</span></span>
+        </li>
+        <li class="feed-item">
+          <span class="feed-time">Today · 11:02 AM</span>
+          <span class="feed-text">Drafted a change-order note for 6.5 hours of out-of-scope revisions on the Northline campaign and routed it to the project manager for approval.</span>
+        </li>
+        <li class="feed-item">
+          <span class="feed-time">Today · 9:40 AM</span>
+          <span class="feed-text">Scheduled a social content review call with Lumen Skincare for Monday morning.</span>
+        </li>
+        <li class="feed-item">
+          <span class="feed-time">Today · 8:15 AM</span>
+          <span class="feed-text">Sent an invoice reminder to Wexford Auto Group; balance now 9 days past net-30.<span class="tag warn">Waiting on client</span></span>
+        </li>
+        <li class="feed-item">
+          <span class="feed-time">Yesterday · 3:40 PM</span>
+          <span class="feed-text">Sent a status update to Bell &amp; Ivy Events; no update had gone out in 9 days.<span class="tag good">Closed gap</span></span>
+        </li>
+        <li class="feed-item">
+          <span class="feed-time">Yesterday · 1:05 PM</span>
+          <span class="feed-text">Flagged 3 hours of out-of-scope revision requests from Route 9 Brewing and drafted a change-order note.</span>
+        </li>
+        <li class="feed-item">
+          <span class="feed-time">Yesterday · 10:30 AM</span>
+          <span class="feed-text">Followed up with Sable &amp; Stone Apparel on the overdue product photography selects (second request).<span class="tag warn">Waiting on client</span></span>
+        </li>
+        <li class="feed-item">
+          <span class="feed-time">Yesterday · 9:15 AM</span>
+          <span class="feed-text">Chased the signed SOW addendum for the Fenwick Coffee onboarding, unblocking kickoff.</span>
+        </li>
+        <li class="feed-item">
+          <span class="feed-time">Wed · 4:50 PM</span>
+          <span class="feed-text">Sent a status update to Frost &amp; Co Realty; no update had gone out in 8 days.<span class="tag good">Closed gap</span></span>
+        </li>
+        <li class="feed-item">
+          <span class="feed-time">Wed · 2:20 PM</span>
+          <span class="feed-text">Compiled a status brief covering 4 stalled projects ahead of Friday's client call.</span>
+        </li>
+        <li class="feed-item">
+          <span class="feed-time">Wed · 10:00 AM</span>
+          <span class="feed-text">Logged 2 incoming client assets and updated the project tracker.</span>
+        </li>
+        <li class="feed-item">
+          <span class="feed-time">Wed · 9:05 AM</span>
+          <span class="feed-text">Chased board-approved boilerplate copy from Bright Harbor Nonprofit (second request).<span class="tag warn">Waiting on client</span></span>
+        </li>
+        <li class="feed-item">
+          <span class="feed-time">Tue · 3:15 PM</span>
+          <span class="feed-text">Followed up with The Yard Coworking on the unsigned kickoff contract, now 9 days out.<span class="tag warn">Waiting on client</span></span>
+        </li>
+        <li class="feed-item">
+          <span class="feed-time">Tue · 11:40 AM</span>
+          <span class="feed-text">Logged Milkwood Bakery Co's approved packaging assets and closed the request.<span class="tag good">Closed gap</span></span>
+        </li>
+        <li class="feed-item">
+          <span class="feed-time">Mon · 5:00 PM</span>
+          <span class="feed-text">Sent the weekly status brief template to the account team ahead of the week.</span>
+        </li>
+        <li class="feed-item">
+          <span class="feed-time">Mon · 9:30 AM</span>
+          <span class="feed-text">Reviewed all 12 open accounts for overdue items and flagged 4 for follow-up.</span>
+        </li>
+      </ul>
+
+      <div class="report-card">
+        <p class="eyebrow">This week's report</p>
+        <p>
+          Unstuck five projects that had been waiting on the client for five or more days, including two
+          status-update gaps over a week old. Caught 9.5 hours of out-of-scope work across two accounts before
+          it went unbilled, and sent one overdue-invoice reminder. Every open project now carries a status
+          update less than 48 hours old.
+        </p>
+        <p class="report-sign">Omar, Tenevue</p>
+      </div>
+    </section>
+
+    <section id="panel-tasks" class="panel" role="tabpanel" aria-labelledby="tab-tasks">
+      <div class="panel-head">
+        <h2>Tasks</h2>
+        <span class="sub">17 tasks across 12 accounts this week</span>
+      </div>
+
+      <div class="board">
+        <div class="col">
+          <div class="col-head"><span class="head-left"><span class="stripe waiting"></span>Waiting on client</span> 6</div>
+          <div class="task-card">
+            <div class="task-client">Halston Retail</div>
+            <div class="task-desc">Logo files for the Q3 rebrand (3rd request)</div>
+            <div class="task-meta">11 days waiting</div>
+          </div>
+          <div class="task-card">
+            <div class="task-client">The Yard Coworking</div>
+            <div class="task-desc">Unsigned kickoff contract</div>
+            <div class="task-meta">9 days waiting</div>
+          </div>
+          <div class="task-card">
+            <div class="task-client">Wexford Auto Group</div>
+            <div class="task-desc">Overdue invoice, net-30 balance</div>
+            <div class="task-meta">9 days waiting</div>
+          </div>
+          <div class="task-card">
+            <div class="task-client">Sable &amp; Stone Apparel</div>
+            <div class="task-desc">Product photography selects (2nd request)</div>
+            <div class="task-meta">6 days waiting</div>
+          </div>
+          <div class="task-card">
+            <div class="task-client">Bright Harbor Nonprofit</div>
+            <div class="task-desc">Board-approved boilerplate copy (2nd request)</div>
+            <div class="task-meta">5 days waiting</div>
+          </div>
+          <div class="task-card">
+            <div class="task-client">Fenwick Coffee</div>
+            <div class="task-desc">Brand guidelines doc for launch assets</div>
+            <div class="task-meta">2 days waiting</div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="col-head"><span class="head-left"><span class="stripe progress"></span>In progress</span> 4</div>
+          <div class="task-card">
+            <div class="task-client">Northline Campaign</div>
+            <div class="task-desc">Change-order note routed for approval</div>
+            <div class="task-meta">sent today</div>
+          </div>
+          <div class="task-card">
+            <div class="task-client">Route 9 Brewing</div>
+            <div class="task-desc">Change-order note drafted for internal review</div>
+            <div class="task-meta">sent yesterday</div>
+          </div>
+          <div class="task-card">
+            <div class="task-client">Lumen Skincare</div>
+            <div class="task-desc">Social content review call scheduled</div>
+            <div class="task-meta">Monday, 10:00 AM</div>
+          </div>
+          <div class="task-card">
+            <div class="task-client">Q3 Reporting</div>
+            <div class="task-desc">Compiling deliverables list across 6 accounts</div>
+            <div class="task-meta">due Friday</div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="col-head"><span class="head-left"><span class="stripe done"></span>Done this week</span> 7</div>
+          <div class="task-card">
+            <div class="task-client">Bell &amp; Ivy Events</div>
+            <div class="task-desc">Status update sent, closed a 9-day gap</div>
+            <div class="task-meta">Thu</div>
+          </div>
+          <div class="task-card">
+            <div class="task-client">Frost &amp; Co Realty</div>
+            <div class="task-desc">Status update sent, closed an 8-day gap</div>
+            <div class="task-meta">Wed</div>
+          </div>
+          <div class="task-card">
+            <div class="task-client">Fenwick Coffee</div>
+            <div class="task-desc">Contract chased, kickoff unblocked</div>
+            <div class="task-meta">Thu</div>
+          </div>
+          <div class="task-card">
+            <div class="task-client">Milkwood Bakery Co</div>
+            <div class="task-desc">Packaging assets logged, request closed</div>
+            <div class="task-meta">Tue</div>
+          </div>
+          <div class="task-card">
+            <div class="task-client">Wexford Auto Group</div>
+            <div class="task-desc">Invoice reminder sent</div>
+            <div class="task-meta">Today</div>
+          </div>
+          <div class="task-card">
+            <div class="task-client">Account Review</div>
+            <div class="task-desc">12 accounts reviewed for overdue items</div>
+            <div class="task-meta">Mon</div>
+          </div>
+          <div class="task-card">
+            <div class="task-client">Status Brief</div>
+            <div class="task-desc">Weekly summary sent to the team</div>
+            <div class="task-meta">Wed, 2:20 PM</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="panel-inbox" class="panel" role="tabpanel" aria-labelledby="tab-inbox">
+      <div class="panel-head">
+        <h2>Inbox</h2>
+        <span class="inbox-address">coordinator@marloweandfinch.tenevue.com</span>
+      </div>
+
+      <div class="inbox-layout">
+        <ul class="mail-list" role="listbox" aria-label="Messages">
+          <li class="mail-item" aria-current="true">
+            <button class="mail-row" data-mail="halston">
+              <div class="mail-top">
+                <span class="mail-who">Halston Retail</span>
+                <span class="mail-when">4:12 PM</span>
+              </div>
+              <div class="mail-subject"><span class="mail-dir">Sent</span>Following up: Q3 rebrand logo files</div>
+              <div class="mail-snippet">Checking in on the final logo files. We're now 11 days out…</div>
+            </button>
+          </li>
+          <li class="mail-item">
+            <button class="mail-row" data-mail="northline">
+              <div class="mail-top">
+                <span class="mail-who">Priya Desai · Northline</span>
+                <span class="mail-when">11:02 AM</span>
+              </div>
+              <div class="mail-subject"><span class="mail-dir">Sent</span>Change order for review: 6.5 hrs out-of-scope</div>
+              <div class="mail-snippet">Flagging additional revision work outside the current SOW…</div>
+            </button>
+          </li>
+          <li class="mail-item">
+            <button class="mail-row" data-mail="wexford">
+              <div class="mail-top">
+                <span class="mail-who">Wexford Auto Group</span>
+                <span class="mail-when">8:15 AM</span>
+              </div>
+              <div class="mail-subject"><span class="mail-dir">Sent</span>Reminder: invoice #4471 now past due</div>
+              <div class="mail-snippet">Our records show this balance is 9 days past net-30…</div>
+            </button>
+          </li>
+          <li class="mail-item">
+            <button class="mail-row" data-mail="bellivy">
+              <div class="mail-top">
+                <span class="mail-who">Bell &amp; Ivy Events</span>
+                <span class="mail-when">Yesterday</span>
+              </div>
+              <div class="mail-subject"><span class="mail-dir">Sent</span>Status update: fall campaign</div>
+              <div class="mail-snippet">Here's where things stand across the three open workstreams…</div>
+            </button>
+          </li>
+          <li class="mail-item">
+            <button class="mail-row" data-mail="route9">
+              <div class="mail-top">
+                <span class="mail-who">Route 9 Brewing</span>
+                <span class="mail-when">Yesterday</span>
+              </div>
+              <div class="mail-subject"><span class="mail-dir">Sent</span>Change order for review: 3 hrs out-of-scope</div>
+              <div class="mail-snippet">Flagging label-redesign revisions beyond the current SOW…</div>
+            </button>
+          </li>
+          <li class="mail-item">
+            <button class="mail-row" data-mail="sablestone">
+              <div class="mail-top">
+                <span class="mail-who">Sable &amp; Stone Apparel</span>
+                <span class="mail-when">Yesterday</span>
+              </div>
+              <div class="mail-subject"><span class="mail-dir">Sent</span>Following up: product photography selects</div>
+              <div class="mail-snippet">Second request. The lookbook can't go to print without these…</div>
+            </button>
+          </li>
+          <li class="mail-item">
+            <button class="mail-row" data-mail="fenwick">
+              <div class="mail-top">
+                <span class="mail-who">Fenwick Coffee</span>
+                <span class="mail-when">Yesterday</span>
+              </div>
+              <div class="mail-subject"><span class="mail-dir">Received</span>Re: Signed SOW addendum</div>
+              <div class="mail-snippet">Signed and attached. Sorry for the delay on our end…</div>
+            </button>
+          </li>
+          <li class="mail-item">
+            <button class="mail-row" data-mail="frostco">
+              <div class="mail-top">
+                <span class="mail-who">Frost &amp; Co Realty</span>
+                <span class="mail-when">Wed</span>
+              </div>
+              <div class="mail-subject"><span class="mail-dir">Sent</span>Status update: listing campaign</div>
+              <div class="mail-snippet">Apologies for the gap. Here's where the three listings stand…</div>
+            </button>
+          </li>
+          <li class="mail-item">
+            <button class="mail-row" data-mail="brief">
+              <div class="mail-top">
+                <span class="mail-who">Account team</span>
+                <span class="mail-when">Wed</span>
+              </div>
+              <div class="mail-subject"><span class="mail-dir">Sent</span>Weekly status brief: 4 stalled projects</div>
+              <div class="mail-snippet">Summary below ahead of Friday's client call…</div>
+            </button>
+          </li>
+          <li class="mail-item">
+            <button class="mail-row" data-mail="brightharbor">
+              <div class="mail-top">
+                <span class="mail-who">Bright Harbor Nonprofit</span>
+                <span class="mail-when">Wed</span>
+              </div>
+              <div class="mail-subject"><span class="mail-dir">Sent</span>Following up: boilerplate copy for the annual report</div>
+              <div class="mail-snippet">Second request. Design is on hold until this is finalized…</div>
+            </button>
+          </li>
+        </ul>
+
+        <article class="reading-pane">
+          <div id="mail-halston" class="mail-body">
+            <h3 class="rp-subject">Following up: Q3 rebrand logo files (3rd request)</h3>
+            <div class="rp-meta">
+              <div><strong>To:</strong> Dana Whitfield, Halston Retail</div>
+              <div><strong>From:</strong> AI Account Coordinator, Marlowe &amp; Finch Creative</div>
+              <div>Today, 4:12 PM</div>
+            </div>
+            <div class="rp-body">
+              <p>Hi Dana,</p>
+              <p>
+                Checking in on the final logo files for the Q3 rebrand. I reached out on the 14th and again on
+                the 19th; we're now 11 days past the original due date, and the rebrand timeline can't move
+                without them.
+              </p>
+              <p>
+                Could you send the finalized files, or let me know if there's a blocker on your end I can help
+                clear? Happy to hop on a quick call if that's faster.
+              </p>
+            </div>
+            <div class="rp-sign">
+              AI Account Coordinator<br />
+              <span class="muted">Marlowe &amp; Finch Creative, managed by Tenevue</span>
+            </div>
+          </div>
+
+          <div id="mail-northline" class="mail-body" hidden>
+            <h3 class="rp-subject">Change order for review: 6.5 hrs out-of-scope</h3>
+            <div class="rp-meta">
+              <div><strong>To:</strong> Priya Desai, Project Manager</div>
+              <div><strong>From:</strong> AI Account Coordinator, Marlowe &amp; Finch Creative</div>
+              <div>Today, 11:02 AM</div>
+            </div>
+            <div class="rp-body">
+              <p>Hi Priya,</p>
+              <p>
+                Flagging 6.5 hours of revision work on Northline that falls outside the current SOW: three
+                rounds of homepage layout changes beyond the two included. I've drafted a short change-order
+                note with the breakdown, attached, so it doesn't go unbilled.
+              </p>
+              <p>Let me know if you'd like it sent to the client as-is or adjusted first.</p>
+            </div>
+            <div class="rp-sign">
+              AI Account Coordinator<br />
+              <span class="muted">Marlowe &amp; Finch Creative, managed by Tenevue</span>
+            </div>
+          </div>
+
+          <div id="mail-wexford" class="mail-body" hidden>
+            <h3 class="rp-subject">Reminder: invoice #4471 now past due</h3>
+            <div class="rp-meta">
+              <div><strong>To:</strong> Accounts Payable, Wexford Auto Group</div>
+              <div><strong>From:</strong> AI Account Coordinator, Marlowe &amp; Finch Creative</div>
+              <div>Today, 8:15 AM</div>
+            </div>
+            <div class="rp-body">
+              <p>Hello,</p>
+              <p>
+                Our records show invoice #4471 ($4,800, June media buy) is 9 days past its net-30 due date.
+                Flagging in case it slipped past; happy to resend the invoice or point you to whoever handles
+                AP on your end.
+              </p>
+            </div>
+            <div class="rp-sign">
+              AI Account Coordinator<br />
+              <span class="muted">Marlowe &amp; Finch Creative, managed by Tenevue</span>
+            </div>
+          </div>
+
+          <div id="mail-bellivy" class="mail-body" hidden>
+            <h3 class="rp-subject">Status update: fall campaign</h3>
+            <div class="rp-meta">
+              <div><strong>To:</strong> Bell &amp; Ivy Events</div>
+              <div><strong>From:</strong> AI Account Coordinator, Marlowe &amp; Finch Creative</div>
+              <div>Yesterday, 3:40 PM</div>
+            </div>
+            <div class="rp-body">
+              <p>Hello,</p>
+              <p>
+                Here's where things stand across the three open workstreams: social assets are in final review,
+                the venue partnership deck is with design, and the email sequence is drafted and awaiting your
+                copy sign-off.
+              </p>
+              <p>Sending updates like this every week going forward; let me know if weekly is the right cadence.</p>
+            </div>
+            <div class="rp-sign">
+              AI Account Coordinator<br />
+              <span class="muted">Marlowe &amp; Finch Creative, managed by Tenevue</span>
+            </div>
+          </div>
+
+          <div id="mail-route9" class="mail-body" hidden>
+            <h3 class="rp-subject">Change order for review: 3 hrs out-of-scope</h3>
+            <div class="rp-meta">
+              <div><strong>To:</strong> Priya Desai, Project Manager</div>
+              <div><strong>From:</strong> AI Account Coordinator, Marlowe &amp; Finch Creative</div>
+              <div>Yesterday, 1:05 PM</div>
+            </div>
+            <div class="rp-body">
+              <p>Hi Priya,</p>
+              <p>
+                Route 9 Brewing asked for a full label redesign this week: the SOW covers seasonal label
+                refreshes, not a ground-up redesign. Drafted a change-order note for the 3 hours spent so far,
+                attached, before more time goes in unbilled.
+              </p>
+            </div>
+            <div class="rp-sign">
+              AI Account Coordinator<br />
+              <span class="muted">Marlowe &amp; Finch Creative, managed by Tenevue</span>
+            </div>
+          </div>
+
+          <div id="mail-sablestone" class="mail-body" hidden>
+            <h3 class="rp-subject">Following up: product photography selects</h3>
+            <div class="rp-meta">
+              <div><strong>To:</strong> Marisol Ortega, Sable &amp; Stone Apparel</div>
+              <div><strong>From:</strong> AI Account Coordinator, Marlowe &amp; Finch Creative</div>
+              <div>Yesterday, 10:30 AM</div>
+            </div>
+            <div class="rp-body">
+              <p>Hi Marisol,</p>
+              <p>
+                Second request on the product photography selects for the fall lookbook; we need your picks
+                from the proof gallery to send the spread to print on schedule. The print deadline is next
+                Wednesday.
+              </p>
+              <p>If it's easier, I can narrow it to a shortlist of 12 for a faster yes/no.</p>
+            </div>
+            <div class="rp-sign">
+              AI Account Coordinator<br />
+              <span class="muted">Marlowe &amp; Finch Creative, managed by Tenevue</span>
+            </div>
+          </div>
+
+          <div id="mail-fenwick" class="mail-body" hidden>
+            <h3 class="rp-subject">Re: Signed SOW addendum</h3>
+            <div class="rp-meta">
+              <div><strong>From:</strong> Fenwick Coffee</div>
+              <div><strong>To:</strong> AI Account Coordinator, Marlowe &amp; Finch Creative</div>
+              <div>Yesterday, 9:15 AM</div>
+            </div>
+            <div class="rp-body">
+              <p>Hi there,</p>
+              <p>Signed and attached. Sorry for the delay on our end. Let us know once kickoff is scheduled.</p>
+            </div>
+            <div class="rp-sign muted">Fenwick Coffee</div>
+          </div>
+
+          <div id="mail-frostco" class="mail-body" hidden>
+            <h3 class="rp-subject">Status update: listing campaign</h3>
+            <div class="rp-meta">
+              <div><strong>To:</strong> Frost &amp; Co Realty</div>
+              <div><strong>From:</strong> AI Account Coordinator, Marlowe &amp; Finch Creative</div>
+              <div>Wednesday, 4:50 PM</div>
+            </div>
+            <div class="rp-body">
+              <p>Hello,</p>
+              <p>
+                Apologies for the gap since the last update. Here's where the three active listings stand:
+                the Elm Street brochure is at the printer, the drone footage for Birch Hollow is in edit, and
+                the open-house postcard set for Cedar Ridge is ready for your review.
+              </p>
+              <p>Back on a weekly cadence from here.</p>
+            </div>
+            <div class="rp-sign">
+              AI Account Coordinator<br />
+              <span class="muted">Marlowe &amp; Finch Creative, managed by Tenevue</span>
+            </div>
+          </div>
+
+          <div id="mail-brief" class="mail-body" hidden>
+            <h3 class="rp-subject">Weekly status brief: 4 stalled projects</h3>
+            <div class="rp-meta">
+              <div><strong>To:</strong> Marlowe &amp; Finch account team</div>
+              <div><strong>From:</strong> AI Account Coordinator, Marlowe &amp; Finch Creative</div>
+              <div>Wednesday, 2:20 PM</div>
+            </div>
+            <div class="rp-body">
+              <p>Summary below ahead of Friday's client call:</p>
+              <p>
+                Halston Retail: waiting on logo files, 11 days. Bell &amp; Ivy: status update sent, gap
+                closed. Fenwick Coffee: SOW addendum signed, kickoff unblocked. Northline: change order
+                routed for approval.
+              </p>
+            </div>
+            <div class="rp-sign">
+              AI Account Coordinator<br />
+              <span class="muted">Marlowe &amp; Finch Creative, managed by Tenevue</span>
+            </div>
+          </div>
+
+          <div id="mail-brightharbor" class="mail-body" hidden>
+            <h3 class="rp-subject">Following up: boilerplate copy for the annual report</h3>
+            <div class="rp-meta">
+              <div><strong>To:</strong> Communications Committee, Bright Harbor Nonprofit</div>
+              <div><strong>From:</strong> AI Account Coordinator, Marlowe &amp; Finch Creative</div>
+              <div>Wednesday, 9:05 AM</div>
+            </div>
+            <div class="rp-body">
+              <p>Hello,</p>
+              <p>
+                Second request on the board-approved boilerplate for the annual report; design is on hold
+                until copy is final, and we're now 5 days past the date you gave us for board sign-off.
+              </p>
+              <p>Let us know if the board needs more time, and we'll adjust the design schedule around it.</p>
+            </div>
+            <div class="rp-sign">
+              AI Account Coordinator<br />
+              <span class="muted">Marlowe &amp; Finch Creative, managed by Tenevue</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+  (function () {
+    var tabs = [
+      { btn: document.getElementById("tab-activity"), panel: document.getElementById("panel-activity") },
+      { btn: document.getElementById("tab-tasks"), panel: document.getElementById("panel-tasks") },
+      { btn: document.getElementById("tab-inbox"), panel: document.getElementById("panel-inbox") }
+    ];
+
+    tabs.forEach(function (t) {
+      t.btn.addEventListener("click", function () {
+        tabs.forEach(function (o) {
+          var active = o === t;
+          o.btn.setAttribute("aria-selected", active ? "true" : "false");
+          o.panel.setAttribute("data-active", active ? "true" : "false");
+        });
+      });
+    });
+
+    var mailRows = Array.prototype.slice.call(document.querySelectorAll(".mail-row"));
+    mailRows.forEach(function (row) {
+      row.addEventListener("click", function () {
+        mailRows.forEach(function (r) {
+          r.closest(".mail-item").setAttribute("aria-current", r === row ? "true" : "false");
+        });
+        document.querySelectorAll(".mail-body").forEach(function (b) { b.hidden = true; });
+        var body = document.getElementById("mail-" + row.getAttribute("data-mail"));
+        if (body) body.hidden = false;
+      });
+    });
+  })();
+</script>
